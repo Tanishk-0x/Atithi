@@ -21,6 +21,8 @@ const HostDashboard = () => {
         ongoing ,
         approveBooking , 
         isApproving , 
+        CheckInBooking , 
+        isCheckIn ,
     } = useContext(hostDataContext); 
 
     // ---- Dummy Data For Chart ----
@@ -250,6 +252,10 @@ const HostDashboard = () => {
 
     const [showPopUp , setShowPopUp] = useState(false); 
 
+    // ------ CheckIn ---------
+    const [ bookingId , setBookingId ] = useState(''); 
+    const [ passCode , setPassCode ] = useState(''); 
+
     useEffect(() => {
         getHostData(); 
     }, []); 
@@ -448,7 +454,11 @@ const HostDashboard = () => {
                                     <p className="text-[gray] text-[12px]"> {`${item.listing.landmark}/${item.listing.city}`} </p>
                                 </div>
                                 <div className="px-2  w-[22%]">
-                                    <button onClick={() => setShowPopUp(true)} className="bg-red-500 px-2 py-2 rounded-lg cursor-pointer text-[white] hover:bg-red-600">
+                                    <button onClick={() => {
+                                        setShowPopUp(true) ; 
+                                        setBookingId(item._id);
+                                        console.log("ID: " , bookingId); 
+                                    }} className="bg-red-500 px-2 py-2 rounded-lg cursor-pointer text-[white] hover:bg-red-600">
                                         CheckIn
                                     </button>
                                 </div>
@@ -464,14 +474,21 @@ const HostDashboard = () => {
       </div>
         
         { showPopUp && 
-            <div className="bg-[#eeeeee] border-2 border-[gray] fixed h-[220px] w-[400px] flex flex-col gap-4 justify-center items-center rounded-lg top-[34%]">
+            <div className="bg-[#eeeeee] border-2 border-[gray] fixed h-[220px] w-[400px] flex flex-col gap-4 justify-center items-center rounded-lg top-[34%]"> 
+                <button onClick={() => setShowPopUp(false)}
+                 className="bg-red-500 absolute top-2 right-2 rounded-full text-white border border-red-600 cursor-pointer h-8 w-8 text-lg hover:bg-red-600">
+                    X
+                </button>
                 <h1 className="text-[28px] font-semibold">Enter Pass Code : </h1>
                 <div>
-                    <input className="w-[250px] h-[50px] bg-white outline-none px-2 text-[28px] border-2 border-[gray] rounded-lg text-[black]"
-                     type="number" name="" id="" />
+                    <input onChange={(e) => setPassCode(e.target.value)}
+                    className="w-[250px] h-[50px] bg-white outline-none px-2 text-[28px] border-2 border-[gray] rounded-lg text-[black]"
+                    type="number" name="" id="" />
                 </div>
-                <button onClick={() => setShowPopUp(false)} className="px-4 py-2 bg-red-500 cursor-pointer rounded-lg text-[white] hover:bg-red-600 text-[22px]">
-                    CheckIn
+                <button onClick={() => 
+                    CheckInBooking(bookingId , passCode)
+                } className="px-4 py-2 bg-red-500 cursor-pointer rounded-lg text-[white] hover:bg-red-600 text-[22px]">
+                    { isCheckIn ? 'loading..' : 'CheckIn' }
                 </button>
             </div>
         }

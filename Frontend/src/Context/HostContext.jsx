@@ -13,6 +13,7 @@ const HostContext = ({children}) => {
 
     const [isApproving , setIsApproving] = useState(false); 
     const [isGettingData , setIsGettingData] = useState(false); 
+    const [isCheckIn , setIsCheckIn] = useState(false); 
 
     const [pending , setPending] = useState([]); 
     const [approved , setApproved] = useState([]); 
@@ -72,6 +73,33 @@ const HostContext = ({children}) => {
         }
     }
 
+    // CheckIn ...
+    const CheckInBooking = async (id , passcode) => {
+        if(isCheckIn){
+            return ; 
+        }
+        try {
+            setIsCheckIn(true); 
+            const res = await axios.put(serverUrl + `/booking/checkin/${id}` , 
+                { passcode : passcode } , {withCredentials : true}
+            ); 
+
+            if(res.data.success){
+                toast.success("CheckInned!"); 
+                await getHostData(); 
+            }
+        }
+        
+        catch (error) {
+            console.error("CheckIn Error:" ,error);
+            toast.error(error.response.data.message);
+        }
+
+        finally{
+            setIsCheckIn(false); 
+        }
+    }
+
     let value = {
         getHostData ,
         pending , 
@@ -80,6 +108,8 @@ const HostContext = ({children}) => {
         approveBooking ,
         isApproving , 
         isGettingData , 
+        CheckInBooking , 
+        isCheckIn , 
     }; 
 
     return (
