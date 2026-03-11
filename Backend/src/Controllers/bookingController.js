@@ -143,7 +143,58 @@ const ApproveBooking = async (req , res) => {
     }
 }
 
+// -------- CheckIn Booking ----------
+/*
+1. take ID from params 
+2. find booking 
+3. update its status to [ongoing]
+*/
+const CheckInBooking = async (req , res) => {
+    try {
+        const {id} = req.params ; 
+        const passcode = Number(req.body.passcode) ;  
 
+        const booking = await Booking.findById(id); 
+
+        if(!booking){
+            return res.status(404).json({
+                success : false ,
+                message : "Booking Not Found"
+            });
+        }
+
+        // check for passCode 
+        if(!passcode){
+            return res.status(404).json({
+                success : false , 
+                message : "PassCode Not Found!"
+            });
+        }
+
+        if( booking.passCode !== passcode ){
+            return res.status(403).json({
+                success : false , 
+                message : "Invalid PassCode"
+            });
+        }
+
+        booking.status = 'ongoing' ; 
+        
+        await booking.save() ; 
+
+        return res.status(200).json({
+            success : true ,
+            message : "CheckInned! SuccessFully"
+        });
+    }
+    
+    catch (error) {
+        res.status(500).json({
+            success : false , 
+            message : `An Error Occured While CheckIn : ${error}`
+        }); 
+    }
+}
 
 // ------- Get Bookings ---------
 /*
@@ -234,4 +285,4 @@ const cancelBooking = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData }
+module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking}
