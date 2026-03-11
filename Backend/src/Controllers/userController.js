@@ -2,12 +2,22 @@ const User = require('../Models/userModel');
 
 const getCurrentUser = async (req , res) => {
     try {
-        const user = await User.findById(req.userId).select('-password').populate(
-            "listing" , "title description image1 image2 image3 rent city landmark category ratings isBooked host"
-        )
-        .populate(
-            "booking" , "title description image1 image2 image3 rent city landmark category ratings isBooked host"
-        );
+        const user = await User.findById(req.userId).select('-password')
+        // updating populate 
+            .populate('listing')
+            .populate({
+                path: 'booking' , 
+                populate : [
+                    { 
+                        path: 'listing' ,
+                        select : 'title landmark city rent image1 image2 image3 isBooked ratings'
+                    },
+                    {
+                        path: 'host' , 
+                        select : 'name email phone'
+                    }
+                ]
+            });
         
         if(!user){
             res.status(400).json({

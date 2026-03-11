@@ -15,7 +15,8 @@ const createBooking = async (req , res) => {
         const {id} = req.params ; 
         const {checkIn , checkOut , totalRent} = req.body ; 
 
-        const listing = await Listing.findById(id); 
+        const listing = await Listing.findById(id)
+            .populate('host' , 'name email phone'); 
 
         // check for listing 
         if(!listing){
@@ -50,14 +51,15 @@ const createBooking = async (req , res) => {
             host : listing.host , 
             guest : req.userId , 
             listing : listing._id ,
-        });
+        }); 
 
         // push listing_id into user's booking
         const user = await User.findByIdAndUpdate(req.userId , {
-            $push:{booking:listing._id} ,
+            $push:{booking:booking._id} ,
         } , {new:true});
 
-        await booking.populate("host" , "email"); 
+        await (await booking.populate("host" , "name phone email"))
+            .populate("listing" , "title city landmark image1 rent");
 
         if(!user){
             res.status(404).json({
@@ -78,7 +80,7 @@ const createBooking = async (req , res) => {
         res.status(201).json({
             success : true , 
             message : "Booking Created SuccessFully" , 
-            booking : booking 
+            booking : booking , 
         });
     }
     
@@ -141,6 +143,64 @@ const ApproveBooking = async (req , res) => {
     }
 }
 
+
+
+// ------- Get Bookings ---------
+/*
+1. Pending Request = (status: pending);
+2. Timeline = (status: approved); 
+3. Ongoing Booking = (status: ongoing); 
+
+*/
+
+const getBookingsData = async (req , res) => {
+    try {
+        // getting host'sId 
+        const hostId = req.userId ; 
+
+        if(!hostId){
+            return res.status(404).json({
+                success : false ,
+                message : "User Not Found!"
+            }); 
+        }
+
+        const bookings = await Booking.find({ host: hostId })
+            .populate('guest' , 'name email')
+            .populate('listing' , 'title image1 landmark city')
+            .sort({createdAt: -1});
+        
+        if(!bookings){
+            return res.status(404).json({
+                success : false , 
+                message : "Booking Not Found!"
+            }); 
+        }
+
+        // filter 
+        const pending = bookings.filter(b => b.status === 'pending'); 
+        const approved = bookings.filter(b => b.status === 'approved');
+        const checkInned = bookings.filter(b => b.status === 'ongoing');  
+
+        res.status(200).json({
+            success : true , 
+            message : "Data Fetched SuccessFully" , 
+            data : {
+                pending ,
+                approved , 
+                checkInned ,
+            }
+        }); 
+    }
+    
+    catch (error) {
+        res.status(500).json({
+            success : false , 
+            message : `An Error Occured While Getting Data : ${error}`
+        }); 
+    }
+}
+
 // ----------------------------------------
 
 const cancelBooking = async (req , res) => {
@@ -174,4 +234,4 @@ const cancelBooking = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking}
+module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData }
