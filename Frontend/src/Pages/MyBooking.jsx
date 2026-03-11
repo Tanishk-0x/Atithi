@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { userDataContext } from '../Context/UserContext';
-import Card from '../Components/Card';
+import BookingCard from '../Components/BookingCard';
 
 const MyBooking = () => {
 
@@ -19,27 +19,33 @@ const MyBooking = () => {
                 <button onClick={() => navigate('/')} className='cursor-pointer'><FaArrowLeftLong /></button>
             </div>
 
-            <div className='w-[50%] h-[10%] border-2 border-[#908c8c] p-[15px] flex items-center justify-center text-[30px] rounded-md text-[#613b3b] font-semibold mt-5 md:w-[600px]'>
+            <div onClick={() => console.log("DATA->>" , userData)} className='w-[50%] h-[10%] border-2 border-[#908c8c] p-[15px] flex items-center justify-center text-[30px] rounded-md text-[#613b3b] font-semibold mt-5 md:w-[600px]'>
                 MY BOOKING
             </div>
 
             <div className='w-full h-[90%] flex items-center justify-center gap-[25px] flex-wrap mt-[30px]'>
-                {
-                    userData.booking.map((list) => (
-                        <Card 
-                            title={list.title} 
-                            landmark={list.landmark}
-                            city={list.city}
-                            image1={list.image1}
-                            image2={list.image2}
-                            image3={list.image3}
-                            rent={list.rent}
-                            id={list._id}
-                            isBooked={list.isBooked}
-                            host={list.host}
-                            ratings={list.ratings}
-                        />
-                    )) 
+                { userData?.booking?.length > 0 ?
+                    (
+                        userData.booking.map((item) => (
+                            <BookingCard 
+                                key={item._id}
+                                id={item._id}
+                                status={item.status}
+                                listing={item.listing}
+                            />
+                        ))
+                    ) : 
+                    (
+                        <div className="flex flex-col items-center gap-4 mt-20">
+                            <p className="text-gray-400 text-xl font-medium">You haven't booked anything yet.</p>
+                            <button 
+                                onClick={() => navigate('/')}
+                                className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600"
+                            >
+                                Explore Properties
+                            </button>
+                        </div>
+                    ) 
                 }
             </div>
 

@@ -37,7 +37,10 @@ const App = () => {
 
         <Route path='/hostdashboard' element={<HostDashboard/>}/>
         <Route path='/waiting' element={<WaitingPage/>} />
-        <Route path='/confirm' element={<BookingConfirm/>} />
+
+        // Dynamic Routing 
+        <Route path='/confirm/:id' element={<BookingConfirm/>} />
+        
       </Routes>
 
       <Toaster/>
