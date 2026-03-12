@@ -29,13 +29,14 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
 
   return (
 
-    <div onClick={() => {!isBooked ? HandleClick() : null}} className='w-[330px] max-w-[85%] h-[460px] flex items-start justify-start flex-col rounded-lg curson-pointer no-scrollBar relative z-10'>
+    // ----------------------------------------
+    <div onClick={HandleClick} className='w-[330px] max-w-[85%] h-[460px] flex items-start justify-start flex-col rounded-lg curson-pointer no-scrollBar relative z-10'>
       
       {/* // Booked Or Not? PopUp */}
       {
         isBooked && 
-        <div className='text-[green] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] '>
-          <GiConfirmed className='w-5 h-5'/> Booked
+        <div className='text-[red] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] '>
+          <GiConfirmed className='w-5 h-5'/> PartialBooked
         </div>
       }
 

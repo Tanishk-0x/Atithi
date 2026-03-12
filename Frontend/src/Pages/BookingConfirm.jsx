@@ -18,6 +18,8 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import { userDataContext } from '../Context/UserContext';
 import toast from 'react-hot-toast';
+import { FaWhatsapp } from "react-icons/fa";
+import { VscFeedback } from "react-icons/vsc";
 
 
 const BookingConfirm = () => {
@@ -196,6 +198,18 @@ const BookingConfirm = () => {
                 <div className='w-[95%] flex items-center justify-center mt-2'>
                     <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-full py-4 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <MdOutlineFileDownload className='font-semibold'/> Download Booking Details As Pdf
+                    </button>
+                </div>
+
+                <div className='w-[95%] flex items-center justify-between mt-2'>
+                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                        <FaWhatsapp className='font-semibold'/> Whatsapp
+                    </button>
+                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                        <VscFeedback className='font-semibold'/> Review
+                    </button>
+                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                        <MdOutlineFileDownload className='font-semibold'/> Download
                     </button>
                 </div>
 
