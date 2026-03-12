@@ -15,6 +15,25 @@ const createBooking = async (req , res) => {
         const {id} = req.params ; 
         const {checkIn , checkOut , totalRent} = req.body ; 
 
+        // ---- Check for Overlap Booking Dates ----
+        const reqIn = new Date(checkIn); 
+        const reqOut = new Date(checkOut); 
+
+        const isOverlapping = await Booking.findOne({
+            listing : id , 
+            $and : [
+                { checkIn : { $lt: reqOut } }, 
+                { checkOut : { $gt: reqIn } }, 
+            ]
+        }); 
+
+        if(isOverlapping){
+            return res.status(400).json({
+                success : false , 
+                message : "Dates already booked!"
+            });
+        }
+
         const listing = await Listing.findById(id)
             .populate('host' , 'name email phone'); 
 
@@ -35,12 +54,12 @@ const createBooking = async (req , res) => {
         } 
 
         // check for already booked or not?
-        if(listing.isBooked){
-            res.status(400).json({
-                success : false , 
-                message : "Listing Already Booked"
-            }); 
-        }
+        // if(listing.isBooked){
+        //     res.status(400).json({
+        //         success : false , 
+        //         message : "Listing Already Booked"
+        //     }); 
+        // }
 
         // creating booking
         const booking = await Booking.create({
@@ -285,4 +304,43 @@ const cancelBooking = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking}
+// ------------ Get Busy Dates -------------
+/*
+1. Fetch Busy Dates
+2. Convert the dates in required format DatePicker  
+3. Exclude Booked Dates using DatePicker 
+4. Additional checks for safety to avoid overlap 
+*/
+
+const FetchBusyDates = async (req , res) => {
+    try {
+        const { id } = req.params ; 
+
+        const busyBookings = await Booking.find({
+            listing : id 
+        }).select('checkIn checkOut -_id'); 
+
+        if(!busyBookings){
+            return res.status(404).json({
+                success : false , 
+                message : "No Booking Found!"
+            }); 
+        }
+
+        res.status(200).json({
+            success : true , 
+            message : 'Dates Fetched SuccessFully!' , 
+            dates : busyBookings , 
+        });
+
+    }
+    
+    catch (error) {
+          res.status(500).json({
+            success : false , 
+            message : `An Error Occured While Fetching Dates : ${error}`
+        });   
+    }
+}
+
+module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates}
