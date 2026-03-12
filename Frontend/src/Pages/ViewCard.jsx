@@ -13,6 +13,9 @@ import { GiConfirmed } from "react-icons/gi";
 import { FaWhatsapp } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const ViewCard = () => {
 
@@ -162,6 +165,33 @@ const ViewCard = () => {
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}` ; 
     window.open(url , "_blank") ; 
   }
+
+  // ----------- Date Handle --------------
+
+  const [startDate , setStartDate] = useState(null); 
+  const [endDate , setEndDate] = useState(null); 
+  const [bookedIntervals , setBookedIntervals] = useState([]); 
+
+    useEffect(() => {
+
+      // function to fetch dates 
+      const fetchBusyDates = async () => {
+        const res = await axios.get(serverUrl + 
+           `/booking/fetchdates/${cardDetails._id}`); 
+        
+        const formattedDates = res.data.dates.map( itr => ({
+          start : new Date(itr.checkIn) , 
+          end : new Date(itr.checkOut) 
+        }));
+
+        setBookedIntervals(formattedDates); 
+      }
+
+      fetchBusyDates(); 
+
+    }, [cardDetails._id]); 
+
+  // --------------------------------------
 
   return (
 
@@ -352,7 +382,7 @@ const ViewCard = () => {
                   Your Trip - 
                 </h3>
 
-                <div className='w-[90%] flex items-center justify-start flex-col gap-2.5 md:gap-6 md:justify-center md:flex-row md:items-start mt-2.5 md:mt-5  ' >
+                {/* <div className='w-[90%] flex items-center justify-start flex-col gap-2.5 md:gap-6 md:justify-center md:flex-row md:items-start mt-2.5 md:mt-5  ' >
                   <label htmlFor="checkIn" className='text-[18px] md:text-[20px]'>CheckIn</label>
                   <input type="date" onChange={(e) => setCheckIn(e.target.value)} id='checkIn' min={minDate} required className='border-[#555656] border-2 w-[200px] h-10 rounded-[10px] bg-transparent px-2.5 text-[15px] md:text-[18px] ' />
                 </div>
@@ -360,10 +390,54 @@ const ViewCard = () => {
                 <div className='w-[90%] flex items-center justify-start flex-col gap-2.5 md:justify-center md:flex-row md:items-start mt-5 md:mt-10 ' >
                   <label htmlFor="checkOut" className='text-[18px] md:text-[20px]'>CheckOut</label>
                   <input type="date" onChange={(e) => setCheckOut(e.target.value)} id='checkOut' min={minDate} required className='border-[#555656] border-2 w-[200px] h-10 rounded-[10px] bg-transparent px-2.5 text-[15px] md:text-[18px] ' />
+                </div> */}
+
+                {/* // ---------------------------------------- */}
+
+                <div className='w-[90%] flex items-center justify-center flex-col gap-2.5 md:gap-6 md:justify-center md:flex-col md:items-center mt-2.5 md:mt-2  ' >
+                  <label className='text-[18px] md:text-[20px]'> Select Dates </label>
+                  
+                  <DatePicker 
+                    selectsRange={true}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(itr) => {
+                      const [start , end] = itr ; 
+                      setStartDate(start) ; 
+                      setEndDate(end) ;
+
+                      // formatt to local 
+                      const formatLocal = (date) => {
+                        if(!date) return null ; 
+                        const offset = date.getTimezoneOffset(); 
+                        const localDate = new Date(date.getTime() - offset * 60 * 1000 ); 
+                        return localDate.toISOString().split('T')[0] ; 
+                      }
+
+                      // setting checkIn/Out
+                      if(start) setCheckIn(formatLocal(start));
+                      if(end) setCheckOut(formatLocal(end)); 
+                    }}
+
+                    // Excluding Intervals 
+                    excludeDateIntervals={bookedIntervals}
+                    
+                    minDate={ new Date() }
+                    isClearable={true}
+                    placeholderText='Select In/Out Dates'
+                    className="w-full max-w-[300px] h-12 border-[#555656] border-2 rounded-[10px] px-3 text-center"
+                  />
                 </div>
 
+                <div className='w-full flex items-center justify-center flex-col gap-2 mt-2'>
+                  <p className='font-semibold'> CheckIn - <span>{checkIn.split('T')[0]}</span> </p>
+                  <p className='font-semibold'> CheckOut - <span>{checkOut.split('T')[0]}</span> </p>
+                </div>
+
+                {/* // ---------------------------------------- */}
+
                 <div className='w-full flex items-center justify-center'>
-                  <button disabled={booking} onClick={() => HandleBooking(cardDetails._id)} className='px-20 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer text-nowrap mt-[30px]' >
+                  <button disabled={booking} onClick={() => HandleBooking(cardDetails._id)} className='px-20 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer text-nowrap mt-2.5' >
                     { booking ? 'Booking..' : 'Book Now' }
                   </button>
                 </div>
