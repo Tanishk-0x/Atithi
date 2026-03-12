@@ -47,7 +47,7 @@ const BookingContext = ({children}) => {
             console.log(error);  
             setBookingData(null);
             setBooking(false); 
-            toast.error("Error While Booking"); 
+            toast.error(error.response.data.message); 
         }
     }
 
