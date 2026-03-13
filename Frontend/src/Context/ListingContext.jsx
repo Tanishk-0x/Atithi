@@ -35,6 +35,9 @@ const ListingContext = ({children}) => {
     const [listingData , setListingData] = useState([]); 
     const [newListingData , setNewListingData] = useState([]);
     const [cardDetails , setCardDetails] = useState(null); 
+    const [lat , setLat] = useState(''); 
+    const [lng , setLng] = useState(''); 
+    const [mapUrl , setMapUrl] = useState(''); 
 
     // Search 
     const [searchData , setSearchData] = useState([]); 
@@ -126,6 +129,14 @@ const ListingContext = ({children}) => {
             );
             console.log(res.data); 
             setCardDetails(res.data.listing);
+
+            if(res.data.lat && res.data.lon){
+                setMapUrl(`https://maps.google.com/maps?q=${res.data.lat},${res.data.lon}&t=&z=16&ie=UTF8&iwloc=near&output=embed`)
+            }
+            else{
+                setMapUrl(`https://maps.google.com/maps?q=${res.data.listing.city}&t=&z=16&ie=UTF8&iwloc=near&output=embed`)
+            }
+
             navigate('/viewcard');
         }
         
@@ -169,6 +180,8 @@ const ListingContext = ({children}) => {
         amenities , setAmenities ,
         points , setPoints , 
         maxGuestAllowed , setMaxGuestAllowed ,
+
+        mapUrl , 
         
         loading , setLoading ,
         adding ,

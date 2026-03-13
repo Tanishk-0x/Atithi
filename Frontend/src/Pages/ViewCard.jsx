@@ -24,7 +24,7 @@ const ViewCard = () => {
   const navigate = useNavigate(); 
 
   const { serverUrl } = useContext(authDataContext);
-  const { cardDetails , updating , setUpdating , deleting , setDeleting } = useContext(listingDataContext);
+  const { cardDetails , updating , setUpdating , deleting , setDeleting , lat , lng , mapUrl} = useContext(listingDataContext);
   const { userData } = useContext(userDataContext);
 
   const [showUpdatePopUp , setShowUpdatePopUp] = useState(false);
@@ -196,7 +196,9 @@ const ViewCard = () => {
 
   // --------------------------------------
 
-  
+  // --------- Handle Map GeoCoding --------- 
+
+  // ----------------------------------------
 
   return (
 
@@ -257,7 +259,7 @@ const ViewCard = () => {
           
           <div className='h-[95%] w-[95%] md:w-[50%] gap-2 flex items-start justify-center flex-col'>
 
-            <div className='overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
+            <div className='shadow-sm shadow-gray-500 rounded-lg overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
               <p className='font-semibold text-[18px] md:text-[22px]'>About This Property</p>
 
               <p className='text-[16px] md:text-[20px] overflow-y-auto'>
@@ -288,7 +290,12 @@ const ViewCard = () => {
           </div>
 
           <div className='w-[98%] h-60 md:h-[95%] md:w-[50%] flex shadow-sm shadow-gray-400 rounded-lg border border-gray-500 items-center justify-center'>
-            MAP HERE
+            <iframe 
+              src={mapUrl}
+              width="98%"
+              height="98%"
+              loading='lazy'
+            />
           </div>
         </div>
 
@@ -651,7 +658,14 @@ const ViewCard = () => {
           </div>
       }
 
-  
+      {/* <div className='bg-orange-400 w-[700px] h-[400px] rounded-lg flex justify-center items-center'>
+        <iframe 
+          src={`https://maps.google.com/maps?q=${lat},${lng}&t=&z=16&ie=UTF8&iwloc=near&output=embed`}
+          width="95%"
+          height="95%"
+          loading='lazy'
+        />
+      </div> */}
         
     
     </div>
