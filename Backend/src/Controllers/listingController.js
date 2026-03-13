@@ -2,6 +2,7 @@ const uploadOnCloudinary = require('../Config/cloudinary');
 const Listing = require('../Models/listingModel'); 
 const User = require('../Models/userModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
+const getCordinates = require('../Config/geoCoding'); 
 
 const addListing = async (req , res) => {
     try {
@@ -83,6 +84,8 @@ const findListing = async (req , res) => {
             });
         }
 
+        const response = await getCordinates(listing.landmark , listing.city); 
+
         listing.viewCount = listing.viewCount + 1 ; 
         await listing.save();
         
@@ -90,7 +93,9 @@ const findListing = async (req , res) => {
         return res.status(200).json({
             success : true , 
             message : "Listing Found SuccessFully" , 
-            listing : listing
+            listing : listing ,
+            lat : response[0] , 
+            lon : response[1] ,  
         });
     }
     
