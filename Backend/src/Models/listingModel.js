@@ -73,6 +73,13 @@ const listingSchema = new mongoose.Schema({
         default : 2 
     }, 
 
+    reviews : [
+        {
+            type : mongoose.Schema.Types.ObjectId , 
+            ref : "Review"
+        }
+    ], 
+
     viewCount : {
         type : Number , 
         default : 0 

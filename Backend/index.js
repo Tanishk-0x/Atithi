@@ -5,6 +5,7 @@ const authRoutes = require('./src/Routes/authRoutes') ;
 const userRoutes = require('./src/Routes/userRoutes') ; 
 const listingRoutes = require('./src/Routes/listingRoutes') ; 
 const bookingRoutes = require('./src/Routes/bookingRoutes');
+const reviewRoutes = require('./src/Routes/reviewRoutes'); 
 const aiRoutes = require('./src/GroqAI/ai.routes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors') ;
@@ -26,6 +27,7 @@ app.use('/auth' , authRoutes);
 app.use('/user' , userRoutes);
 app.use('/listing' , listingRoutes); 
 app.use('/booking' , bookingRoutes); 
+app.use('/review' , reviewRoutes); 
 app.use('/ai' , aiRoutes); 
 
 //Starting Server
