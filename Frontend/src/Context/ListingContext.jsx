@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import {authDataContext} from '../Context/AuthContext'
 import axios from 'axios'
 import toast from 'react-hot-toast'; 
-import {data, useNavigate} from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom'; 
 
 // Creating Context
 export const listingDataContext = createContext() ; 
@@ -29,6 +29,8 @@ const ListingContext = ({children}) => {
     const [backEndImage3 , setBackEndImage3] = useState(null);
     
     const [amenities , setAmenities] = useState([]); 
+    const [points , setPoints] = useState([]); 
+    const [maxGuestAllowed , setMaxGuestAllowed] = useState(0); 
 
     const [listingData , setListingData] = useState([]); 
     const [newListingData , setNewListingData] = useState([]);
@@ -57,10 +59,15 @@ const ListingContext = ({children}) => {
             formData.append("image1" , backEndImage1);
             formData.append("image2" , backEndImage2);
             formData.append("image3" , backEndImage3);
+            formData.append("maxGuestAllowed" , maxGuestAllowed); 
 
             amenities.forEach((item) => {
                 formData.append("amenities[]" , item);
             });
+
+            points.forEach((item) => {
+                formData.append("points[]" , item); 
+            })
 
             // Calling
             const res = await axios.post(serverUrl + "/listing/add" , 
@@ -160,6 +167,8 @@ const ListingContext = ({children}) => {
         backEndImage2,setBackEndImage2 , 
         backEndImage3,setBackEndImage3 ,
         amenities , setAmenities ,
+        points , setPoints , 
+        maxGuestAllowed , setMaxGuestAllowed ,
         
         loading , setLoading ,
         adding ,

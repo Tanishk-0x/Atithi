@@ -27,6 +27,8 @@ const ListingPage1 = () => {
       setBackEndImage2 , 
       setBackEndImage3 ,
       amenities , setAmenities ,
+      points , setPoints , 
+      maxGuestAllowed , setMaxGuestAllowed ,
     } = useContext(listingDataContext); 
 
     // Amenities Data 
@@ -103,6 +105,7 @@ const ListingPage1 = () => {
     const [descriptions , setDescriptions] = useState({}); 
     const [generating , setGenerating] = useState(false); 
     const [showPopUp , setShowPopUp] = useState(false); 
+    const [point , setPoint] = useState(''); 
 
     // Generate Description 
     const GenerateDescription = async () => {
@@ -134,6 +137,17 @@ const ListingPage1 = () => {
       }
     }
 
+    // ----------- Points ------------- 
+    const HandleKeyDown = (event) => {
+      if( event.key === 'Enter' ){
+        event.preventDefault(); 
+        if( point.trim() !== "" ){
+          setPoints(prev => [...prev , point] ); 
+          setPoint("");
+        }  
+      }
+    }
+
     return (
       
       <div className='w-full h-screen bg-white flex items-center justify-center relative overflow-auto'>
@@ -145,7 +159,7 @@ const ListingPage1 = () => {
                 <button className='cursor-pointer' onClick={() => navigate('/')}><FaArrowLeftLong /></button>
               </div>
 
-              <div onClick={() => { console.log(descriptions)}} className='w-[200px] h-[50px] text-[20px] bg-[#f14242] text-white flex items-center justify-center rounded-[30px] absolute top-[5%] right-2.5 shadow-lg cursor-pointer'>
+              <div onClick={() => { console.log("POINTS:" , points)}} className='w-[200px] h-[50px] text-[20px] bg-[#f14242] text-white flex items-center justify-center rounded-[30px] absolute top-[5%] right-2.5 shadow-lg cursor-pointer'>
                   SetUp Your Home
               </div>
 
@@ -243,6 +257,50 @@ const ListingPage1 = () => {
                 placeholder='amenities : press space to make seprated' id='amenities' value={amenities} required className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
               </div> 
 
+              {/* // -------- Points --------------  */}
+              <div className='w-[90%] flex items-start justify-start flex-col gap-2.5' >
+                <label htmlFor="points" className='text-[20px]'>Points to note</label>
+                
+                <div className='flex flex-col gap-1 w-full'>
+                  {
+                  points.map((itr) => (
+                    <div className='px-3 w-[90%] py-1 bg-gray-200 border border-gray-600 rounded-lg'>
+                      {itr}
+                    </div>
+                  ))
+                }
+                </div>
+
+                <input
+                  onChange={(e) => setPoint(e.target.value)}
+                  onKeyDown={HandleKeyDown}
+                  type="text" value={point} placeholder='rules' id='points' className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' 
+                />
+
+              </div>
+
+              {/* // -------- Max Guest Allowed ---------- */}
+              <div className='w-[90%] flex items-start justify-start flex-col gap-2.5' >
+                <label htmlFor="landmark" className='text-[20px]'>Max Guest Allowed</label>
+                
+                <div className='w-[140px] h-[50px] flex flex-row justify-center items-center gap-1'>
+                  <button onClick={(e) => {
+                    e.preventDefault(); 
+                    setMaxGuestAllowed((prev) => prev+1); 
+                  }} className='h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
+                    +
+                  </button>
+                  <div className='h-10 w-10 flex items-center justify-center text-[18px] rounded-lg border border-gray-800 font-semibold'>
+                    {maxGuestAllowed}
+                  </div>
+                  <button onClick={(e) => {
+                    e.preventDefault(); 
+                    setMaxGuestAllowed((prev) => prev-1); 
+                  }} className='h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
+                    -
+                  </button>
+                </div>
+              </div>
        
               <button className='py-2.5 bg-[red] text-[white] text-[18px] md: px-[100px] rounded-lg cursor-pointer mt-2' > Next </button>
 
