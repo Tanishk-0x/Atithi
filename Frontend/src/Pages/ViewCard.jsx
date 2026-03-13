@@ -12,6 +12,8 @@ import { bookingDataContext } from '../Context/BookingContext';
 import { GiConfirmed } from "react-icons/gi";
 import { FaWhatsapp } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { IoPeopleSharp } from "react-icons/io5";
+
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -191,92 +193,239 @@ const ViewCard = () => {
 
     }, [cardDetails._id]); 
 
+
   // --------------------------------------
+
+  
 
   return (
 
     <div className='w-full h-full min-h-screen md:h-auto flex items-center justify-start md:justify-center gap-2.5 flex-col overflow-y-auto relative'>
           
-        <div className='h-10 w-10 bg-[red] rounded-full flex justify-center items-center top-[5%] left-5 absolute'>
-            <button className='cursor-pointer' onClick={() => navigate('/')}><FaArrowLeftLong /></button>
-        </div>
-    
-        <div className='mt-0 md:mt-8 w-[95%] flex items-start justify-start text-[25px] md:w-[80%] mb-1'>
-            <h1 className='text-[20px] text-[#272727] md:text-[30px] text-ellipsis text-nowrap overflow-hidden px-2 md:px-0 font-semibold'>
-                {`In ${cardDetails.landmark.toUpperCase()} , ${cardDetails.city.toUpperCase()}`}
-            </h1>
-        </div>
-    
-        <div className='w-[95%] h-auto md:h-[400px] flex gap-1 items-center justify-center flex-col md:w-[80%] md:flex-row'>
-    
-            <div className='w-full h-[250px] md:h-full md:w-[70%] rounded-lg overflow-hidden flex items-center justify-center border-2 border-[white]'>
-                <img src={cardDetails.image1} alt="" className='w-full' />
-            </div>
-    
-            <div className='w-full h-[120px] md:h-full flex items-center gap-1 justify-center md:w-[30%] md:flex-col'>
-                <div className='w-full h-full rounded-lg overflow-hidden flex items-center justify-center border-2 border-[white] '>
-                    <img src={cardDetails.image2} alt="" className='w-full'/>
-                </div>
-    
-                <div className='w-full h-full rounded-lg overflow-hidden flex items-center justify-center border-2 border-[white] '>
-                    <img src={cardDetails.image3} alt="" className='w-full'/>
-                </div>
-            </div>
-    
-        </div>
 
-        <div className='w-[95%] py-1 border flex-row border-gray-300 bg-[##f5f5f5] border-t-0 px-2 rounded-lg flex items-center justify-between text-[18px] md:w-[80%] md:text-[25px] '>
-            <div className='flex flex-col gap-0'>
-              <span>{`${cardDetails.title.toUpperCase()}  .  ${cardDetails.category.toUpperCase()}`}</span>
-              <span className='text-[12px] text-gray-600'>{cardDetails.landmark}</span>
-            </div>
-            <div className='px-2 '>
-              {`₹ ${cardDetails.rent} /day`}
-            </div>
-        </div>
-
-        <div className=' w-[95%] flex flex-col md:flex-row  items-start justify-start text-[18px] md:w-[80%] md:text-[25px] '>
-          <div className=' w-full md:w-[50%] px-2'>
-            <p className='text-[24px]'> About This Property</p>
-            <p className='text-[18px] text-gray-700'> {cardDetails.description.toUpperCase()} </p>
-          </div>
-           
-          {/* ----- Amenities ---- */}
-          {
-          cardDetails.amenities && cardDetails.amenities.length > 0 && 
-              <div className='mt-2 md:mt-0 w-full md:w-[50%] flex flex-wrap gap-2 overflow-auto'>
-              {
-                cardDetails.amenities.map((item) => (
-                  <div className='bg-gray-200 text-black rounded-lg text-[15px] p-2'>
-                    <span className='flex flex-row  items-center justify-center gap-1'> {item} <span className='text-green-700'><GiConfirmed/></span> </span> 
-                  </div>
-                ))
-              }
-            </div>
-          }
+        <div className='w-[95%] md:w-[90%] mt-2 md:mt-5 h-[55px] md:h-[70px] rounded-lg shadow-md shadow-gray-600 flex justify-between items-center px-4'>
+          <div className='h-full flex justify-start items-center px-4 '>
+            <p className='font-semibold text-[18px] md:text-[30px]'>In {cardDetails.landmark}, {cardDetails.city}</p>
           </div>
 
-   
-        <div className='w-[95%] md:w-[80%]'>
-            {
-              cardDetails.host?._id == userData._id 
-              ?
-              <button onClick={() => setShowUpdatePopUp(true)} className='px-[50px] py-2.5 bg-[red] text-[white] text-[18px] md:px-[100px] rounded-lg cursor-pointer text-nowrap'>
-                Edit Listing
-              </button>
-              :
-              <div className='flex flex-col md:flex-row gap-2 mt-3 mb-3 '>
-                <button onClick={() => setShowBookingPopUp(true)} className='px-[50px] py-2.5 bg-[red] text-[white] text-[18px] md:px-[100px] rounded-lg cursor-pointer'>
-                  Reserve
-                </button>
+          <button className='bg-red-500 hidden md:block rounded-lg px-20 py-3 text-[white] text-[18px] font-semibold cursor-pointer hover:bg-red-600'>
+            Back to Home
+          </button>
+        </div>
 
-                <button onClick={() => HandleWhatsappConnect(cardDetails.host.phone , title)}
-                className='flex flex-row px-3 py-2.5 rounded-lg bg-green-400 border border-green-800 justify-center items-center gap-1 cursor-pointer text-nowrap'>
-                  <FaWhatsapp /> Connect on Whatsapp 
-                </button>
+        <div className='w-[95%] md:w-[90%] h-[300px] md:h-[400px] flex flex-col md:flex-row justify-center items-center gap-2 md:gap-3 mt-1 md:mt-0'>
+          <div className='h-[60%] md:h-[95%] w-[98%] md:w-[65%] flex items-center justify-center'>
+            <img src={cardDetails.image1} 
+            className='w-full h-full md:w-full md:h-full object-cover rounded-lg'
+            />
+          </div>
+
+          <div className='h-[40%] w-[98%] md:h-[95%] md:w-[32%] flex flex-row md:flex-col justify-center items-center gap-2 md:gap-3 '>
+            <div className='h-[95%] w-[50%] md:h-[48%] md:w-[98%] '>
+              <img src={cardDetails.image2} 
+              className='w-full h-full object-cover rounded-lg'
+              />
+            </div>
+
+            <div className='h-[95%] w-[50%] md:h-[48%] md:w-[98%] '>
+              <img src={cardDetails.image3} 
+              className='w-full h-full object-cover rounded-lg'
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className='w-[95%] md:w-[90%] h-[60px] rounded-lg shadow-sm shadow-gray-600 flex justify-between items-center gap-2 md:gap-0'>
+          <div className='truncate h-full w-auto md:w-[80%] flex flex-col items-start justify-center px-4'>
+            <p className='text-[18px] md:text-[24px]'>
+              {cardDetails.title.toUpperCase()} . {cardDetails.category.toUpperCase()}  
+            </p>
+            <p className='text-gray-800 text-[10px] md:text-[14px]'>
+              {cardDetails.landmark}
+            </p>   
+          </div>
+
+          <div className='h-full w-auto md:w-[15%] flex items-center justify-center'>
+            <p className='text-[18px] md:text-[24px] text-nowrap'>
+              ₹{cardDetails.rent} /day
+            </p>
+          </div>
+          
+        </div>
+
+        <div className='w-[98%] h-auto md:w-[90%] md:h-[300px] flex items-center justify-center gap-2 flex-col md:flex-row'>
+          
+          <div className='h-[95%] w-[95%] md:w-[50%] gap-2 flex items-start justify-center flex-col'>
+
+            <div className='overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
+              <p className='font-semibold text-[18px] md:text-[22px]'>About This Property</p>
+
+              <p className='text-[16px] md:text-[20px] overflow-y-auto'>
+                {cardDetails.description}
+              </p>
+            </div>
+            
+            <div className='w-[98%] gap-2 h-[120px] md:h-[60px] flex items-center justify-center flex-col md:flex-row '>
+              
+              <div className='shadow-sm shadow-gray-500 rounded-lg w-[98%] md:w-[48%] h-[60px] flex items-center justify-center '>
+                <div className='text-[red] h-12 w-12 rounded-full border-2 border-red-500 flex items-center justify-center font-semibold text-[20px] bg-gray-300'>
+                  T
+                </div>
+                <div className='flex flex-col ml-1'>
+                  <div>Hosted by - {cardDetails.host?.name}</div>
+                  <div>{cardDetails.host?.email}</div>
+                </div>
               </div>
+
+              <div className='w-[98%] h-[60px] md:w-[48%] md:h-full shadow-sm shadow-gray-500 rounded-lg flex items-center justify-center'>
+                <div className='flex flex-row items-center justify-center text-xl gap-2'>
+                  <IoPeopleSharp className='text-[28px]'/> Max Guest Allowed: {cardDetails.maxGuestAllowed || 0 } 
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div className='w-[98%] h-60 md:h-[95%] md:w-[50%] flex shadow-sm shadow-gray-400 rounded-lg border border-gray-500 items-center justify-center'>
+            MAP HERE
+          </div>
+        </div>
+
+        <div className='w-[98%] h-auto  md:w-[90%] md:h-[300px] gap-2 mb-5 flex justify-center items-center flex-col md:flex-row'>
+          
+          <div className='w-[98%] md:h-[98%] md:w-[50%] '>
+            <div className='w-full h-auto px-2 '>
+              <p className='font-semibold text-[20px] mt-1'>
+                What is Provides?
+              </p>
+              <div>
+                {
+                  cardDetails.amenities && cardDetails.amenities.length > 0 && 
+                      <div className='mt-2 md:mt-0 w-full flex flex-wrap gap-2 overflow-auto'>
+                      {
+                        cardDetails.amenities.map((item) => (
+                          <div className='bg-gray-200 text-black rounded-lg text-[15px] p-2'>
+                            <span className='flex flex-row  items-center justify-center gap-1'> {item} <span className='text-green-700'><GiConfirmed/></span> </span> 
+                          </div>
+                        ))
+                      }
+                    </div>
+                }
+              </div>
+
+              <p className='font-semibold text-[20px] mt-1'>
+                Point to Note
+              </p>
+
+              <div className='md:text-[16px]'>
+                {cardDetails.points.length > 0 && 
+                 cardDetails?.points.map((item) => (
+                    <div>
+                      { item }
+                    </div>
+                  ))
+                }
+              </div>
+
+            </div>
+          </div>
+
+          <div className='w-full md:h-[98%] md:w-[50%]'>
+            
+            {
+              cardDetails.host?._id !== userData._id ? 
+              (
+                <div className='w-full flex items-center justify-center flex-row gap-3'>
+                  <button onClick={() => setShowBookingPopUp(true)} className='bg-[red] w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-red-600 border border-gray-800'>
+                    Reserve
+                  </button>
+
+                  <button onClick={() => HandleWhatsappConnect(cardDetails.host.phone , title)} className='bg-green-500 w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-green-600 border border-gray-800'>
+                    Connect 
+                  </button>
+                </div>
+              ) : 
+              (
+                <div className='w-full flex items-center justify-center flex-row gap-3'>
+                  <button onClick={() => setShowUpdatePopUp(true)} className='bg-[red] w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-red-600 border border-gray-800'>
+                    Update Listing
+                  </button>
+                </div>
+              )
             }
 
+            <p className='font-semibold text-[20px] px-3'>
+              Reviews
+            </p>
+
+            <div className='w-full h-auto md:h-[60px] flex flex-col md:flex-row justify-center items-center gap-2 '>
+                <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
+                  Write a review
+                  <button className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
+                    Review
+                  </button>
+                </div>
+
+                <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
+                  Summarize with Ai
+                  <button className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
+                    Summarize
+                  </button>
+                </div>
+            </div>
+
+            <div className='bg-yellow-400 w-[98%] h-[130px] mt-2 flex flex-wrap overflow-y-auto justify-center items-center gap-3 md:gap-4'>
+              
+              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
+                <div className='bg-green-400 flex justify-between px-2 items-center'>
+                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
+                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
+                </div>
+                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
+                  🌟🌟🌟🌟
+                </div>
+                <div className='bg-blue-400 w-full px-2'>
+                  <p className='text-[12px]'>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
+                  </p>
+                </div>
+              </div>
+
+              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
+                <div className='bg-green-400 flex justify-between px-2 items-center'>
+                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
+                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
+                </div>
+                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
+                  🌟🌟🌟🌟
+                </div>
+                <div className='bg-blue-400 w-full px-2'>
+                  <p className='text-[12px]'>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
+                  </p>
+                </div>
+              </div>
+
+              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
+                <div className='bg-green-400 flex justify-between px-2 items-center'>
+                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
+                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
+                </div>
+                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
+                  🌟🌟🌟🌟
+                </div>
+                <div className='bg-blue-400 w-full px-2'>
+                  <p className='text-[12px]'>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
         </div>
 
         {/* Update Listing PopUp */}
@@ -284,7 +433,7 @@ const ViewCard = () => {
         {
           showUpdatePopUp && 
           
-          <div className='w-full h-full flex items-center justify-center bg-[#000000a9] absolute top-0 z-100 backdrop-blur-sm'>
+          <div className='w-full h-full flex items-center justify-center bg-[#000000a9] fixed top-0 z-100 backdrop-blur-sm'>
             
             <div onClick={() => setShowUpdatePopUp(false)} className='h-8 w-8 bg-[red] rounded-full flex justify-center items-center top-[6%] left-[25px] absolute text-[18px] font-bold'>
               <RxCross2/>
@@ -364,37 +513,27 @@ const ViewCard = () => {
 
        { showBookingPopUp &&
 
-          <div className='w-full h-full flex items-center justify-center bg-[#000000a9] absolute top-0 z-100 p-5  backdrop-blur-sm md:flex-row md:gap-[100px] flex-col'>
+          <div className='gap-2  w-full h-full flex items-center justify-center bg-[#000000a9] fixed top-0 z-100 p-5  backdrop-blur-sm md:flex-row md:gap-[100px] flex-col'>
 
             <div onClick={() => setShowBookingPopUp(false)} className='h-8 w-8 bg-[red] rounded-full flex justify-center items-center top-[6%] left-[25px] absolute text-[18px] font-bold'>
               <RxCross2/>
             </div>
 
             <form onSubmit={(e) => {e.preventDefault()}}
-            className='max-w-[450px] w-[90%] h-[450px] overflow-auto bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#dedddd]'>
+            className='h-[50%] md:max-w-[450px] w-[90%] md:h-[450px] overflow-auto bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#dedddd]'>
               
               <h1 className='w-full flex items-center justify-center py-2.5 text-[25px] border-b border-[#a3a3a3] '>
                 Confirm & Book
               </h1>
 
               <div className='w-full h-[80%] bg-[#79797933] mt-2.5 rounded-lg p-2.5 md:h-[70%]'>
-                <h3 className='text-[19px] font-semibold'>
+                <h3 className='text-[14px] md:text-[19px] font-semibold'>
                   Your Trip - 
                 </h3>
 
-                {/* <div className='w-[90%] flex items-center justify-start flex-col gap-2.5 md:gap-6 md:justify-center md:flex-row md:items-start mt-2.5 md:mt-5  ' >
-                  <label htmlFor="checkIn" className='text-[18px] md:text-[20px]'>CheckIn</label>
-                  <input type="date" onChange={(e) => setCheckIn(e.target.value)} id='checkIn' min={minDate} required className='border-[#555656] border-2 w-[200px] h-10 rounded-[10px] bg-transparent px-2.5 text-[15px] md:text-[18px] ' />
-                </div>
-
-                <div className='w-[90%] flex items-center justify-start flex-col gap-2.5 md:justify-center md:flex-row md:items-start mt-5 md:mt-10 ' >
-                  <label htmlFor="checkOut" className='text-[18px] md:text-[20px]'>CheckOut</label>
-                  <input type="date" onChange={(e) => setCheckOut(e.target.value)} id='checkOut' min={minDate} required className='border-[#555656] border-2 w-[200px] h-10 rounded-[10px] bg-transparent px-2.5 text-[15px] md:text-[18px] ' />
-                </div> */}
-
                 {/* // ---------------------------------------- */}
 
-                <div className='w-[90%] flex items-center justify-center flex-col gap-2.5 md:gap-6 md:justify-center md:flex-col md:items-center mt-2.5 md:mt-2  ' >
+                <div className='w-[90%] flex items-center justify-center flex-col gap-1 md:gap-2 md:justify-center md:flex-col md:items-center mt-1 md:mt-2  ' >
                   <label className='text-[18px] md:text-[20px]'> Select Dates </label>
                   
                   <DatePicker 
@@ -425,13 +564,13 @@ const ViewCard = () => {
                     minDate={ new Date() }
                     isClearable={true}
                     placeholderText='Select In/Out Dates'
-                    className="w-full max-w-[300px] h-12 border-[#555656] border-2 rounded-[10px] px-3 text-center"
+                    className="w-full max-w-[300px] h-10 md:h-12 border-[#555656] border-2 rounded-[10px] px-3 text-center"
                   />
                 </div>
 
-                <div className='w-full flex items-center justify-center flex-col gap-2 mt-2'>
-                  <p className='font-semibold'> CheckIn - <span>{checkIn.split('T')[0]}</span> </p>
-                  <p className='font-semibold'> CheckOut - <span>{checkOut.split('T')[0]}</span> </p>
+                <div className='w-full flex items-center justify-center flex-col gap-1 md:gap-2 mt-2'>
+                  <p className='font-semibold text-[12px] md:text-[16px]'> CheckIn - <span>{checkIn.split('T')[0]}</span> </p>
+                  <p className='font-semibold text-[12px] md:text-[16px]'> CheckOut - <span>{checkOut.split('T')[0]}</span> </p>
                 </div>
 
                 {/* // ---------------------------------------- */}
@@ -446,7 +585,7 @@ const ViewCard = () => {
 
             </form>
 
-            <div className='max-w-[450px] w-[90%] h-[450px] bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#e2e1e1] '>
+            <div className='h-[45%] md:max-w-[450px] w-[90%] md:h-[450px] bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#e2e1e1] '>
               
               <div className='w-[95%] h-[30%] border border-[#abaaaa] rounded-lg flex justify-center items-center gap-2 p-5 overflow-hidden'>
 
@@ -455,55 +594,52 @@ const ViewCard = () => {
                 </div>
 
                 <div className='w-[80%] h-[100px] gap-[5px]'>
-                    <h1 className='w-[90%] truncate'>
-                      { `IN ${cardDetails.landmark.toUpperCase()},${cardDetails.city.toUpperCase()}` }
+                    <h1 className='text-[12px] md:text-[18px] w-[90%] truncate'>
+                      { `In ${cardDetails.landmark},${cardDetails.city}` }
                     </h1>
-                    <h1> {cardDetails.title.toUpperCase()} </h1>
-                    <h1> {cardDetails.category.toUpperCase()} </h1>
-                    <h1 className='flex items-center justify-start gap-[5px]'>
-                      <IoStar className='text-[#eb6262]'/>{cardDetails.ratings}
-                    </h1>
+                    <h1 className='text-[12px] md:text-[18px]'> {cardDetails.title} </h1>
+                    <h1 className='text-[12px] md:text-[18px]'> {cardDetails.category.toUpperCase()} </h1>
                 </div>
 
               </div>
 
-              <div className='w-[95%] h-[60%] border border-[#abaaaa] rounded-lg flex justify-start items-start p-5 gap-[15px] flex-col'>
-                <h1 className='text-[22px] font-semibold'>
+              <div className='w-[95%] h-[60%] border border-[#abaaaa] rounded-lg flex justify-start items-start p-2 md:p-5 gap-1 md:gap-[15px] flex-col'>
+                <h1 className='text-[14px] md:text-[22px] font-semibold'>
                   Booking Price -
                 </h1>
 
                 <p className='w-full flex justify-between items-center px-5'>
-                  <span className='font-semibold'>
+                  <span className='font-semibold text-[12px] md:text-[14px]'>
                     {`₹${cardDetails.rent} X ${night} nights`}
                   </span>
-                  <span>
+                  <span className='text-[12px] md:text-[14px]'>
                     {cardDetails.rent * night}
                   </span>
                 </p>
 
                 <p className='w-full flex justify-between items-center px-5'>
-                  <span className='font-semibold'>
+                  <span className='font-semibold text-[12px] md:text-[14px]'>
                     Tax
                   </span>
-                  <span>
+                  <span className='text-[12px] md:text-[14px]'>
                     {cardDetails.rent * (8/100)}
                   </span>
                 </p>
 
                 <p className='w-full flex justify-between items-center px-5 border-b border-gray-500 pb-2.5'>
-                  <span className='font-semibold'>
+                  <span className='font-semibold text-[12px] md:text-[14px] text-nowrap'>
                     Platform Charge 
                   </span>
-                  <span>
+                  <span className='text-[12px] md:text-[14px]'>
                     {cardDetails.rent * (7/100)}
                   </span>
                 </p>
 
                 <p className='w-full flex justify-between items-center px-5'>
-                  <span className='font-semibold'>
+                  <span className='font-semibold text-[14px] md:text-[16px]'>
                     Total Price
                   </span>
-                  <span>
+                  <span className='text-[14px] md:text-[16px]'>
                     ₹{total}
                   </span>
                 </p>
@@ -514,6 +650,8 @@ const ViewCard = () => {
 
           </div>
       }
+
+  
         
     
     </div>
