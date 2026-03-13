@@ -63,6 +63,16 @@ const listingSchema = new mongoose.Schema({
         default : [] 
     },
 
+    points : {
+        type : [String] , 
+        default : [] , 
+    }, 
+
+    maxGuestAllowed : {
+        type : Number , 
+        default : 2 
+    }, 
+
     viewCount : {
         type : Number , 
         default : 0 

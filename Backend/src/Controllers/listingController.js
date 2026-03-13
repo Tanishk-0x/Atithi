@@ -6,7 +6,7 @@ const GenerateContent = require('../GroqAI/ai.controller');
 const addListing = async (req , res) => {
     try {
         const host = req.userId ; 
-        const {title , description , rent , city , landmark , category , amenities} = req.body ;
+        const {title , description , rent , city , landmark , category , amenities , points , maxGuestAllowed} = req.body ;
         
         const image1 = await uploadOnCloudinary(req.files.image1[0].path); 
         const image2 = await uploadOnCloudinary(req.files.image2[0].path); 
@@ -23,7 +23,9 @@ const addListing = async (req , res) => {
             image1 , 
             image2 ,
             image3 , 
-            amenities 
+            amenities , 
+            points , 
+            maxGuestAllowed , 
         }); 
 
         const user = await User.findByIdAndUpdate(host , {$push:{listing:listing._id}} , {new:true}); 
