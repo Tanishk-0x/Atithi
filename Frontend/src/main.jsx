@@ -9,6 +9,7 @@ import ListingContext from './Context/ListingContext.jsx'
 import BookingContext from './Context/BookingContext.jsx'
 import NaturalSearchContext from './Context/NaturalSearchContext.jsx'
 import HostContext from './Context/HostContext.jsx'
+import ReviewContext from './Context/ReviewContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -20,7 +21,9 @@ createRoot(document.getElementById('root')).render(
           <BookingContext>
             <NaturalSearchContext>
               <HostContext>
-                <App />
+                <ReviewContext>
+                  <App />
+                </ReviewContext>
               </HostContext>
             </NaturalSearchContext>      
           </BookingContext>

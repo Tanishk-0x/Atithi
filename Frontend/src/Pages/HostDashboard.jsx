@@ -7,12 +7,19 @@ import { useContext, useEffect, useState } from "react";
 import { userDataContext } from "../Context/UserContext";
 import { useNavigate } from 'react-router-dom';
 import { hostDataContext } from "../Context/HostContext";
+import { reviewDataContext } from "../Context/reviewContext";
+import { IoIosStar } from "react-icons/io";
 
 const HostDashboard = () => {
 
     const navigate = useNavigate(); 
 
     const { userData } = useContext(userDataContext);
+
+    const {
+        FetchReviews , 
+        reviewsHost 
+    } = useContext(reviewDataContext); 
 
     const { 
         getHostData , 
@@ -258,6 +265,7 @@ const HostDashboard = () => {
 
     useEffect(() => {
         getHostData(); 
+        FetchReviews(); 
     }, []); 
 
 
@@ -352,7 +360,7 @@ const HostDashboard = () => {
                 <div className="bg-[#F9F6EE] w-[60%] h-[98%] rounded-lg flex flex-col justify-center items-center">
                     <div className="w-full flex items-start px-4 font-semibold text-[18px]"> Listings: </div>
                     
-                    <div className="bg-[white] py-2 w-[98%] max-h-[220px] h-[95%] mb-2 flex items-center overflow-y-auto flex-col gap-3">
+                    <div className="bg-[white] py-2 w-[98%] h-[90%] mb-2 flex items-center overflow-y-auto flex-col gap-3">
                         
                         {
                             userData?.listing.map((item,key) => (
@@ -387,8 +395,46 @@ const HostDashboard = () => {
                 {/* -------- Reviews --------- */}
                 <div className="bg-[#F9F6EE] w-[40%] h-[98%] rounded-lg flex items-center justify-center flex-col gap-2">
                     <div className="w-full flex items-start text-[18px] font-semibold px-4"> Reviews: </div>
-                    <div className="bg-[white] w-[95%] h-[90%] mb-2 flex items-center justify-center">
-                        All reviews here ..
+                    <div className="bg-[white] py-1 w-[95%] h-[90%] mb-2 flex items-center flex-col gap-2 overflow-y-auto">
+                    {
+                        reviewsHost.length > 0 && 
+                        reviewsHost.map((itr) => (
+                            <div className="w-[95%] bg-[#edede3]  h-auto flex items-center justify-center flex-col gap-1 py-1 rounded-lg shadow-sm shadow-gray-400 border border-gray-500">
+                                <div className=" w-[98%] h-[45%] flex justify-between items-center px-1">
+                                    <div className="flex flex-row gap-2 justify-center items-center">
+                                        <div className="h-8 w-8 bg-gray-300 flex justify-center items-center rounded-full font-semibold">
+                                            {itr.guest?.name?.slice(0,1).toUpperCase()}
+                                        </div>
+                                        <div className="text-[16px]">
+                                            <p>{itr.guest.name}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-row gap-2 justify-center items-center">
+                                        <div>
+                                            {itr.createdAt.split('T')[0]}
+                                        </div>
+                                        <div className="text-[#ff0044]">
+                                            {(itr.rating === 1) && (<IoIosStar />) }
+                                            {(itr.rating === 2) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /></div>) }
+                                            {(itr.rating === 3) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
+                                            {(itr.rating === 4) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="h-[55%] w-full px-2 text-[12px] pb-1">
+                                    <div className="font-semibold text-red-500">
+                                        {itr.listing?.title}
+                                    </div>
+                                    <div className="text-gray-800">
+                                        {itr.feedback}
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+
                     </div>
                 </div>
             </div>

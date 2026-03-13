@@ -13,11 +13,17 @@ import { GiConfirmed } from "react-icons/gi";
 import { FaWhatsapp } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { IoPeopleSharp } from "react-icons/io5";
+import { IoSadOutline } from "react-icons/io5";
+import { FaRegFaceSadTear } from "react-icons/fa6";
+import { BsEmojiNeutral } from "react-icons/bs";
+import { IoHappyOutline } from "react-icons/io5";
+import { PiSparkleLight } from "react-icons/pi";
+import { IoIosStar } from "react-icons/io";
 
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { reviewDataContext } from '../Context/reviewContext';
 
 const ViewCard = () => {
 
@@ -27,8 +33,19 @@ const ViewCard = () => {
   const { cardDetails , updating , setUpdating , deleting , setDeleting , lat , lng , mapUrl} = useContext(listingDataContext);
   const { userData } = useContext(userDataContext);
 
+  const { 
+    feedback , setFeedback , 
+    rating , setRating , 
+    isAddingReview , 
+    HandleAddReview ,
+    HandleGetReviews , 
+    reviews , 
+  } = useContext(reviewDataContext); 
+
   const [showUpdatePopUp , setShowUpdatePopUp] = useState(false);
   const [showBookingPopUp , setShowBookingPopUp] = useState(false); 
+  const [showReviewPopUp , setShowReviewPopUp] = useState(false); 
+  const [showSummarizePopUp , setShowSummarizePopUp] = useState(false); 
   
   const [title , setTitle] = useState(cardDetails.title); 
   const [description , setDescription] = useState(cardDetails.description); 
@@ -194,11 +211,12 @@ const ViewCard = () => {
     }, [cardDetails._id]); 
 
 
-  // --------------------------------------
+  // --------- Handle FetchReviews ----------- 
+  useEffect(() => {
+    HandleGetReviews(cardDetails._id); 
+  },[]); 
 
-  // --------- Handle Map GeoCoding --------- 
-
-  // ----------------------------------------
+  // -----------------------------------------
 
   return (
 
@@ -369,65 +387,44 @@ const ViewCard = () => {
             <div className='w-full h-auto md:h-[60px] flex flex-col md:flex-row justify-center items-center gap-2 '>
                 <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
                   Write a review
-                  <button className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
+                  <button onClick={() => setShowReviewPopUp(true)} className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
                     Review
                   </button>
                 </div>
 
                 <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
                   Summarize with Ai
-                  <button className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
+                  <button onClick={() => setShowSummarizePopUp(true)} className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
                     Summarize
                   </button>
                 </div>
             </div>
 
-            <div className='bg-yellow-400 w-[98%] h-[130px] mt-2 flex flex-wrap overflow-y-auto justify-center items-center gap-3 md:gap-4'>
+            <div className='bg-gray-100 rounded-lg w-[98%] h-[130px] mt-2 flex flex-wrap overflow-y-auto justify-center items-center gap-3 md:gap-4'>
               
-              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
-                <div className='bg-green-400 flex justify-between px-2 items-center'>
-                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
-                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
-                </div>
-                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
-                  🌟🌟🌟🌟
-                </div>
-                <div className='bg-blue-400 w-full px-2'>
-                  <p className='text-[12px]'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
-                  </p>
-                </div>
-              </div>
-
-              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
-                <div className='bg-green-400 flex justify-between px-2 items-center'>
-                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
-                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
-                </div>
-                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
-                  🌟🌟🌟🌟
-                </div>
-                <div className='bg-blue-400 w-full px-2'>
-                  <p className='text-[12px]'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
-                  </p>
-                </div>
-              </div>
-
-              <div className='bg-purple-400 w-[48%] md:w-[200px] h-[100px] md:h-[110px] overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
-                <div className='bg-green-400 flex justify-between px-2 items-center'>
-                  <p className='text-[14px] md:text-[16px]'> Tanishk </p>
-                  <p className='text-[14px] md:text-[16px]'> 21-03-2026 </p>
-                </div>
-                <div className='bg-orange-400 text-[14px] md:text-[16px] w-full flex items-center justify-start px-2'>
-                  🌟🌟🌟🌟
-                </div>
-                <div className='bg-blue-400 w-full px-2'>
-                  <p className='text-[12px]'>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum autem sapiente dolor at quos.
-                  </p>
-                </div>
-              </div>
+              {
+                reviews.length > 0 && 
+                reviews.map((itr) => (
+                  <div className='bg-[#edede3] w-[48%] md:w-[200px] h-auto md:h-auto overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
+                    <div className=' flex justify-between px-2 items-center'>
+                      <p className='text-[14px] md:text-[16px]'> {itr.guest.name} </p>
+                      <p className='text-[14px] md:text-[16px] text-red-500'> {itr.createdAt.split('T')[0]} </p>
+                    </div>
+                    <div className=' text-[14px] md:text-[16px] w-full flex items-center justify-start px-2 text-[#ff0048]'>
+                      {(itr.rating === 1) && (<IoIosStar />) }
+                      {(itr.rating === 2) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /></div>) }
+                      {(itr.rating === 3) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
+                      {(itr.rating === 4) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
+                    </div>
+                    <div className=' w-full px-2'>
+                      <p className='text-[12px] md:text-[14px]'>
+                        {itr.feedback}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              }
+  
 
             </div>
 
@@ -658,15 +655,83 @@ const ViewCard = () => {
           </div>
       }
 
-      {/* <div className='bg-orange-400 w-[700px] h-[400px] rounded-lg flex justify-center items-center'>
-        <iframe 
-          src={`https://maps.google.com/maps?q=${lat},${lng}&t=&z=16&ie=UTF8&iwloc=near&output=embed`}
-          width="95%"
-          height="95%"
-          loading='lazy'
-        />
-      </div> */}
+
+      {/* // --------- Review PopUp --------------- */}
+      { showReviewPopUp && 
+          <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[400px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
+                
+            <button onClick={() => setShowReviewPopUp(false)} className='absolute top-1 font-semibold text-gray-800 right-1 p-1 text-2xl flex items-center justify-center rounded-full cursor-pointer'>
+                <RxCross2 />
+            </button>
+                
+            <h1 className='font-semibold text-[24px] text-gray-900'>
+                Share Your Experience!
+            </h1>
+
+            <div className='w-full h-[100px] flex justify-center items-center flex-row flex-wrap gap-3 '>
+                <div onClick={() => setRating(1)} className='h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400'>
+                    <IoSadOutline className='text-[24px] md:text-[34px]'/>
+                    <p className='text-[8px] md:text-[12px]'>Disappointed</p>
+                </div>
+
+                <div onClick={() => setRating(2)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400'>
+                    <FaRegFaceSadTear className='text-[24px] md:text-[34px]'/>
+                    <p className='text-[8px] md:text-[12px]'>Sad</p>
+                </div>
+
+                <div onClick={() => setRating(3)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400'>
+                    <BsEmojiNeutral className='text-[24px] md:text-[34px]'/>
+                    <p className='text-[8px] md:text-[12px]'>Neutral</p>
+                </div>
+
+                <div onClick={() => setRating(4)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400'>
+                    <IoHappyOutline className='text-[24px] md:text-[34px]'/>
+                    <p className='text-[8px] md:text-[12px]'>Happy</p>
+                </div>
+                    
+            </div>
+
+            <h2 className='font-semibold text-[20px] text-gray-900'>
+                How was the stay?
+            </h2>
+
+            <div className='w-full h-36 flex items-center justify-center'>
+                <textarea onChange={(e) => setFeedback(e.target.value)} value={feedback} name="" id="" placeholder='Write your detailed feedback here...'
+                className='w-[92%] h-[95%] border-2 border-gray-500 min-h-34 max-h-34 rounded-lg text-[18px] text-black outline-none p-2 '
+                />
+            </div>
+
+            <button onClick={() => HandleAddReview(cardDetails._id)} disabled={isAddingReview} className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700'>
+              { isAddingReview ? 'Adding Review...' : 'Submit Review' }
+            </button>
+
+        </div>
+      }
+
+      {/* // --------- Review Summarize PopUp ---------- */}
+      { showSummarizePopUp && 
+          <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[500px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
+                
+            <button onClick={() => setShowSummarizePopUp(false)} className='absolute top-1 font-semibold text-gray-800 right-1 p-1 text-2xl flex items-center justify-center rounded-full cursor-pointer'>
+                <RxCross2 />
+            </button>
+                
+            <h1 className='font-semibold text-[26px] text-gray-900 flex justify-center items-center gap-1'> 
+              <PiSparkleLight className='text-[red]'/>  AI Review Summary
+            </h1>
+
+            <p className='text-center'>
+              Get a quick overview of guest feedback for this property without reading every review.
+            </p>
+
+            <button className='bg-[red] w-[90%] py-3 rounded-lg cursor-pointer text-[white] font-semibold hover:bg-red-600'>
+              Summarize with AI
+            </button>
+
         
+
+        </div>
+      }            
     
     </div>
     

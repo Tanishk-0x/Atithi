@@ -17,16 +17,31 @@ import { IoKeyOutline } from "react-icons/io5";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import { userDataContext } from '../Context/UserContext';
+import { reviewDataContext } from '../Context/ReviewContext';
 import toast from 'react-hot-toast';
 import { FaWhatsapp } from "react-icons/fa";
 import { VscFeedback } from "react-icons/vsc";
+import { IoSadOutline } from "react-icons/io5";
+import { FaRegFaceSadTear } from "react-icons/fa6";
+import { BsEmojiNeutral } from "react-icons/bs";
+import { IoHappyOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 
 const BookingConfirm = () => {
 
+    const [showReviewPopUp , setShowReviewPopUp] = useState(false); 
+
     // to fetch id from params (URL) 
     const {id} = useParams(); 
     const { userData } = useContext(userDataContext); 
+
+    const { 
+        feedback , setFeedback , 
+        rating , setRating , 
+        isAddingReview , 
+        HandleAddReview ,
+    } = useContext(reviewDataContext); 
 
     // filter booking 
     const booking = userData?.booking?.find(itr => itr._id === id);
@@ -48,7 +63,7 @@ const BookingConfirm = () => {
 
   return (
 
-    <div onClick={() => toast.success(id)} className='w-full h-auto md:h-screen flex flex-col items-center justify-start'>
+    <div className='relative w-full h-auto md:h-screen flex flex-col items-center justify-start'>
 
         <div className='w-[90%] h-auto md:h-[12%] mt-4 relative px-3 flex justify-center items-center rounded-lg shadow-md shadow-gray-600 py-6 md:py-0'>
 
@@ -205,7 +220,8 @@ const BookingConfirm = () => {
                     <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <FaWhatsapp className='font-semibold'/> Whatsapp
                     </button>
-                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                    <button onClick={() => setShowReviewPopUp(true)}
+                     className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <VscFeedback className='font-semibold'/> Review
                     </button>
                     <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
@@ -216,6 +232,59 @@ const BookingConfirm = () => {
 
             </div>
         </div>
+
+        {/* // --------- Review PopUp --------------- */}
+        { showReviewPopUp && 
+            <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[400px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
+                
+                <button onClick={() => setShowReviewPopUp(false)} className='absolute top-1 font-semibold text-gray-800 right-1 p-1 text-2xl flex items-center justify-center rounded-full cursor-pointer'>
+                    <RxCross2 />
+                </button>
+                
+                <h1 className='font-semibold text-[24px] text-gray-900'>
+                    Share Your Experience!
+                </h1>
+
+                <div className='w-full h-[100px] flex justify-center items-center flex-row flex-wrap gap-3 '>
+                    <div onClick={() => setRating(1)} className='h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400'>
+                        <IoSadOutline className='text-[24px] md:text-[34px]'/>
+                        <p className='text-[8px] md:text-[12px]'>Disappointed</p>
+                    </div>
+
+                    <div onClick={() => setRating(2)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400'>
+                        <FaRegFaceSadTear className='text-[24px] md:text-[34px]'/>
+                        <p className='text-[8px] md:text-[12px]'>Sad</p>
+                    </div>
+
+                    <div onClick={() => setRating(3)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400'>
+                        <BsEmojiNeutral className='text-[24px] md:text-[34px]'/>
+                        <p className='text-[8px] md:text-[12px]'>Neutral</p>
+                    </div>
+
+                    <div onClick={() => setRating(4)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400'>
+                        <IoHappyOutline className='text-[24px] md:text-[34px]'/>
+                        <p className='text-[8px] md:text-[12px]'>Happy</p>
+                    </div>
+                    
+                </div>
+
+                <h2 className='font-semibold text-[20px] text-gray-900'>
+                    How was the stay?
+                </h2>
+
+                <div className='w-full h-36 flex items-center justify-center'>
+                    <textarea onChange={(e) => setFeedback(e.target.value)} value={feedback} name="" id="" placeholder='Write your detailed feedback here...'
+                    className='w-[92%] h-[95%] border-2 border-gray-500 min-h-34 max-h-34 rounded-lg text-[18px] text-black outline-none p-2 '
+                    />
+                </div>
+
+                <button onClick={() => HandleAddReview(booking?.listing._id)} disabled={isAddingReview}  className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700'>
+                    { isAddingReview ? 'Adding Review...' : 'Submit Review' }
+                </button>
+
+            </div>
+        }
+
     </div>
   )
 
