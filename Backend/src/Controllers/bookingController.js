@@ -215,6 +215,52 @@ const CheckInBooking = async (req , res) => {
     }
 }
 
+// ---------- Complete Booking -------------
+const CompleteBooking = async (req , res) => {
+    try {
+        const {id} = req.params ; 
+
+        const booking = await Booking.findById(id); 
+
+        if(!booking){
+            return res.status(404).json({
+                success : false ,
+                message : "Booking Not Found"
+            });
+        }
+
+        booking.status = 'completed' ; 
+        
+        await booking.save(); 
+
+        return res.status(200).json({
+            success : true , 
+            message : "Marked As Completed"
+        }); 
+    }
+    
+    catch (error) {
+        res.status(500).json({
+            success : false , 
+            message : `An Error Occured While Completing : ${error}`
+        });
+    }
+}
+
+// ----------- Reject Request ----------
+const RejectBooking = async (req , res) => {
+    try {
+        
+    }
+    
+    catch (error) {
+       res.status(500).json({
+            success : false , 
+            message : `An Error Occured While Rejecting : ${error}`
+        }); 
+    }
+}
+
 // ------- Get Bookings ---------
 /*
 1. Pending Request = (status: pending);
@@ -250,15 +296,18 @@ const getBookingsData = async (req , res) => {
         // filter 
         const pending = bookings.filter(b => b.status === 'pending'); 
         const approved = bookings.filter(b => b.status === 'approved');
-        const checkInned = bookings.filter(b => b.status === 'ongoing');  
+        const ongoing = bookings.filter(b => b.status === 'ongoing');  
+        const completed = bookings.filter(b => b.status === 'completed'); 
 
         res.status(200).json({
             success : true , 
             message : "Data Fetched SuccessFully" , 
             data : {
+                bookings ,
                 pending ,
                 approved , 
-                checkInned ,
+                ongoing ,
+                completed , 
             }
         }); 
     }
@@ -343,4 +392,4 @@ const FetchBusyDates = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates}
+module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates , CompleteBooking}

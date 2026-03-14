@@ -21,7 +21,7 @@ const bookingSchema = new mongoose.Schema({
 
     status : {
         type : String , 
-        enum : ["pending" , "approved" , "ongoing"] , 
+        enum : ["pending" , "approved" , "ongoing" , "completed"] , 
         default : "pending" , 
     }, 
     passCode : {
