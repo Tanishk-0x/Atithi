@@ -14,10 +14,14 @@ const HostContext = ({children}) => {
     const [isApproving , setIsApproving] = useState(false); 
     const [isGettingData , setIsGettingData] = useState(false); 
     const [isCheckIn , setIsCheckIn] = useState(false); 
+    const [isComplete , setIsComplete] = useState(false); 
+    const [isReject , setIsReject] = useState(false); 
 
+    const [allBookings , setAllBookings] = useState([]); 
     const [pending , setPending] = useState([]); 
     const [approved , setApproved] = useState([]); 
     const [ongoing , setOngoing] = useState([]); 
+    const [completed , setCompleted] = useState([]); 
 
     // Host Dashboard Data ...
     const getHostData = async () => {
@@ -29,6 +33,8 @@ const HostContext = ({children}) => {
 
             if( res.data?.success ){
                 const result = res.data.data ; 
+                setAllBookings(result?.bookings || []); 
+                setCompleted(result?.completed || []); 
                 setPending(result?.pending || []); 
                 setApproved(result?.approved || []); 
                 setOngoing(result?.ongoing || []); 
@@ -87,12 +93,14 @@ const HostContext = ({children}) => {
             if(res.data.success){
                 toast.success("CheckInned!"); 
                 await getHostData(); 
+                setIsCheckIn(false); 
             }
         }
         
         catch (error) {
             console.error("CheckIn Error:" ,error);
             toast.error(error.response.data.message);
+            setIsCheckIn(false); 
         }
 
         finally{
@@ -100,16 +108,83 @@ const HostContext = ({children}) => {
         }
     }
 
+    // Complete ..
+    const CompleteBooking = async (id) => {
+        if(isComplete){
+            return ; 
+        }
+        try {
+            setIsComplete(true); 
+            const res = await axios.put(serverUrl + `/booking/complete/${id}` , 
+                { withCredentials: true }
+            );
+
+            if(res.data.success){
+                toast.success("Marked Completed"); 
+                await getHostData(); 
+                setIsComplete(false);
+            }
+        }
+        
+        catch (error) {
+            console.error("Completing Error:" ,error);
+            toast.error("Error While Marking Complete!");
+            setIsComplete(false);
+        }
+
+        finally{
+            setIsComplete(false); 
+        }
+    }
+
+
+    // Reject .. 
+    const RejectBooking = async (id) => {
+        if(isReject){
+            return ; 
+        }
+
+        try {
+            setIsReject(true); 
+            const res = await axios.put(serverUrl + `/booking/reject/${id}` , 
+                { withCredentials : true }
+            );
+
+            if(res.data.success){
+                toast.success("Rejected SuccessFully"); 
+                await getHostData(); 
+                setIsReject(false);
+            }
+        }
+        
+        catch (error) {
+            console.error("Rejecting Error:" ,error);
+            toast.error("Error While Rejecting Booking!");
+            setIsReject(false);
+        }
+
+        finally{
+            setIsReject(false); 
+        }
+    }
+
+
     let value = {
         getHostData ,
         pending , 
         approved , 
         ongoing ,
+        allBookings ,
+        completed ,  
         approveBooking ,
         isApproving , 
         isGettingData , 
         CheckInBooking , 
         isCheckIn , 
+        CompleteBooking , 
+        isComplete , 
+        RejectBooking , 
+        isReject , 
     }; 
 
     return (

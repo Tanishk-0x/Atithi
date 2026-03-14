@@ -9,6 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import { hostDataContext } from "../Context/HostContext";
 import { reviewDataContext } from "../Context/reviewContext";
 import { IoIosStar } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import { TiInputChecked } from "react-icons/ti";
+import { MdDoNotDisturb } from "react-icons/md";
+
 
 const HostDashboard = () => {
 
@@ -26,11 +30,18 @@ const HostDashboard = () => {
         pending , 
         approved , 
         ongoing ,
+        completed ,
+        allBookings , 
         approveBooking , 
         isApproving , 
         CheckInBooking , 
         isCheckIn ,
+        CompleteBooking , 
+        isComplete , 
+        RejectBooking , 
+        isReject , 
     } = useContext(hostDataContext); 
+
 
     // ---- Dummy Data For Chart ----
     const data = [
@@ -48,216 +59,10 @@ const HostDashboard = () => {
         { month: 'Dec' , value: 4000} , 
     ]; 
 
-    const listingsDummyData = [
-        {
-                "ratings": 0,
-                "_id": "69207d59d3b4846cf7865412",
-                "title": "Yellow Bedroom ",
-                "description": "A Yellow Themed Bedroom With Beautiful Ambiance Glossy ",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685554/qfhi1nhpjnvuh13igqdk.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685556/bdjqkbg2m28n7mvclcbm.jpg",
-                "rent": 9999,
-                "city": "Indore",
-                "landmark": "Marimata Square",
-                "category": "pool house",
-                "isBooked": false
-            },
-            {
-                "ratings": 0,
-                "_id": "6925a1c7e604d130c586d227",
-                "title": "Simple House",
-                "description": "simple fully furnished house for 2 people",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764073926/dceees6w6mt9kk5s9hoq.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764073930/byok7u78x0utrqfmlvhh.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764073932/pgxxvj1mio1jecmis13l.jpg",
-                "rent": 5100,
-                "city": "Indore",
-                "landmark": "Marimata Square",
-                "category": "flat",
-                "isBooked": false
-            },
-            {
-                "ratings": 0,
-                "_id": "69270fb8ccf09fd83e087c47",
-                "title": "Blue Bedrooom ",
-                "description": "Fully Centralised Blue Themed Bedroom With Beautiful Ambinace",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764684841/olxx6wypoeyy8s0ahvec.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764684842/uycldhpqguxlgztl7scw.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764684845/bg1mjdc5asxpgeuwiskz.jpg",
-                "rent": 5121,
-                "city": "Indore",
-                "landmark": "Khajrana Ganesh",
-                "category": "farm house",
-                "isBooked": false
-            },
-            {
-                "_id": "69271079ccf09fd83e087c90",
-                "title": "Pool House",
-                "description": "Pool House With Multiple Stage Pools",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764167799/evyaolgonbo60yksoo0i.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764167803/pop2bne1eqzv3gr05pk8.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764167806/m9ijaahgpxn5deqyhswy.jpg",
-                "rent": 1151,
-                "city": "Indore",
-                "landmark": "PitraParvat",
-                "category": "pool house",
-                "isBooked": false,
-                "ratings": 0
-            },
-            {
-                "_id": "692713b4ccf09fd83e087cd0",
-                "title": "Fantastic Shop",
-                "description": "A Shop With  Beautiful Embianced ",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764168628/ukmvxxx2iximhrbxuw1n.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764168631/mytafibrmobjx8b4ivn8.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764168633/lfhkxntzkxgq73blk0v1.jpg",
-                "rent": 9900,
-                "city": "Banaras",
-                "landmark": "PostOffice",
-                "category": "shops",
-                "isBooked": false,
-                "ratings": 4
-            },
-            {
-                "_id": "69271639ccf09fd83e087cf7",
-                "title": "2Bhk Blue House",
-                "description": "Fully Furnished Blue Themed House With Beautiful Ambiance",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685080/wnkmoso2kaunmqlnlcbp.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685081/l0jgdppir39jphwfyhmq.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685084/nnoilkxshgr5accj0fei.jpg",
-                "rent": 1151,
-                "city": "Katra/Jammu",
-                "landmark": "15, Railway Station",
-                "category": "farm house",
-                "isBooked": false,
-                "ratings": 0
-            },
-            {
-                "_id": "69285c8cfaa8ef4a3ba2c808",
-                "title": "3.5 BHK House",
-                "description": "Beautiful House With Various Facility , Beautiful Bedroom Green Themed ",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764683827/tygb4sps5xgenmow92jp.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764683830/jpqxauxsawpfbyyqmibz.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764683833/lgrisgczq3pustj7kuce.jpg",
-                "rent": 5151,
-                "city": "Jabalpur",
-                "landmark": "Bijasan MataMandir",
-                "category": "villa",
-                "isBooked": false,
-                "ratings": 2
-            },
-            {
-                "_id": "6950c3a8c21a3d0939874e52",
-                "title": "3bhk room ",
-                "description": "beautiful room available with various facilities",
-                "host": "69184463b266357dfd2b0046",
-                "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1766900642/pcyzlpqoudwzliiriist.jpg",
-                "image2": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1766900645/enujmcl1ibf8azz2moqy.jpg",
-                "image3": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1766900647/ec39ss1by5ejj4m05tyg.jpg",
-                "rent": 2100,
-                "city": "Rajkot",
-                "landmark": "73, Clerk Colony",
-                "category": "rooms",
-                "ratings": 5,
-                "isBooked": false
-            }
-    ];
-
-    const requestsDummyData = [
-        {
-            "listing" : "Yellow House" , 
-            "checkIn" : "2026-02-03" ,
-            "checkOut": "2026-02-07" , 
-            "guest" : "Tanmay Verma" , 
-        }, 
-        {
-            "listing" : "Green House" , 
-            "checkIn" : "2026-02-03" ,
-            "checkOut": "2026-02-07" , 
-            "guest" : "Satyam Nayak" , 
-        },
-        {
-            "listing" : "Blue House" , 
-            "checkIn" : "2026-02-03" ,
-            "checkOut": "2026-02-07" , 
-            "guest" : "Keshav Solanki" , 
-        },
-        {
-            "listing" : "Orange House" , 
-            "checkIn" : "2026-02-03" ,
-            "checkOut": "2026-02-07" , 
-            "guest" : "Mohit Nayak" , 
-        },
-        {
-            "listing" : "Purple House" , 
-            "checkIn" : "2026-02-03" ,
-            "checkOut": "2026-02-07" , 
-            "guest" : "Adarsh Verma" , 
-        },
-    ]; 
-
-    const timelineDummyData = [
-        {
-            "guest" : "Mohan Verma" ,
-            "CheckIn" : "2-02-2026" , 
-            "CheckOut" : "6-02-2026" , 
-            "landmark" : "dadarEast" , 
-            "city" : "mumbai" , 
-            "rent" : "1500" , 
-            "title" : "Yellow Bedroom" ,
-            "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-        },
-        {
-            "guest" : "Mohan Verma" ,
-            "CheckIn" : "2-02-2026" , 
-            "CheckOut" : "6-02-2026" , 
-            "landmark" : "dadarEast" , 
-            "city" : "mumbai" , 
-            "rent" : "1500" , 
-            "title" : "Yellow Bedroom" ,
-            "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-        },
-        {
-            "guest" : "Mohan Verma" ,
-            "CheckIn" : "2-02-2026" , 
-            "CheckOut" : "6-02-2026" , 
-            "landmark" : "dadarEast" , 
-            "city" : "mumbai" , 
-            "rent" : "1500" , 
-            "title" : "Yellow Bedroom" ,
-            "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-        },
-        {
-            "guest" : "Mohan Verma" ,
-            "CheckIn" : "2-02-2026" , 
-            "CheckOut" : "6-02-2026" , 
-            "landmark" : "dadarEast" , 
-            "city" : "mumbai" , 
-            "rent" : "1500" , 
-            "title" : "Yellow Bedroom" ,
-            "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-        },
-        {
-            "guest" : "Mohan Verma" ,
-            "CheckIn" : "2-02-2026" , 
-            "CheckOut" : "6-02-2026" , 
-            "landmark" : "dadarEast" , 
-            "city" : "mumbai" , 
-            "rent" : "1500" , 
-            "title" : "Yellow Bedroom" ,
-            "image1": "https://res.cloudinary.com/dhwwgg0u9/image/upload/v1764685551/nuzcgurwnbt4scpqpciy.jpg",
-        },
-    ];
+    const [status , setStatus] = useState('all'); 
 
     const [showPopUp , setShowPopUp] = useState(false); 
+    const [showManagePopUp , setShowManagePopUp] = useState(false); 
 
     // ------ CheckIn ---------
     const [ bookingId , setBookingId ] = useState(''); 
@@ -337,8 +142,8 @@ const HostDashboard = () => {
             <button onClick={() => navigate('/listingpage1') } className="bg-red-500 w-[90%] py-1 md:py-1 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[14px]">
                 Add New Listing
             </button>
-            <button onClick={() => navigate('/') } className="bg-red-500 w-[90%] py-1 md:py-1 rounded-lg cursor-pointer text-[white] hover:bg-red-600 mb-1 text-[14px]">
-                Back To Home
+            <button onClick={() => setShowManagePopUp(true)} className="bg-red-500 w-[90%] py-1 md:py-1 rounded-lg cursor-pointer text-[white] hover:bg-red-600 mb-1 text-[14px]">
+                Manage Bookings
             </button>
         </div>
       </div>
@@ -461,9 +266,10 @@ const HostDashboard = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-2 w-full md:w-auto justify-end">
-                                    <button className="px-2 md:px-3 py-1 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
-                                        Reject
+                                    <button onClick={() => RejectBooking(item._id)} className="px-2 md:px-3 py-1 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
+                                        { isReject ? 'loading' : 'Reject' }
                                     </button>
+
                                     <button onClick={() => approveBooking(item._id)}
                                     className="px-2 md:px-2 py-2 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
                                         { isApproving ? 'Approving' : 'Approve'}
@@ -519,7 +325,7 @@ const HostDashboard = () => {
       </div>
         
         { showPopUp && 
-            <div className="bg-[#eeeeee] border-2 border-[gray] fixed h-[220px] w-[90%] max-w-[400px] flex flex-col gap-4 justify-center items-center rounded-lg top-[34%] z-50"> 
+            <div className="bg-[#eeeeee] border-2 border-[gray] fixed h-[220px] w-[90%] max-w-[400px] flex flex-col gap-4 justify-center items-center rounded-lg top-[34%] z-100"> 
                 <button onClick={() => setShowPopUp(false)}
                  className="bg-red-500 absolute top-2 right-2 rounded-full text-white border border-red-600 cursor-pointer h-8 w-8 text-lg hover:bg-red-600">
                     X
@@ -537,7 +343,109 @@ const HostDashboard = () => {
                 </button>
             </div>
         }
-      
+
+        {/* // --------- Booking PopUp ------------ */}
+        {
+            showManagePopUp && 
+            <div className="bg-[#F9F6EE] gap-2 flex justify-start items-center flex-col shdaow-sm shadow-gray-500 rounded-lg border-2 border-gray-800 w-[95%] h-[550px] md:w-[840px] md:h-[600px] fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 z-50">
+            
+                <div onClick={() => setShowManagePopUp(false)} className="absolute top-1 right-1 text-[22px] p-1.5 text-gray-800 rounded-full cursor-pointer flex justify-center items-center">
+                    <RxCross2 />
+                </div>
+
+                <h1 className="font-mono  text-[32px] underline">
+                    Manage Bookings
+                </h1>
+
+                <div className="w-[98%] md:w-[90%] h-20 md:h-[50px] flex flex-wrap justify-center items-center gap-3">
+                    <div onClick={() => setStatus('all')} className={`border border-red-600 px-1 md:px-2 py-1 text-[12px] rounded-lg text-[black] hover:border-2 cursor-pointer font-semibold ${(status === 'all') && 'bg-red-500 text-white'}`}>
+                        All Bookings
+                    </div>
+                    <div onClick={() => setStatus('completed')} className={`border border-red-600 px-1 md:px-2 py-1 text-[12px] rounded-lg text-[black] hover:border-2 cursor-pointer font-semibold ${(status === 'completed') && 'bg-red-500 text-white'}`}>
+                        Previous Bookings
+                    </div>
+                    <div onClick={() => setStatus('ongoing')} className={`border border-red-600 px-1 md:px-2 py-1 text-[12px] rounded-lg text-[black] hover:border-2 cursor-pointer font-semibold ${(status === 'ongoing') && 'bg-red-500 text-white'}`}>
+                        Ongoing Bookings
+                    </div>
+                    <div onClick={() => setStatus('approved')} className={`border border-red-600 px-1 md:px-2 py-1 text-[12px] rounded-lg text-[black] hover:border-2 cursor-pointer font-semibold ${(status === 'approved') && 'bg-red-500 text-white'}`}>
+                        Approved Bookings
+                    </div>
+                </div>
+
+                <div className="h-[450px] w-[98%] border-r-gray-200 overflow-auto">
+                    <table className="w-full text-left border-collapse bg-white text-sm text-gray-500">
+
+                        <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-semibold">
+                            <tr>
+                                <th className="px-1 py-4 text-[white] bg-red-500 border-r-2 border-r-gray-500 text-center">S.no</th>
+                                <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">title</th>
+                                <th className="px-4 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">guest</th>
+                                <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">checkin</th>
+                                <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">checkout</th>
+                                <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">status</th>
+                                <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">pay</th>
+                                <th className="px-4 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                            {
+                                (
+                                    status === 'all' ? allBookings : 
+                                    status === 'completed' ? completed :
+                                    status === 'ongoing' ? ongoing :
+                                    status === 'approved' ? approved : []
+                                ).map((itr , index) => (
+                                    <tr className="hover:bg-gray-50 transition-colors outline-1 outline-gray-400">
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {index+1} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.listing?.title || "Property Deleted"} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.guest.name} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.checkIn.split('T')[0]} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.checkOut.split('T')[0]} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.status} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {parseInt(itr.totalRent)} </td>
+                                        <td className="text-center">
+                                            {
+                                               itr.status === 'approved' ? (
+                                                <button onClick={() => {
+                                                    setBookingId(itr._id); 
+                                                    setShowPopUp(true);
+                                                }} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
+                                                    { isCheckIn ? 'loading' : 'CheckIn' }
+                                                </button>
+                                               ) : 
+                                                itr.status === 'ongoing' ? (
+                                                    <button onClick={() => CompleteBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
+                                                        { isComplete ? 'loading' : 'Complete' }
+                                                    </button>
+                                                ) : 
+                                                itr.status === 'pending' ? (
+                                                    <button onClick={() => approveBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
+                                                        { isApproving ? 'loading' : 'Approve' }
+                                                    </button>
+                                                ) : 
+                                                itr.status === 'completed' ? (
+                                                    <div className="text-[28px] text-[#00a100] flex justify-center items-center">
+                                                        <TiInputChecked />
+                                                    </div>
+                                                ) : 
+                                                itr.status === 'rejected' ? (
+                                                    <div className="text-[22px] text-[#bd001f] flex justify-center items-center">
+                                                        <MdDoNotDisturb />
+                                                    </div>
+                                                )  : ('')                                                                                    
+                                            }
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        }
 
     </div>
 
