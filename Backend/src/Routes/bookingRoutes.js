@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBooking , cancelBooking , ApproveBooking , getBookingsData, CheckInBooking , FetchBusyDates , CompleteBooking} = require('../Controllers/bookingController');
+const { createBooking , cancelBooking , ApproveBooking , getBookingsData, CheckInBooking , FetchBusyDates , CompleteBooking , RejectBooking} = require('../Controllers/bookingController');
 const isAuth = require('../Middlewares/authMiddleware');
 const router = express.Router(); 
 
@@ -11,6 +11,8 @@ router.put('/approve/:id' , ApproveBooking );
 router.put('/checkin/:id' , CheckInBooking ); 
 
 router.put('/complete/:id' , CompleteBooking ); 
+
+router.put('/reject/:id' , RejectBooking ); 
 
 router.get('/fetchdates/:id' , FetchBusyDates ); 
 

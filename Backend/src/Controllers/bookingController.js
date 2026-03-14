@@ -250,7 +250,24 @@ const CompleteBooking = async (req , res) => {
 // ----------- Reject Request ----------
 const RejectBooking = async (req , res) => {
     try {
-        
+        const {id} = req.params ; 
+
+        const booking = await Booking.findByIdAndUpdate(id , 
+            { status : 'rejected'},
+            { new : true}
+        );
+
+        if(!booking){
+            return res.status(404).json({
+                success : false ,
+                message : "Booking Not Found"
+            });
+        }
+
+        return res.status(200).json({
+            success : true ,
+            message : "Booking Rejected!"
+        }); 
     }
     
     catch (error) {
@@ -392,4 +409,4 @@ const FetchBusyDates = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates , CompleteBooking}
+module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates , CompleteBooking , RejectBooking}
