@@ -8,6 +8,7 @@ import { TbMessage2Search } from "react-icons/tb";
 import toast from 'react-hot-toast';
 import {SearchDataContext} from '../Context/NaturalSearchContext';
 import Pagination from '../Components/Pagination';
+import Footer from '../Components/Footer';
 
 
 const Home = () => {
@@ -56,10 +57,14 @@ const Home = () => {
           ))
         }
 
-        <div className='w-full flex justify-center mt-2 mb-2'>
+        <div className='w-full flex justify-center mt-0 mb-0'>
            <Pagination />
         </div>
+
+          <Footer />
+
       </div>
+
 
       {/* ------ Natural Search Button ------ */}
       <div className='z-100 fixed bottom-4 right-4 flex items-center justify-center'>

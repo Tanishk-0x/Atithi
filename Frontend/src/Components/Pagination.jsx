@@ -13,7 +13,7 @@ const Pagination = () => {
 
   return (
 
-    <div className='w-[90%] h-[72px] border-t border-gray-400 flex justify-center items-center'>
+    <div className='w-[90%] h-11 bg-gray-50  flex justify-center items-center'>
       <div className='flex flex-row gap-1'>
         
         <button onClick={() => setPage(prev => prev - 1)} disabled={page === 1} className='bg-gray-300 px-1 py-1 rounded-lg cursor-pointer text-[white] font-semibold text-[24px] hover:bg-gray-400 flex justify-center items-center'>
