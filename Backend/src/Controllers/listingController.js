@@ -54,13 +54,32 @@ const addListing = async (req , res) => {
 }; 
 
 
+
 const getListing = async (req , res) => {
     try {
-        const listing = await Listing.find().sort({createdAt:-1}); 
+        // taking page & limit from query 
+        const page = parseInt(req.query.page) || 1 ;  
+        const limit = parseInt(req.query.limit) || 12 ; 
+
+        // calculate document to skip 
+        const skip = (page-1) * limit ; 
+
+        // total documents 
+        const totalListings = await Listing.countDocuments(); 
+
+        // fetch the listings 
+        const listings = await Listing.find()
+            .sort({ createdAt: -1 } )
+            .skip(skip)
+            .limit(limit);
+        
         return res.status(200).json({
             success : true , 
-            message : "Listings Fetched SuccessFully" , 
-            listing : listing ,
+            message : "Listing Through Pagination Fetched SuccessFully" , 
+            listing : listings , 
+            totalPages : Math.ceil(totalListings / limit), 
+            currentPage : page , 
+            totalResults : totalListings  
         }); 
     }
     
