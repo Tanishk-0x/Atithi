@@ -37,7 +37,7 @@ const MyBooking = () => {
                         ))
                     ) : 
                     (
-                        <div className="flex flex-col items-center gap-4 mt-20">
+                        <div className="flex flex-col items-center gap-4 md:h-[400px] w-full justify-center">
                             <p className="text-gray-400 text-xl font-medium">You haven't booked anything yet.</p>
                             <button 
                                 onClick={() => navigate('/')}
