@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { userDataContext } from '../Context/UserContext';
 import BookingCard from '../Components/BookingCard';
+import Footer from '../Components/Footer';
 
 const MyBooking = () => {
 
@@ -19,11 +20,11 @@ const MyBooking = () => {
                 <button onClick={() => navigate('/')} className='cursor-pointer'><FaArrowLeftLong /></button>
             </div>
 
-            <div onClick={() => console.log("DATA->>" , userData)} className='w-[50%] h-[10%] border-2 border-[#908c8c] p-[15px] flex items-center justify-center text-[30px] rounded-md text-[#613b3b] font-semibold mt-5 md:w-[600px]'>
-                MY BOOKING
+            <div className='mt-5 w-[90%] h-[70px] rounded-lg shadow-md shadow-gray-500 flex justify-center items-center text-[34px] font-mono font-semibold'>
+                MY BOOKINGS
             </div>
 
-            <div className='w-full h-[90%] flex items-center justify-center gap-[25px] flex-wrap mt-[30px]'>
+            <div className='w-full h-[90%] flex items-center justify-center gap-[25px] flex-wrap mt-2 md:mt-[18px]'>
                 { userData?.booking?.length > 0 ?
                     (
                         userData.booking.map((item) => (
@@ -48,6 +49,8 @@ const MyBooking = () => {
                     ) 
                 }
             </div>
+
+            <Footer /> 
 
         </div>
 
