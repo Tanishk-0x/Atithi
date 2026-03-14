@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, use, useContext, useEffect, useState } from 'react'
 import {authDataContext} from '../Context/AuthContext'
 import axios from 'axios'
 import toast from 'react-hot-toast'; 
@@ -38,6 +38,9 @@ const ListingContext = ({children}) => {
     const [lat , setLat] = useState(''); 
     const [lng , setLng] = useState(''); 
     const [mapUrl , setMapUrl] = useState(''); 
+
+    const [page , setPage] = useState(1);
+    const [totalPages , setTotalPages] = useState(1);  
 
     // Search 
     const [searchData , setSearchData] = useState([]); 
@@ -106,11 +109,12 @@ const ListingContext = ({children}) => {
     const getListings = async () => {
         try {
             setLoading(true); 
-            const res = await axios.get(serverUrl + "/listing/get" , 
+            const res = await axios.get(serverUrl + `/listing/get?page=${page}&limit=12` , 
                 {withCredentials:true}
             );     
             setListingData(res.data.listing);
             setNewListingData(res.data.listing); 
+            setTotalPages(res.data.totalPages); 
             setLoading(false); 
             console.log(res.data);  
         }
@@ -162,7 +166,7 @@ const ListingContext = ({children}) => {
 
     useEffect(() => {
         getListings(); 
-    },[adding , updating , deleting]);
+    },[adding , updating , deleting , page]);
 
     const value = {
         title,setTitle , 
@@ -182,6 +186,8 @@ const ListingContext = ({children}) => {
         maxGuestAllowed , setMaxGuestAllowed ,
 
         mapUrl , 
+        page , setPage , 
+        totalPages , 
         
         loading , setLoading ,
         adding ,

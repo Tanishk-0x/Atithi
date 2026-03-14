@@ -7,6 +7,7 @@ import { GrSearchAdvanced } from "react-icons/gr";
 import { TbMessage2Search } from "react-icons/tb";
 import toast from 'react-hot-toast';
 import {SearchDataContext} from '../Context/NaturalSearchContext';
+import Pagination from '../Components/Pagination';
 
 
 const Home = () => {
@@ -36,7 +37,7 @@ const Home = () => {
     <div>
       <Navbar/>
 
-      <div className='w-screen h-[77vh] flex items-center justify-center gap-[25px] flex-wrap mt-[250px] md:mt-[180px] relative'>
+      <div className='w-full min-h-screen flex items-start justify-center gap-[25px] flex-wrap pt-[250px] md:pt-[180px] pb-0 relative'>
         {
           newListingData.map((list) => (
             <Card 
@@ -54,6 +55,10 @@ const Home = () => {
             />
           ))
         }
+
+        <div className='w-full flex justify-center mt-2 mb-2'>
+           <Pagination />
+        </div>
       </div>
 
       {/* ------ Natural Search Button ------ */}

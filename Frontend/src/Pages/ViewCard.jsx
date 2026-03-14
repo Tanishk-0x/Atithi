@@ -30,7 +30,7 @@ const ViewCard = () => {
   const navigate = useNavigate(); 
 
   const { serverUrl } = useContext(authDataContext);
-  const { cardDetails , updating , setUpdating , deleting , setDeleting , lat , lng , mapUrl} = useContext(listingDataContext);
+  const { cardDetails , updating , setUpdating , deleting , setDeleting , mapUrl} = useContext(listingDataContext);
   const { userData } = useContext(userDataContext);
 
   const { 
@@ -266,7 +266,7 @@ const ViewCard = () => {
           </div>
 
           <div className='h-full w-auto md:w-[15%] flex items-center justify-center'>
-            <p className='text-[18px] md:text-[24px] text-nowrap'>
+            <p className='text-[18px] md:text-[24px] text-nowrap mr-3'>
               ₹{cardDetails.rent} /day
             </p>
           </div>
@@ -277,7 +277,7 @@ const ViewCard = () => {
           
           <div className='h-[95%] w-[95%] md:w-[50%] gap-2 flex items-start justify-center flex-col'>
 
-            <div className='shadow-sm shadow-gray-500 rounded-lg overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
+            <div className='bg-[#FAF9F6] shadow-sm shadow-gray-500 rounded-lg overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
               <p className='font-semibold text-[18px] md:text-[22px]'>About This Property</p>
 
               <p className='text-[16px] md:text-[20px] overflow-y-auto'>
@@ -405,7 +405,7 @@ const ViewCard = () => {
               {
                 reviews.length > 0 && 
                 reviews.map((itr) => (
-                  <div className='bg-[#edede3] w-[48%] md:w-[200px] h-auto md:h-auto overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
+                  <div className='bg-[#FAF9F6] w-[48%] md:w-[200px] h-auto md:h-auto overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
                     <div className=' flex justify-between px-2 items-center'>
                       <p className='text-[14px] md:text-[16px]'> {itr.guest.name} </p>
                       <p className='text-[14px] md:text-[16px] text-red-500'> {itr.createdAt.split('T')[0]} </p>
@@ -423,6 +423,13 @@ const ViewCard = () => {
                     </div>
                   </div>
                 ))
+              }
+
+              {
+                reviews.length === 0 && 
+                <div className='font-semibold font-mono text-[22px] text-center text-gray-600'>
+                  No reviews!
+                </div>
               }
   
 
