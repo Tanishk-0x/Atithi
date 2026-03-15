@@ -1,11 +1,23 @@
 const User = require('../Models/userModel');
 const bcrypt = require('bcrypt');
 const GenerateToken = require('../Config/token');
+const Otp = require('../Models/otpModel'); 
 
 const Signup = async (req , res) => {
     try {
-        const {name , email , password} = req.body ; 
+        const {name , email , password , otp} = req.body ; 
         const userExist = await User.findOne({email}); 
+
+        // Verify Otp 
+        const otpCheck = await Otp.findOne({ email , otp }); 
+
+        if(!otpCheck){
+            return res.status(400).json({
+                success : false , 
+                message : "Invalid or Expired Otp"
+            }); 
+        }
+
 
         if(userExist){
             return res.status(400).json({
@@ -39,7 +51,7 @@ const Signup = async (req , res) => {
     catch (error) {
       return res.status(500).json({
         success : false , 
-        message : "An Error Occured While Signup"
+        message : `An Error Occured While Signup : ${error}`
       })  
     }
 }
