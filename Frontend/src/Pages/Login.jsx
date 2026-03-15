@@ -53,33 +53,43 @@ const Login = () => {
         <div className='h-10 w-10 bg-[red] rounded-full flex justify-center items-center top-[10%] left-5 absolute'>
           <button onClick={() => navigate('/')} className='cursor-pointer'><FaArrowLeftLong /></button>
         </div>
-        
-        <form action="" onSubmit={LoginHandler}
-         className='max-w-[900px] w-[90%] h-[600px] flex items-center justify-center flex-col md:items-start gap-2.5'>
+
+          <form action="" onSubmit={LoginHandler}
+           className='bg-[#fff8f8] border border-gray-300 h-auto gap-2 w-[90%] md:w-[500px] rounded-lg shadow-md shadow-gray-600 flex justify-start items-center flex-col'>
           
-          <h1 className='text-[30px] font-bold font-serif'>Welcome To xxxxx</h1>
-            
-            <div className='w-[90%] flex items-start justify-start flex-col gap-2.5' >
-              <label htmlFor="email" className='text-[20px]'>Email</label>
-              <input type="text" placeholder='email' id='email' required value={email} onChange={(e) => setEmail(e.target.value)} className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
-            </div>
+          <div className=' h-[120px] w-[95%] mt-2'>
+            <img src='./signup-banner.png' alt="" className='border border-gray-300 w-full h-full object-cover rounded-lg' />
+          </div>
 
-            <div className='w-[90%] flex items-start justify-start flex-col gap-2.5 relative' >
+          <h1 className=' font-semibold text-[30px] font-serif'>
+            Welcome Back!
+          </h1>
+
+          <div className='w-[90%] flex items-start justify-start flex-col gap-0 mt-1'>
+            <label htmlFor="email" className='text-[20px]'>Email</label>
+            <input type="text" placeholder='email' id='email' required value={email} onChange={(e) => setEmail(e.target.value)} className='w-[98%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
+          </div>
+
+
+          <div className='w-[90%] flex items-start justify-start flex-col gap-2.5 relative' >
               <label htmlFor="password" className='text-[20px]'>Password</label>
-              <input type={ show ? 'text' : 'password' } placeholder='password' id='password'required value={password} onChange={(e) => setPassword(e.target.value)} className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4 ' />
-                  {
-                    !show ? 
-                     <IoMdEye onClick={() => setShow(true)} className='w-[22px] h-[22px] absolute right-[12%] bottom-2.5 cursor-pointer'/> 
-                     : 
-                      <IoMdEyeOff onClick={() => setShow(false)} className='w-[22px] h-[22px] absolute right-[12%] bottom-2.5 cursor-pointer'/>
-                  }
-            </div>
+              <input type={ show ? 'text' : 'password' } placeholder='password' id='password'required value={password} onChange={(e) => setPassword(e.target.value)} className='w-[98%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4 ' />
+              {
+                !show ? 
+                <IoMdEye onClick={() => setShow(true)} className='w-[22px] h-[22px] absolute right-[4%] bottom-2.5 cursor-pointer'/> 
+                : 
+                <IoMdEyeOff onClick={() => setShow(false)} className='w-[22px] h-[22px] absolute right-[4%] bottom-2.5 cursor-pointer'/>
+              }
+          </div>
 
-            <button className='py-2.5 bg-[red] text-[white] text-[18px] md: px-[100px] rounded-lg cursor-pointer mt-4' > {loading ? 'loading' : 'Login'} </button>
-            
-            <p className='text-[18px]'>Does not have account? <span className='text-[19px] text-[red] cursor-pointer' onClick={() => navigate('/signup')}>Signup</span></p>
+          <button className='bg-[red] w-[90%] mt-2 h-12 rounded-lg text-white cursor-pointer text-[18px]'>
+            {loading ? 'loading' : 'Login'}
+          </button>
+
+          <p className='text-[18px] mb-6 mt-2'>Does not have account? <span className='text-[19px] text-[red] cursor-pointer' onClick={() => navigate('/signup')}> Signup </span></p>
 
         </form>
+
     </div>
     
 
