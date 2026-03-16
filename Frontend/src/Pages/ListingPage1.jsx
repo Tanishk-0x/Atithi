@@ -287,7 +287,7 @@ const ListingPage1 = () => {
                   <button onClick={(e) => {
                     e.preventDefault(); 
                     setMaxGuestAllowed((prev) => prev+1); 
-                  }} className='h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
+                  }} className='bg-gray-300 text-[24px] font-semibold h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
                     +
                   </button>
                   <div className='h-10 w-10 flex items-center justify-center text-[18px] rounded-lg border border-gray-800 font-semibold'>
@@ -296,7 +296,7 @@ const ListingPage1 = () => {
                   <button onClick={(e) => {
                     e.preventDefault(); 
                     setMaxGuestAllowed((prev) => prev-1); 
-                  }} className='h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
+                  }} className='bg-gray-300 text-[24px] font-semibold h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer border border-gray-800 hover:border-2'>
                     -
                   </button>
                 </div>

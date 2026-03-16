@@ -273,9 +273,9 @@ const ViewCard = () => {
           
         </div>
 
-        <div className='w-[98%] h-auto md:w-[90%] md:h-[300px] flex items-center justify-center gap-2 flex-col md:flex-row'>
+        <div className='w-[98%] h-auto md:w-[90%] md:h-[300px] flex items-center justify-center gap-4 flex-col md:flex-row'>
           
-          <div className='h-[95%] w-[95%] md:w-[50%] gap-2 flex items-start justify-center flex-col'>
+          <div className='h-[95%] w-[95%] md:w-[50%] gap-3 flex items-start justify-center flex-col'>
 
             <div className='bg-[#FAF9F6] shadow-sm shadow-gray-500 rounded-lg overflow-y-auto w-full h-[200px] md:w-full md:h-[90%] flex justify-start items-start px-4 py-1 flex-col gap-1'>
               <p className='font-semibold text-[18px] md:text-[22px]'>About This Property</p>
@@ -287,7 +287,7 @@ const ViewCard = () => {
             
             <div className='w-[98%] gap-2 h-[120px] md:h-[60px] flex items-center justify-center flex-col md:flex-row '>
               
-              <div className='shadow-sm shadow-gray-500 rounded-lg w-[98%] md:w-[48%] h-[60px] flex items-center justify-center '>
+              <div className='bg-[#FAF9F6] shadow-sm shadow-gray-500 rounded-lg w-[98%] md:w-[48%] h-[60px] flex items-center justify-center '>
                 <div className='text-[red] h-12 w-12 rounded-full border-2 border-red-500 flex items-center justify-center font-semibold text-[20px] bg-gray-300'>
                   T
                 </div>
@@ -297,7 +297,7 @@ const ViewCard = () => {
                 </div>
               </div>
 
-              <div className='w-[98%] h-[60px] md:w-[48%] md:h-full shadow-sm shadow-gray-500 rounded-lg flex items-center justify-center'>
+              <div className='bg-[#FAF9F6] w-[98%] h-[60px] md:w-[48%] md:h-full shadow-sm shadow-gray-500 rounded-lg flex items-center justify-center'>
                 <div className='flex flex-row items-center justify-center text-xl gap-2'>
                   <IoPeopleSharp className='text-[28px]'/> Max Guest Allowed: {cardDetails.maxGuestAllowed || 0 } 
                 </div>
@@ -307,7 +307,7 @@ const ViewCard = () => {
 
           </div>
 
-          <div className='w-[98%] h-60 md:h-[95%] md:w-[50%] flex shadow-sm shadow-gray-400 rounded-lg border border-gray-500 items-center justify-center'>
+          <div className='bg-[#FAF9F6] w-[98%] h-60 md:h-[95%] md:w-[50%] flex shadow-sm shadow-gray-400 rounded-lg  items-center justify-center'>
             <iframe 
               src={mapUrl}
               width="98%"
@@ -320,7 +320,7 @@ const ViewCard = () => {
         <div className='w-[98%] h-auto  md:w-[90%] md:h-[300px] gap-2 mb-5 flex justify-center items-center flex-col md:flex-row'>
           
           <div className='w-[98%] md:h-[98%] md:w-[50%] '>
-            <div className='w-full h-auto px-2 '>
+            <div className='w-full h-auto px-2 bg-[#FAF9F6]'>
               <p className='font-semibold text-[20px] mt-1'>
                 What is Provides?
               </p>
@@ -676,22 +676,22 @@ const ViewCard = () => {
             </h1>
 
             <div className='w-full h-[100px] flex justify-center items-center flex-row flex-wrap gap-3 '>
-                <div onClick={() => setRating(1)} className='h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400'>
+                <div onClick={() => setRating(1)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400 ${ (rating === 1) && 'bg-red-400'}`}>
                     <IoSadOutline className='text-[24px] md:text-[34px]'/>
-                    <p className='text-[8px] md:text-[12px]'>Disappointed</p>
+                    <p className='text-[8px] md:text-[12px]'>Disappointed</p> 
                 </div>
 
-                <div onClick={() => setRating(2)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400'>
+                <div onClick={() => setRating(2)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400 ${ (rating === 2) && 'bg-orange-400'}`}>
                     <FaRegFaceSadTear className='text-[24px] md:text-[34px]'/>
                     <p className='text-[8px] md:text-[12px]'>Sad</p>
                 </div>
 
-                <div onClick={() => setRating(3)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400'>
+                <div onClick={() => setRating(3)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400 ${ (rating === 3) && 'bg-yellow-400'}`}>
                     <BsEmojiNeutral className='text-[24px] md:text-[34px]'/>
                     <p className='text-[8px] md:text-[12px]'>Neutral</p>
                 </div>
 
-                <div onClick={() => setRating(4)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400'>
+                <div onClick={() => setRating(4)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400 ${ (rating === 4) && 'bg-green-400'}`}>
                     <IoHappyOutline className='text-[24px] md:text-[34px]'/>
                     <p className='text-[8px] md:text-[12px]'>Happy</p>
                 </div>

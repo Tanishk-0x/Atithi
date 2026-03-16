@@ -40,12 +40,6 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
         </div>
       }
 
-      {
-        isBooked && host == userData?._id &&
-        <div onClick={() => setShowCancelPopUp(true)} className='text-[red] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-[50px] gap-[5px] p-[5px] cursor-pointer'>
-          <FcCancel className='w-5 h-5'/> Cancel
-        </div>
-      }
 
       {/* // Cancel Booking PopUp */}
       { showCancelPopUp && 

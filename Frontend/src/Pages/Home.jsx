@@ -9,6 +9,8 @@ import toast from 'react-hot-toast';
 import {SearchDataContext} from '../Context/NaturalSearchContext';
 import Pagination from '../Components/Pagination';
 import Footer from '../Components/Footer';
+import { PiSparkleLight } from "react-icons/pi";
+
 
 
 const Home = () => {
@@ -76,13 +78,13 @@ const Home = () => {
       {/* ----- Natural Search PopUp ----- */}
       { 
         showPopUp && 
-        <div className='fixed flex justify-between items-center flex-col bg-[#FAF9F6] min-h-[400px] max-h-[500px] w-[90%] md:w-[500px] bottom-4 right-4 z-100 rounded-lg border-2 border-[black]'>
+        <div className='shadow-sm shadow-gray-400 fixed flex justify-between items-center flex-col bg-[#FAF9F6] min-h-[400px] max-h-[500px] w-[90%] md:w-[500px] bottom-4 right-4 z-100 rounded-lg border-2 border-[black]'>
           
-          <div className='flex justify-between w-full p-2 items-center border-b h-[10%]'>
-            <p className='font-semibold text-gray-700'>
-              Smart Search
+          <div className='flex justify-between w-full p-2 items-center border-b-2 border-gray-300 h-[10%]'>
+            <p className='font-mono text-gray-900 text-[22px] flex flex-row gap-1 justify-center items-center'>
+              <PiSparkleLight className='font-semibold'/> Smart Search
             </p>
-            <button onClick={() => setShowPopUp(false)} className='bg-[red] px-1 py-1 rounded-full cursor-pointer hover:border text-[18px]'>
+            <button onClick={() => setShowPopUp(false)} className='text-[24px] px-1 py-1 rounded-full cursor-pointer'>
               <RxCross2 />
             </button>
           </div>
@@ -130,24 +132,31 @@ const Home = () => {
               )
               : 
               (
-                <div className='h-full text-gray-400 flex items-center justify-center flex-col'>
-                  <TbMessage2Search size={40}/>
-                  <p className='mt-2'>
-                    No matching found. try searching something else! 
-                  </p>
+                <div className='h-full flex items-center justify-center flex-col'>
+                  <div>
+                    <img src='./key.png' alt="" />
+                  </div>
+
+                  <div className='text-[18px] text-gray-800'>
+                    Describe your perfect stay ..
+                  </div>
+
+                  <div className='font-semibold font-mono text-gray-700'>
+                    Tell us what you want to feel
+                  </div>
                 </div>
               )
             }
             
           </div>
 
-          <div className='w-full h-[65px] flex items-center justify-center border-t'>
-            <input className='bg-[white] relative w-[98%] h-[45px] px-3 border border-[gray] outline-none rounded-2xl'
-            type="text" placeholder='Search Here ..'
+          <div className='w-full h-auto p-1 flex items-center justify-center border-t-2 border-gray-300'>
+            <textarea className='bg-gray-200 min-h-20 max-h-[150px] relative w-[98%] h-[45px] px-3 border border-[gray] outline-none rounded-lg'
+            type="text" placeholder='Search you vibe here ..'
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => HandleKeyDown(e)}
             />
-            <button className='absolute right-3 bg-[red] px-3 py-3 rounded-full'>
+            <button className='absolute right-5 bg-[red] px-3 py-3 rounded-full'>
               <GrSearchAdvanced />
             </button>
           </div>

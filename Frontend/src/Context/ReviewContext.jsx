@@ -12,7 +12,7 @@ const ReviewContext = ({children}) => {
     const { serverUrl } = useContext(authDataContext); 
 
     const [feedback , setFeedback] = useState(''); 
-    const [rating , setRating] = useState(0); 
+    const [rating , setRating] = useState(3); 
     const [isAddingReview , setIsAddingReview] = useState(false); 
     const [reviews , setReviews] = useState([]);
     const [reviewsHost , setReviewsHost] = useState([]);  

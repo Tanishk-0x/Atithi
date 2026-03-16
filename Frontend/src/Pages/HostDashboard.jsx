@@ -213,7 +213,7 @@ const HostDashboard = () => {
                                             {itr.guest?.name?.slice(0,1).toUpperCase()}
                                         </div>
                                         <div className="text-[12px] md:text-[14px]">
-                                            <p>{itr.guest.name}</p>
+                                            <p>{itr.guest?.name}</p>
                                         </div>
                                     </div>
 
@@ -261,7 +261,7 @@ const HostDashboard = () => {
                                     </div>
                                     <div className="flex flex-col py-1 h-full w-full overflow-hidden">
                                         <div className="text-[14px] md:text-[16px] font-semibold truncate"> {item.listing.title} </div>
-                                        <div className="text-[10px] md:text-[12px] text-[gray] truncate"> {item.guest.name} </div>
+                                        <div className="text-[10px] md:text-[12px] text-[gray] truncate"> {item.guest?.name} </div>
                                         <div className="text-[12px] md:text-[14px] text-[red] truncate"> {`${item.checkIn.split('T')[0]} - ${item.checkOut.split('T')[0]}`} </div>
                                     </div>
                                 </div>
@@ -300,7 +300,7 @@ const HostDashboard = () => {
                                         <p className="text-[12px] md:text-[14px] font-semibold truncate"> {item.listing.title} </p>
                                         <p className="text-[12px] md:text-[14px] font-semibold text-[green]"> {`₹${item.totalRent}`} </p>
                                     </div>
-                                    <p className="text-[12px] truncate"> {item.guest.name} </p>
+                                    <p className="text-[12px] truncate"> {item.guest?.name} </p>
                                     <p className="text-[12px] font-semibold text-[red] truncate"> {`${item.checkIn.split('T')[0]} - ${item.checkOut.split('T')[0]}`} </p>
                                     <p className="text-[gray] text-[10px] truncate"> {`${item.listing.landmark}/${item.listing.city}`} </p>
                                 </div>
@@ -399,7 +399,7 @@ const HostDashboard = () => {
                                     <tr className="hover:bg-gray-50 transition-colors outline-1 outline-gray-400">
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {index+1} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.listing?.title || "Property Deleted"} </td>
-                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.guest.name} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.guest?.name} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.checkIn.split('T')[0]} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.checkOut.split('T')[0]} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.status} </td>

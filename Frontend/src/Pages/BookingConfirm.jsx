@@ -246,22 +246,22 @@ const BookingConfirm = () => {
                 </h1>
 
                 <div className='w-full h-[100px] flex justify-center items-center flex-row flex-wrap gap-3 '>
-                    <div onClick={() => setRating(1)} className='h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400'>
+                    <div onClick={() => setRating(1)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400 ${ (rating === 1) && 'bg-red-400'}`}>
                         <IoSadOutline className='text-[24px] md:text-[34px]'/>
                         <p className='text-[8px] md:text-[12px]'>Disappointed</p>
                     </div>
 
-                    <div onClick={() => setRating(2)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400'>
+                    <div onClick={() => setRating(2)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400 ${ (rating === 2) && 'bg-orange-400'}`}>
                         <FaRegFaceSadTear className='text-[24px] md:text-[34px]'/>
                         <p className='text-[8px] md:text-[12px]'>Sad</p>
                     </div>
 
-                    <div onClick={() => setRating(3)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400'>
+                    <div onClick={() => setRating(3)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400 ${ (rating === 3) && 'bg-yellow-400'}`}>
                         <BsEmojiNeutral className='text-[24px] md:text-[34px]'/>
                         <p className='text-[8px] md:text-[12px]'>Neutral</p>
                     </div>
 
-                    <div onClick={() => setRating(4)} className='h-15 w-15 md:h-20 md:w-20  flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400'>
+                    <div onClick={() => setRating(4)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400 ${ (rating === 4) && 'bg-green-400'}`}>
                         <IoHappyOutline className='text-[24px] md:text-[34px]'/>
                         <p className='text-[8px] md:text-[12px]'>Happy</p>
                     </div>

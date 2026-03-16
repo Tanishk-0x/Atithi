@@ -20,7 +20,7 @@ const MyBooking = () => {
                 <button onClick={() => navigate('/')} className='cursor-pointer'><FaArrowLeftLong /></button>
             </div>
 
-            <div className='mt-5 w-[90%] h-[70px] rounded-lg shadow-md shadow-gray-500 flex justify-center items-center text-[34px] font-mono font-semibold'>
+            <div className='bg-[#FAF9F6] mt-5 w-[90%] h-[70px] rounded-lg shadow-md shadow-gray-500 flex justify-center items-center text-[34px] font-mono font-semibold'>
                 MY BOOKINGS
             </div>
 
