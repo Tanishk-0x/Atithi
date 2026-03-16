@@ -40,6 +40,10 @@ const HostDashboard = () => {
         isComplete , 
         RejectBooking , 
         isReject , 
+
+        revenueStats , 
+        totalRevenue , 
+        totalBookings ,
     } = useContext(hostDataContext); 
 
 
@@ -114,7 +118,7 @@ const HostDashboard = () => {
             </div>
             <div className="h-auto text-[white] text-nowrap">
                 <p className="text-[12px] md:text-[16px]">Total Revenue:</p>
-                <p className="text-[18px] md:text-[28px] font-semibold">00</p>
+                <p className="text-[18px] md:text-[28px] font-semibold">{totalRevenue}</p>
             </div>
         </div>
         <div className="bg-red-600 w-[46%] md:w-[20%] h-20 md:h-[80%] rounded-lg flex items-center justify-start px-3 md:px-5 gap-2 md:gap-4">
@@ -131,8 +135,8 @@ const HostDashboard = () => {
                 <PiChartLineUp />
             </div>
             <div className="h-auto text-[white] text-nowrap">
-                <p className="text-[12px] md:text-[16px]">Occupancy Rate:</p>
-                <p className="text-[18px] md:text-[28px] font-semibold">00</p>
+                <p className="text-[12px] md:text-[16px]">TotalBookings:</p>
+                <p className="text-[18px] md:text-[28px] font-semibold">{totalBookings}</p>
             </div>
         </div>
         <div className="bg-[#f0f0f0] rounded-lg w-[95%] md:w-[15%] h-auto md:h-[98%] flex flex-col justify-center items-center gap-1 p-2 md:p-0">
@@ -151,16 +155,18 @@ const HostDashboard = () => {
       <div className="w-[95%] md:w-[90%] h-auto md:h-[88%] mb-2 flex flex-col md:flex-row gap-2 items-center justify-center">
         <div className="h-full w-full md:w-[65%] flex items-center justify-center flex-col gap-2">
             
+
             {/* --------- Chart!----------- */}
             <div className="w-full md:w-[98%] h-[300px] md:h-[50%] pt-4 rounded-lg  bg-[white]">
                 <ResponsiveContainer width="98%" height="98%">
-                    <BarChart data={data}>
+                    <BarChart data={revenueStats}>
                         <XAxis dataKey="month" />
                         <YAxis style={{ fontSize: '14px' }} />
-                        <Bar dataKey="value" fill="#D22B2B" activeBar={{ fill:"red" }}/>
+                        <Bar dataKey="revenue" fill="#D22B2B" activeBar={{ fill:"red" }} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
+
 
             {/* --------- Listings ----------- */}
             <div className="w-full md:w-[98%] h-auto md:h-[50%] flex items-center justify-center flex-col md:flex-row gap-2">

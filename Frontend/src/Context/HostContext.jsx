@@ -23,6 +23,11 @@ const HostContext = ({children}) => {
     const [ongoing , setOngoing] = useState([]); 
     const [completed , setCompleted] = useState([]); 
 
+    // Revenue Stats 
+    const [revenueStats , setRevenueStats] = useState([]); 
+    const [totalRevenue , setTotalRevenue] = useState(0); 
+    const [totalBookings , setTotalBookings] = useState(0); 
+
     // Host Dashboard Data ...
     const getHostData = async () => {
         try {
@@ -38,6 +43,12 @@ const HostContext = ({children}) => {
                 setPending(result?.pending || []); 
                 setApproved(result?.approved || []); 
                 setOngoing(result?.ongoing || []); 
+
+                setRevenueStats(res.data?.revenueStats); 
+                setTotalRevenue(res.data?.totalRevenue); 
+                setTotalBookings(res.data?.totalBookings); 
+
+                console.log("Stats:" , res.data?.revenueStats); 
             }
 
             console.log("Dashboard Data: " , res.data);  
@@ -185,6 +196,10 @@ const HostContext = ({children}) => {
         isComplete , 
         RejectBooking , 
         isReject , 
+
+        revenueStats , 
+        totalRevenue , 
+        totalBookings ,
     }; 
 
     return (
