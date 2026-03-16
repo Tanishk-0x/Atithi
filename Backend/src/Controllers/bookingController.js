@@ -2,6 +2,7 @@ const Booking = require('../Models/bookingModel');
 const Listing = require('../Models/listingModel'); 
 const User = require('../Models/userModel'); 
 const SendMail = require('../Config/sendMail');
+const { mongoose } = require('mongoose');
 
 /*
 1. create booking (status = pending)
@@ -310,6 +311,69 @@ const getBookingsData = async (req , res) => {
             }); 
         }
 
+        // --------- Revenue Logic -------------
+        /*
+        1. filter only this host and completed bookings 
+        2. group => { taking month from checkOut Date } + { calculate the totalrent Month-wise }
+        3. sort => { _id } => Jan-Feb-Mar-....
+        
+        4. mongoDb only gives the avialable month's revenue field.  for all months manually set it to 0 ( found => monthlyTotal , 0 )
+        5. return as response  
+        */
+
+        const revenueStats = await Booking.aggregate([
+
+            // Stage: 1 - Filter Bookings 
+            { 
+                $match : { 
+                    host : new mongoose.Types.ObjectId(hostId) , 
+                    status : 'completed'
+                }
+            }, 
+
+            // Stage: 2 - Grouping by Months / Calculate total 
+            {
+                $group : {
+                    _id : { $month: "$checkOut" }, // 1 = Jan , 2 = Feb 
+                    monthlyTotal : { $sum : "$totalRent" }, // calculating monthWise total
+                    totalBookings : { $sum : 1 }, 
+                }
+            }, 
+
+            // Stage: 3 - Sort by Months 
+            {
+                $sort : {
+                    "_id" : 1 
+                }
+            }
+
+
+        ]); 
+
+        // manually mapping the empty months to 0 
+
+        const monthsNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+
+        let totalOverallRevenue = 0 ; 
+        let totalOverallBookings = 0 ; 
+
+        const FinalData = monthsNames.map((name , index) => {
+            const monthCode = index + 1 ; 
+            const found = revenueStats.find(itr => itr._id === monthCode) ; 
+
+            if(found){
+                totalOverallRevenue += found.monthlyTotal ; 
+                totalOverallBookings += found.totalBookings ; 
+            }
+
+            return {
+                month : name ,
+                revenue : found ? parseInt(found.monthlyTotal) : 0 ,
+            }
+        }); 
+
+        // -------------------------------------
+
         // filter 
         const pending = bookings.filter(b => b.status === 'pending'); 
         const approved = bookings.filter(b => b.status === 'approved');
@@ -325,7 +389,10 @@ const getBookingsData = async (req , res) => {
                 approved , 
                 ongoing ,
                 completed , 
-            }
+            },
+            revenueStats : FinalData ,
+            totalRevenue : parseInt(totalOverallRevenue) , 
+            totalBookings : totalOverallBookings , 
         }); 
     }
     
