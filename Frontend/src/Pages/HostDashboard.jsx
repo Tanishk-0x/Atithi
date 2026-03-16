@@ -2,7 +2,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { CiDollar } from "react-icons/ci";
 import { GoClock } from "react-icons/go";
 import { PiChartLineUp } from "react-icons/pi";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer , Tooltip} from 'recharts';
 import { useContext, useEffect, useState } from "react";
 import { userDataContext } from "../Context/UserContext";
 import { useNavigate } from 'react-router-dom';
@@ -162,7 +162,23 @@ const HostDashboard = () => {
                     <BarChart data={revenueStats}>
                         <XAxis dataKey="month" />
                         <YAxis style={{ fontSize: '14px' }} />
-                        <Bar dataKey="revenue" fill="#D22B2B" activeBar={{ fill:"red" }} />
+
+                        <Tooltip
+                        cursor={{ fill: 'transparent' }}
+                        content={({active , payload }) => {
+                            if (active && payload && payload.length > 0 && payload[0].value > 0 ) {
+                                return (
+                                    <div className="bg-black text-white px-3 py-1 rounded-md shadow-xl text-[14px] font-bold border border-gray-600">
+                                        ₹{payload[0].value}
+                                    </div>
+                                );
+                            }
+                            return null ; 
+                        }}
+
+                        />
+
+                        <Bar dataKey="revenue" fill="#D22B2B" activeBar={{ fill:"red" }} isAnimationActive={true} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
