@@ -404,38 +404,55 @@ const getBookingsData = async (req , res) => {
     }
 }
 
-// ----------------------------------------
-
-const cancelBooking = async (req , res) => {
+// ------------- Cancel Booking --------------
+const CancelBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
-        // IsBooked = False
-        const listing = await Listing.findByIdAndUpdate(id , {isBooked:false})
-        // Update in User's Booking 
-        const user = await User.findByIdAndUpdate(listing.guest , {
-            $pull:{booking:listing._id}
-        },{ new:true });
+        const userId = req.userId ; 
 
-        if(!user){
-            res.status(404).json({
-                success : false ,
-                message : "User Not Found"
+        const booking = await Booking.findById(id); 
+
+        if(!booking){
+            return res.status(404).json({
+                success : false , 
+                message : "Booking Not Found!"
             }); 
         }
 
-        res.status(200).json({
+        // Check for unauthorized cancellation 
+        if( booking.guest.toString() !== userId.toString() ){
+            return res.status(403).json({
+                success : false , 
+                message : "Unauthorized Action!"
+            }); 
+        }
+
+        // Check for status 
+        if( booking.status === 'ongoing' || booking.status === 'completed' ){
+            return res.status(400).json({
+                success : false , 
+                message : `Unable to cancel : ${booking.status} booking`
+            }); 
+        }
+
+        // updating the status
+        booking.status = 'cancelled' ; 
+        await booking.save(); 
+        
+        return res.status(200).json({
             success : true , 
-            message : "Booking Canceled SuccessFully"
+            message : "Booking Cancelled!"
         }); 
     }
     
     catch (error) {
-       res.status(500).json({
+        res.status(500).json({
             success : false , 
-            message : `An Error Occured While Cancel Booking : ${error}`
+            message : `An Error Occured Cancelling Booking : ${error}`
         }); 
     }
 }
+
 
 // ------------ Get Busy Dates -------------
 /*
@@ -476,4 +493,4 @@ const FetchBusyDates = async (req , res) => {
     }
 }
 
-module.exports = {createBooking , cancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates , CompleteBooking , RejectBooking}
+module.exports = {createBooking , CancelBooking , ApproveBooking , getBookingsData , CheckInBooking , FetchBusyDates , CompleteBooking , RejectBooking}
