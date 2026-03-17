@@ -24,6 +24,8 @@ const BookingContext = ({children}) => {
     const [bookingData , setBookingData] = useState([]); 
     const [booking , setBooking] = useState(false); 
 
+    const [isCancelling , setIsCancelling] = useState(false); 
+
     // Handle Booking 
     const HandleBooking = async (id) => {
         setBooking(true); 
@@ -54,19 +56,33 @@ const BookingContext = ({children}) => {
 
     // Cancel Booking 
     const CancelBooking = async (id) => {
+        if(isCancelling){
+            return ; 
+        }
+
         try {
-            const res = await axios.delete(serverUrl + `/booking/cancel/${id}` , 
-                {withCredentials : true}
+            setIsCancelling(true); 
+            const res = await axios.put(serverUrl + `/booking/cancel/${id}` , 
+               {} , { withCredentials : true }
             ); 
-            await getUserDetails(); 
-            await getListings(); 
-            toast.success(res.data.message); 
-            console.log(res.data); 
+
+            if(res.data.success){
+                getListings(); 
+                getUserDetails(); 
+                toast.success(res.data?.message);
+                setIsCancelling(false); 
+                navigate('/');  
+            }
         }
         
         catch (error) {
             console.log(error); 
-            toast.error("Error While Cancel");   
+            toast.error(error.response?.data?.message);  
+            setIsCancelling(false); 
+        }
+
+        finally{
+            setIsCancelling(false);
         }
     }
 
@@ -78,6 +94,7 @@ const BookingContext = ({children}) => {
         bookingData , setBookingData , 
         HandleBooking , 
         CancelBooking , 
+        isCancelling , 
         booking , setBooking
     };
 

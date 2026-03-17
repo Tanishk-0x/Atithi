@@ -26,6 +26,10 @@ import { FaRegFaceSadTear } from "react-icons/fa6";
 import { BsEmojiNeutral } from "react-icons/bs";
 import { IoHappyOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { isCancel } from 'axios';
+import { bookingDataContext } from '../Context/BookingContext';
+import { ImCancelCircle } from "react-icons/im";
+
 
 
 const BookingConfirm = () => {
@@ -42,6 +46,11 @@ const BookingConfirm = () => {
         isAddingReview , 
         HandleAddReview ,
     } = useContext(reviewDataContext); 
+
+    const {
+        CancelBooking , 
+        isCancelling , 
+    } = useContext(bookingDataContext); 
 
     // filter booking 
     const booking = userData?.booking?.find(itr => itr._id === id);
@@ -220,12 +229,14 @@ const BookingConfirm = () => {
                     <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <FaWhatsapp className='font-semibold'/> Whatsapp
                     </button>
+
                     <button onClick={() => setShowReviewPopUp(true)}
                      className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <VscFeedback className='font-semibold'/> Review
                     </button>
-                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
-                        <MdOutlineFileDownload className='font-semibold'/> Download
+
+                    <button onClick={() => CancelBooking(booking._id)}  className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                        <ImCancelCircle className='font-semibold'/> { isCancelling ? 'loading' : 'Cancel' }
                     </button>
                 </div>
 

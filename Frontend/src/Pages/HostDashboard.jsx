@@ -12,7 +12,7 @@ import { IoIosStar } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { TiInputChecked } from "react-icons/ti";
 import { MdDoNotDisturb } from "react-icons/md";
-
+import { ImCancelCircle } from "react-icons/im";
 
 const HostDashboard = () => {
 
@@ -455,7 +455,12 @@ const HostDashboard = () => {
                                                     <div className="text-[22px] text-[#bd001f] flex justify-center items-center">
                                                         <MdDoNotDisturb />
                                                     </div>
-                                                )  : ('')                                                                                    
+                                                ) : 
+                                                itr.status === 'cancelled' ? (
+                                                    <div className="text-[22px] text-[#bd001f] flex justify-center items-center">
+                                                        <ImCancelCircle />
+                                                    </div>
+                                                ) : ('')
                                             }
                                         </td>
                                     </tr>
