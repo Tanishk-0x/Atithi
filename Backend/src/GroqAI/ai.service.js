@@ -13,6 +13,9 @@ const SetSystemInstruction = async (flag) => {
     if( flag === '1' ){
         system = Instructions.DescriptionGeneration ; 
     }
+    if( flag === '2' ){
+        system = Instructions.SummaryGeneration ; 
+    }
     return system ; 
 }
 
@@ -35,7 +38,9 @@ const GenerateByGroq = async ( ques , flag ) => {
                     role : "user" , 
                     content : ques 
                 }
-            ]
+            ],
+
+            
         }); 
 
         const result = (ChatCompletion.choices[0].message.content)
