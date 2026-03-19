@@ -35,10 +35,18 @@ const addReview = async (req , res) => {
 
         await newReview.save(); 
 
+        // ---------- Avg Rating --------------
+        const oldCount = listing.reviews.length ; 
+        const oldRating = listing.ratings || 0 ; 
+
+        const newCount = oldCount + 1 ; 
+        const newAverage = ((oldRating * oldCount) + rating) / newCount ; 
+
+        listing.ratings = Number(newAverage.toFixed(1)); 
+
         // pushing review's id into listing model 
-        await Listing.findByIdAndUpdate(id , {
-            $push: { reviews: newReview._id }
-        });
+        listing.reviews.push(newReview._id); 
+        await listing.save();         
 
         return res.status(201).json({
             success : true , 
