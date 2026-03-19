@@ -1,6 +1,7 @@
 const Listing = require('../Models/listingModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
 const QueryBuilder = require('../Config/queryBuilder');
+const ValidateAndSearch = require('../Config/searchValidation'); 
 
 /*
 1. get the query from request 
@@ -25,8 +26,11 @@ const NaturalSearch = async (req , res) => {
         // calling ai 
         const response = await GenerateContent( query , '0' ); 
 
+        // validate response 
+        const validatedResult = ValidateAndSearch( response ); 
+
         // build query 
-        const queryBuilds = QueryBuilder( response ); 
+        const queryBuilds = QueryBuilder( validatedResult ); 
 
         // find listing using his query 
         const listings = await Listing.find( queryBuilds )
@@ -39,6 +43,7 @@ const NaturalSearch = async (req , res) => {
             success : true , 
             message : "Natural Search Worked!" , 
             aiResponse : response , 
+            validated : validatedResult , 
             buildQuery : queryBuilds , 
             matchedListings : listings.length , 
             results : listings , 
