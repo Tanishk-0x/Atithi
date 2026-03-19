@@ -53,7 +53,7 @@ const listingSchema = new mongoose.Schema({
 
     ratings : {
         type : Number , 
-        min : 0 ,
+        min : 1 ,
         max : 5 ,
         default : 0
     },
