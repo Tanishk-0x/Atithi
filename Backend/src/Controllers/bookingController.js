@@ -1,16 +1,10 @@
 const Booking = require('../Models/bookingModel'); 
 const Listing = require('../Models/listingModel'); 
 const User = require('../Models/userModel'); 
-const SendMail = require('../Config/sendMail');
+const SendMail = require('../Services/sendMail');
 const { mongoose } = require('mongoose');
 
-/*
-1. create booking (status = pending)
-2. approve booking (status= approved), (passcode Generated), (email send), ( show in Upcoming HOST)
-3. checkIn - with passcode ( show in active booking )
-4. complete - delete the booking 
-*/
-
+// ---------- Create Booking ----------
 const createBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -54,14 +48,6 @@ const createBooking = async (req , res) => {
             }); 
         } 
 
-        // check for already booked or not?
-        // if(listing.isBooked){
-        //     res.status(400).json({
-        //         success : false , 
-        //         message : "Listing Already Booked"
-        //     }); 
-        // }
-
         // creating booking
         const booking = await Booking.create({
             checkIn ,
@@ -91,9 +77,6 @@ const createBooking = async (req , res) => {
         // mark the guest
         listing.guest = req.userId ; 
 
-        // mark as booked 
-        listing.isBooked = true ; 
-
         // save
         await listing.save(); 
 
@@ -112,8 +95,7 @@ const createBooking = async (req , res) => {
     }
 }
 
-// ------ Approve Booking (request) -------
-
+// ---------- Approve Booking ----------
 const GeneratePassCode = () => {
     return Math.floor(1000 + Math.random() * 9000); 
 }
@@ -163,12 +145,7 @@ const ApproveBooking = async (req , res) => {
     }
 }
 
-// -------- CheckIn Booking ----------
-/*
-1. take ID from params 
-2. find booking 
-3. update its status to [ongoing]
-*/
+// ---------- CheckIn Booking ----------
 const CheckInBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -216,7 +193,7 @@ const CheckInBooking = async (req , res) => {
     }
 }
 
-// ---------- Complete Booking -------------
+// ---------- Complete Booking ----------
 const CompleteBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -248,7 +225,7 @@ const CompleteBooking = async (req , res) => {
     }
 }
 
-// ----------- Reject Request ----------
+// ---------- Reject Request ----------
 const RejectBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -279,14 +256,7 @@ const RejectBooking = async (req , res) => {
     }
 }
 
-// ------- Get Bookings ---------
-/*
-1. Pending Request = (status: pending);
-2. Timeline = (status: approved); 
-3. Ongoing Booking = (status: ongoing); 
-
-*/
-
+// ---------- Get Bookings ----------
 const getBookingsData = async (req , res) => {
     try {
         // getting host'sId 
@@ -311,14 +281,13 @@ const getBookingsData = async (req , res) => {
             }); 
         }
 
-        // --------- Revenue Logic -------------
+        // ------- Revenue Logic -------
         /*
-        1. filter only this host and completed bookings 
-        2. group => { taking month from checkOut Date } + { calculate the totalrent Month-wise }
-        3. sort => { _id } => Jan-Feb-Mar-....
-        
-        4. mongoDb only gives the avialable month's revenue field.  for all months manually set it to 0 ( found => monthlyTotal , 0 )
-        5. return as response  
+            1. filter only this host and completed bookings 
+            2. group => { taking month from checkOut Date } + { calculate the totalrent Month-wise }
+            3. sort => { _id } => Jan-Feb-Mar-....
+            4. mongoDb only gives the avialable month's revenue field.  for all months manually set it to 0 ( found => monthlyTotal , 0 )
+            5. return as response  
         */
 
         const revenueStats = await Booking.aggregate([
@@ -347,7 +316,6 @@ const getBookingsData = async (req , res) => {
                 }
             }
 
-
         ]); 
 
         // manually mapping the empty months to 0 
@@ -371,8 +339,6 @@ const getBookingsData = async (req , res) => {
                 revenue : found ? parseInt(found.monthlyTotal) : 0 ,
             }
         }); 
-
-        // -------------------------------------
 
         // filter 
         const pending = bookings.filter(b => b.status === 'pending'); 
@@ -404,7 +370,7 @@ const getBookingsData = async (req , res) => {
     }
 }
 
-// ------------- Cancel Booking --------------
+// ---------- Cancel Booking ----------
 const CancelBooking = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -454,12 +420,12 @@ const CancelBooking = async (req , res) => {
 }
 
 
-// ------------ Get Busy Dates -------------
+// ---------- Get Busy Dates ----------
 /*
-1. Fetch Busy Dates
-2. Convert the dates in required format DatePicker  
-3. Exclude Booked Dates using DatePicker 
-4. Additional checks for safety to avoid overlap 
+    1. Fetch Busy Dates
+    2. Convert the dates in required format DatePicker  
+    3. Exclude Booked Dates using DatePicker 
+    4. Additional checks for safety to avoid overlap 
 */
 
 const FetchBusyDates = async (req , res) => {

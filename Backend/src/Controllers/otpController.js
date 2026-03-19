@@ -5,6 +5,7 @@ const GenerateOtp = () => {
     return Math.floor(1000 + Math.random() * 9000);
 }
 
+// ---------- Send Otp ----------
 const sendOtp = async (req , res) => {
     try {
         const {email} = req.body ; 

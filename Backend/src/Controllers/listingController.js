@@ -2,8 +2,9 @@ const uploadOnCloudinary = require('../Config/cloudinary');
 const Listing = require('../Models/listingModel'); 
 const User = require('../Models/userModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
-const getCordinates = require('../Config/geoCoding'); 
+const getCordinates = require('../Services/geoCoding'); 
 
+// ---------- Add Listing ----------
 const addListing = async (req , res) => {
     try {
         const host = req.userId ; 
@@ -53,8 +54,7 @@ const addListing = async (req , res) => {
     }
 }; 
 
-
-
+// ---------- Get Listings(through pagination) ----------
 const getListing = async (req , res) => {
     try {
         // taking page & limit from query 
@@ -91,6 +91,8 @@ const getListing = async (req , res) => {
     }
 }
 
+
+// ---------- Find Listing (ViewCard) ----------
 const findListing = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -103,11 +105,11 @@ const findListing = async (req , res) => {
             });
         }
 
+        // call to fetch lat and lon
         const response = await getCordinates(listing.landmark , listing.city); 
 
         listing.viewCount = listing.viewCount + 1 ; 
         await listing.save();
-        
 
         return res.status(200).json({
             success : true , 
@@ -126,6 +128,7 @@ const findListing = async (req , res) => {
     }
 }
 
+// ---------- Update Listing ----------
 const updateListing = async (req , res) => {
     try {
         let image1 ; 
@@ -173,6 +176,7 @@ const updateListing = async (req , res) => {
     }
 }
 
+// ---------- Delete Listing ----------
 const deleteListing = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -202,38 +206,7 @@ const deleteListing = async (req , res) => {
     }
 }
 
-const rateListing = async (req , res) => {
-    try {
-       const {id}= req.params ; 
-       const {ratings} = req.body ; 
-       const listing = await Listing.findById(id); 
-       
-       if(!listing){
-            return res.status(404).json({
-                success : false , 
-                message : "Listing Not Found"
-            }); 
-       }
-
-        // Update Listing 
-       listing.ratings = Number(ratings);
-       await listing.save();  
-
-       return res.status(200).json({
-            success : true , 
-            message : "Thanks For Your FeedBack" , 
-            ratings : listing.ratings  
-       }); 
-    }
-    
-    catch (error) {
-        return res.status(500).json({
-            success : false , 
-            message : `An Error Occured While Rating Listing ${error}`
-        })    
-    }
-}
-
+// ---------- Search Listing ----------
 const searchListing = async (req , res) => {
     try {
         const { query } = req.query ; 
@@ -268,6 +241,7 @@ const searchListing = async (req , res) => {
     }
 }
 
+// ---------- Generate Description ----------
 const GenerateDescription = async (req , res) => {
     try {
         const { searchquery } = req.body ; 
@@ -281,6 +255,7 @@ const GenerateDescription = async (req , res) => {
             })
         }
 
+        // calling ai
         const response = await GenerateContent( searchQuery , '1' ); 
 
         return res.status(200).json({
@@ -298,4 +273,4 @@ const GenerateDescription = async (req , res) => {
     }
 }
 
-module.exports = {addListing , getListing , findListing , updateListing , deleteListing , rateListing , searchListing , GenerateDescription} ; 
+module.exports = {addListing , getListing , findListing , updateListing , deleteListing , searchListing , GenerateDescription} ; 

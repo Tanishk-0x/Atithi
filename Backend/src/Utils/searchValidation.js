@@ -1,4 +1,5 @@
 
+// ---------- Search Validation ----------
 const ValidateAndSearch = ( AiOutput ) => {
     
     // Check for structure (JSON Parsing)
@@ -25,7 +26,7 @@ const ValidateAndSearch = ( AiOutput ) => {
         : [] 
     }; 
 
-    // 3. logical fail safe 
+    // logical fail safe 
     if( cleanData.maxPrice && cleanData.maxPrice < 0 ){
         cleanData.maxPrice = null ; 
     }

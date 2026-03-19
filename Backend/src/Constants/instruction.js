@@ -12,7 +12,7 @@ const Instructions = {
         "category": "rooms" | "villa" | "farm house" | "pool house" | "shops" | "cabin" | "pg" | "flat" | null,
         "amenities": String[]
         }
-
+        
         ### ALLOWED AMENITIES LIST:
         ["WiFi", "AC", "Geyser", "PowerBackup", "RO Water", "Parking", "CCTV", "Lift", "Induction", "Microwave", "Washing Machine", "Iron", "FirstAidKit", "EvCharger", "Balcony", "Electric Kettle", "Dedicated Workspace", "Fridge", "Full-Length Mirror", "Wardrobe", "Kitchen Utensils"]
 
@@ -49,7 +49,8 @@ const Instructions = {
         [INSERT_USER_QUERY_HERE]
     ` , 
 
-    DescriptionGeneration : ` Now you act as a proffesional indian ascent description generator for property 
+    DescriptionGeneration : `
+        Now you act as a proffesional indian ascent description generator for property 
         we provide you the details of the property like : title , rent , city , landmark , amenities 
         and you have to generate the description in maximum 400 words only 
         also give description in easy to engage not a difficult english 

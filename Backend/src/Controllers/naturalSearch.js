@@ -1,17 +1,18 @@
 const Listing = require('../Models/listingModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
-const QueryBuilder = require('../Config/queryBuilder');
-const ValidateAndSearch = require('../Config/searchValidation'); 
+const QueryBuilder = require('../Utils/queryBuilder');
+const ValidateAndSearch = require('../Utils/searchValidation'); 
 
 /*
-1. get the query from request 
-2. send the query to Groq(ai) to parse and extract useful info
-3. now send the aiResponse to Query-Builder to built dynamic query 
-4. using that query -> Query the database 
-5. sort them accordingly 
+    1. get the query from request 
+    2. send the query to Groq(ai) to parse and extract useful info
+    3. validate the ai response 
+    4. now send the validated response to queryBuilder to build Query  
+    4. using that query -> Query the database 
+    5. sort them accordingly 
 */
 
-
+// ---------- Natural Search ----------
 const NaturalSearch = async (req , res) => {
     try {
         const { query } = req.query ; 

@@ -5,9 +5,7 @@ const {addReview , getReviews , FetchReviews} = require('../Controllers/reviewCo
 const SummarizeReviews = require('../Controllers/reviewSummarize');
 
 router.post('/addreview/:id' , isAuth , addReview ); 
-
 router.get('/getreviews/:id' , getReviews); 
-
 router.get('/fetchreviews' , isAuth , FetchReviews); 
 
 router.get('/summarize/:id' , SummarizeReviews); 

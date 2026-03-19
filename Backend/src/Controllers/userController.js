@@ -1,23 +1,24 @@
 const User = require('../Models/userModel'); 
 
+// ---------- Get Current User Date ----------
 const getCurrentUser = async (req , res) => {
     try {
         const user = await User.findById(req.userId).select('-password')
         // updating populate 
-            .populate('listing')
-            .populate({
-                path: 'booking' , 
-                populate : [
-                    { 
-                        path: 'listing' ,
-                        select : 'title landmark city rent image1 image2 image3 isBooked ratings'
-                    },
-                    {
-                        path: 'host' , 
-                        select : 'name email phone'
-                    }
-                ]
-            });
+        .populate('listing')
+        .populate({
+            path: 'booking' , 
+            populate : [
+                { 
+                    path: 'listing' ,
+                    select : 'title landmark city rent image1 image2 image3 isBooked ratings'
+                },
+                {
+                    path: 'host' , 
+                    select : 'name email phone'
+                }
+            ]
+        });
         
         if(!user){
             res.status(400).json({
@@ -41,6 +42,7 @@ const getCurrentUser = async (req , res) => {
     }
 }
 
+// ---------- Add Phone ----------
 const AddPhone = async (req , res) => {
     try {
         const phone = req.body.phone ; 

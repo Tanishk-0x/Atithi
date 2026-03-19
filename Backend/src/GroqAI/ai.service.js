@@ -1,10 +1,11 @@
 const Groq = require('groq-sdk'); 
-const Instructions = require('../Config/instruction'); 
+const Instructions = require('../Constants/instruction'); 
 
 const groq = new Groq({
     apiKey : process.env.GROQ_API_KEY 
 });
 
+// setting the instruction based on requirement 
 const SetSystemInstruction = async (flag) => {
     let system ;
     if( flag === '0'){

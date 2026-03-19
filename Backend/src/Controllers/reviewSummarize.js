@@ -1,6 +1,7 @@
 const Review = require('../Models/reviewModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
 
+// ---------- Summarize Reviews ----------
 const SummarizeReviews = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -11,6 +12,7 @@ const SummarizeReviews = async (req , res) => {
 
         const reviewString = JSON.stringify(reviews);  
 
+        // calling ai 
         const Summmarized = await GenerateContent( reviewString , '2' ); 
 
         return res.status(200).json({

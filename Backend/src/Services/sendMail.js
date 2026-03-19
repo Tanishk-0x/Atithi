@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer'); 
 require('dotenv').config(); 
 
+// ---------- Send Mail ----------
 const SendMail = async (email , passcode) => {
+
     // create a transport (gmail smtp configuration)
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com' , 

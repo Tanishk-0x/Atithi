@@ -85,10 +85,6 @@ const listingSchema = new mongoose.Schema({
         default : 0 
     }, 
 
-    isBooked : {
-        type : Boolean , 
-        default : false 
-    }
 
 }, {timestamps:true}); 
 

@@ -1,6 +1,6 @@
 const User = require('../Models/userModel');
 const bcrypt = require('bcrypt');
-const GenerateToken = require('../Config/token');
+const GenerateToken = require('../Utils/token');
 const Otp = require('../Models/otpModel'); 
 
 const Signup = async (req , res) => {
@@ -17,7 +17,6 @@ const Signup = async (req , res) => {
                 message : "Invalid or Expired Otp"
             }); 
         }
-
 
         if(userExist){
             return res.status(400).json({

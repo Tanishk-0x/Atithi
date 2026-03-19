@@ -1,19 +1,19 @@
 const Review = require('../Models/reviewModel'); 
 const Listing = require('../Models/listingModel'); 
 
-
+// ---------- Add Review ----------
 const addReview = async (req , res) => {
     try {
         const {id} = req.params ; 
-       const feedback = req.body.feedback ; 
-       const rating = Number(req.body.rating);
+        const feedback = req.body.feedback ; 
+        const rating = Number(req.body.rating);
        
-       if( !feedback || !rating ){
+        if( !feedback || !rating ){
             return res.status(404).json({
                 success : false , 
                 message : "Feedback And Rating Can't Be Empty!"
             }); 
-       }
+        }
 
         const listing = await Listing.findById(id); 
         
@@ -42,6 +42,7 @@ const addReview = async (req , res) => {
         const newCount = oldCount + 1 ; 
         const newAverage = ((oldRating * oldCount) + rating) / newCount ; 
 
+        // Save rating to listing model 
         listing.ratings = Number(newAverage.toFixed(1)); 
 
         // pushing review's id into listing model 
@@ -63,6 +64,7 @@ const addReview = async (req , res) => {
     }
 }
 
+// ---------- Get Reviews ----------
 const getReviews = async (req , res) => {
     try {
         const {id} = req.params ; 
@@ -93,6 +95,7 @@ const getReviews = async (req , res) => {
     }
 }
 
+// ---------- Fetch Reviews ----------
 const FetchReviews = async (req , res) => {
     try {
         const user = req.userId ; 
