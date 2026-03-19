@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { listingDataContext } from '../Context/ListingContext';
 import { userDataContext } from '../Context/UserContext';
@@ -7,11 +6,8 @@ import { RxCross2 } from "react-icons/rx";
 import axios from 'axios';
 import { authDataContext } from '../Context/AuthContext';
 import {toast} from 'react-hot-toast'
-import { IoStar } from "react-icons/io5";
 import { bookingDataContext } from '../Context/BookingContext';
 import { GiConfirmed } from "react-icons/gi";
-import { FaWhatsapp } from "react-icons/fa";
-import { GoDotFill } from "react-icons/go";
 import { IoPeopleSharp } from "react-icons/io5";
 import { IoSadOutline } from "react-icons/io5";
 import { FaRegFaceSadTear } from "react-icons/fa6";
@@ -21,9 +17,7 @@ import { PiSparkleLight } from "react-icons/pi";
 import { IoIosStar } from "react-icons/io";
 import Loader from '../Components/Loader'; 
 import { HiOutlineEmojiHappy } from "react-icons/hi";
-
-
-
+// ---------- Date Picker -----------
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { reviewDataContext } from '../Context/reviewContext';
@@ -72,14 +66,15 @@ const ViewCard = () => {
     booking , 
   } = useContext(bookingDataContext) ; 
 
-  // Handle Minimum Date To Choose 
+
+  // ----- Handle Minimum Date To Choose -----
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0] ; 
     setMinDate(today); // min={minDate}
   },[]);
 
 
-  // Handle TotalRent 
+  // ---------- Handle TotalRent ------------
   useEffect(() => {
 
     if(checkIn && checkOut){
@@ -104,6 +99,7 @@ const ViewCard = () => {
   },[checkIn , checkOut , cardDetails.rent , total]);
   
 
+  // ----------- Update Listing -------------
   const HandleUpdateListing = async () => {
         setUpdating(true);
         try { 
@@ -151,24 +147,25 @@ const ViewCard = () => {
     setBackEndImage1(file);
   }
 
+  // Image Handlers
   const handleImage2 = (e) => {
     let file = e.target.files[0]; 
     setBackEndImage2(file);
   }
 
+  // Image Handlers
   const handleImage3 = (e) => {
     let file = e.target.files[0]; 
     setBackEndImage3(file);
   }
 
-  // Delete Listing
+  // ------------ Delete Listing ------------
   const HandleDeleteListing = async () => {
     setDeleting(true); 
     try {
       const res = await axios.delete(serverUrl + `/listing/deletelistingbyid/${cardDetails._id}` , 
         {withCredentials : true}
       ); 
-      console.log(res.data); 
       toast.success(res.data.message); 
       setDeleting(false); 
       navigate('/'); 
@@ -181,7 +178,7 @@ const ViewCard = () => {
     }
   }
 
-  // Handle Whatsapp Connect 
+  // ----------- Handle Whatsapp Connect ------------
   const HandleWhatsappConnect = (phone , title) => {
     const phoneno = Number(phone); 
     // create message , embeded url , redirect 
@@ -197,9 +194,11 @@ const ViewCard = () => {
   const [endDate , setEndDate] = useState(null); 
   const [bookedIntervals , setBookedIntervals] = useState([]); 
 
+
+  // ---------- Handle Booked Dates -------------
     useEffect(() => {
 
-      // function to fetch dates 
+      // ----- function to fetch dates -----
       const fetchBusyDates = async () => {
         const res = await axios.get(serverUrl + 
            `/booking/fetchdates/${cardDetails._id}`); 
@@ -217,12 +216,12 @@ const ViewCard = () => {
     }, [cardDetails._id]); 
 
 
-  // --------- Handle FetchReviews ----------- 
+  // ---------- Handle Fetch-Reviews ------------ 
   useEffect(() => {
     HandleGetReviews(cardDetails._id); 
   },[]); 
 
-  // -----------------------------------------
+  // --------------------------------------------
 
   return (
 
@@ -313,6 +312,7 @@ const ViewCard = () => {
 
           </div>
 
+          {/* ------------ Map Embedded ----------- */}
           <div className='bg-[#FAF9F6] w-[98%] h-60 md:h-[95%] md:w-[50%] flex shadow-sm shadow-gray-400 rounded-lg  items-center justify-center'>
             <iframe 
               src={mapUrl}
@@ -364,6 +364,7 @@ const ViewCard = () => {
 
           <div className='w-full md:h-[98%] md:w-[50%]'>
             
+            {/* ----------- For Guest -------------- */}
             {
               cardDetails.host?._id !== userData._id ? 
               (
@@ -377,6 +378,7 @@ const ViewCard = () => {
                   </button>
                 </div>
               ) : 
+              // ------------- For Host ----------------
               (
                 <div className='w-full flex items-center justify-center flex-row gap-3'>
                   <button onClick={() => setShowUpdatePopUp(true)} className='bg-[red] w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-red-600 border border-gray-800'>
@@ -438,16 +440,13 @@ const ViewCard = () => {
                   No reviews!
                 </div>
               }
-  
 
             </div>
-
 
           </div>
         </div>
 
-        {/* Update Listing PopUp */}
-        
+        {/* --------- Update Listing PopUp ----------- */}
         {
           showUpdatePopUp && 
           
@@ -515,7 +514,7 @@ const ViewCard = () => {
                     { updating ? 'Updating' : 'Update Listing' }
                   </button>
                   
-                  {/* Delete */}
+                  {/* ----- Delete ----- */}
                   <button onClick={HandleDeleteListing} className='px-5 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer mt-2 md:text-[18px] text-nowrap' >
                     { deleting ? 'Deleting' : 'Delete Listing' }
                   </button>
@@ -527,7 +526,7 @@ const ViewCard = () => {
         }
 
 
-        {/* Booking PopUp */}
+        {/* --------- Booking PopUp ------------ */}
 
        { showBookingPopUp &&
 
@@ -554,6 +553,7 @@ const ViewCard = () => {
                 <div className='w-[90%] flex items-center justify-center flex-col gap-1 md:gap-2 md:justify-center md:flex-col md:items-center mt-1 md:mt-2  ' >
                   <label className='text-[18px] md:text-[20px]'> Select Dates </label>
                   
+                  {/* ------ Exclude Dates Using DatePicker ------ */}
                   <DatePicker 
                     selectsRange={true}
                     startDate={startDate}
@@ -670,7 +670,7 @@ const ViewCard = () => {
       }
 
 
-      {/* // --------- Review PopUp --------------- */}
+      {/* ------------ Review PopUp -------------- */}
       { showReviewPopUp && 
           <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[400px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
                 
@@ -727,7 +727,7 @@ const ViewCard = () => {
         </div>
       }
 
-      {/* // --------- Review Summarize PopUp ---------- */}
+      {/* --------- Review Summarize PopUp ---------- */}
       { showSummarizePopUp && 
           <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[500px] w-[90%] md:w-[500px] flex items-center justify-start  flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50 overflow-y-auto'>
                 
@@ -791,8 +791,6 @@ const ViewCard = () => {
             <button onClick={() => SummarizeReviews(cardDetails._id)} className='bg-[red] mb-4 mt-2 w-[90%] py-3 rounded-lg cursor-pointer text-[white] font-semibold hover:bg-red-600 text-center flex justify-center items-center'>
               { isSummarizing ? <Loader /> : 'Summarize with AI' }
             </button>
-
-        
 
         </div>
       }            

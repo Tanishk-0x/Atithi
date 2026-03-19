@@ -12,7 +12,6 @@ import { Navigate } from 'react-router-dom'
 import MyListing from './Pages/MyListing'
 import ViewCard from './Pages/ViewCard'
 import MyBooking from './Pages/MyBooking'
-import Booked from './Pages/Booked'
 import HostDashboard from './Pages/HostDashboard'
 import WaitingPage from './Pages/WaitingPage'
 import BookingConfirm from './Pages/BookingConfirm'
@@ -33,14 +32,12 @@ const App = () => {
         <Route path='/mylisting' element={ userData != null ? <MyListing/> : <Navigate to={'/'}/>}/>
         <Route path='/viewcard' element={userData != null ? <ViewCard/> : <Navigate to={'/'}/>}/>
         <Route path='/mybooking' element={userData != null ? <MyBooking/> : <Navigate to={'/'}/>}/>
-        <Route path='/booked' element={userData != null ? <Booked/> : <Navigate to={'/'}/>}/>
 
-        <Route path='/hostdashboard' element={<HostDashboard/>}/>
-        <Route path='/waiting' element={<WaitingPage/>} />
+        <Route path='/hostdashboard' element={userData != null ? <HostDashboard/> : <Navigate to={'/'}/>}/>
+        <Route path='/waiting' element={userData != null ? <WaitingPage/> : <Navigate to={'/'}/>} />
 
         // Dynamic Routing 
-        <Route path='/confirm/:id' element={<BookingConfirm/>} />
-        
+        <Route path='/confirm/:id' element={userData != null ? <BookingConfirm/> : <Navigate to={'/'}/>} />
       </Routes>
 
       <Toaster/>

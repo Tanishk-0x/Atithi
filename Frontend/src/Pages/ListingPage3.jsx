@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { listingDataContext } from '../Context/ListingContext';
 import { RxCross2 } from "react-icons/rx";
@@ -19,18 +18,15 @@ const ListingPage3 = () => {
     const { userData , getUserDetails } = useContext(userDataContext); 
 
     const {
-        title,setTitle , 
-        description,setDescription , 
-        rent,setRent , 
-        city,setCity , 
-        landmark,setLandmark , 
-        category,setCategory , 
-        frontEndImage1,setFrontEndImage1 , 
-        frontEndImage2,setFrontEndImage2 , 
-        frontEndImage3,setFrontEndImage3 , 
-        backEndImage1,setBackEndImage1 , 
-        backEndImage2,setBackEndImage2 , 
-        backEndImage3,setBackEndImage3 , 
+        title, 
+        description,
+        rent,
+        city, 
+        landmark,
+        category, 
+        frontEndImage1, 
+        frontEndImage2, 
+        frontEndImage3, 
         adding ,
         amenities , 
         HandleAddListing ,
@@ -42,6 +38,7 @@ const ListingPage3 = () => {
     const [phone , setPhone] = useState(''); 
     const [validating , setValidating] = useState(false);  
 
+    // --------- Check Phone Validation ----------
     const addListing = () => {
         if( userData.phone ){
             HandleAddListing(); 
@@ -52,7 +49,7 @@ const ListingPage3 = () => {
         }
     }
 
-    
+    // ---------- Add Phone No ----------
     const updatePhone = async () => {
         try {
             setValidating(true); 
@@ -211,7 +208,7 @@ const ListingPage3 = () => {
         </div>
         
 
-        {/* ----- Phone PopUp ----- */}
+        {/* ----------- Phone PopUp ------------ */}
         { showPopUp && 
             <div className='fixed inset-0 z-100 flex items-center justify-center bg-black/30 backdrop-blur-md'>
                 <div className='bg-gray-200 h-[250px] w-[90%] md:w-[500px] border-2 border-gray-400 flex justify-center px-8 flex-col gap-4 rounded-2xl relative shadow-2xl'>

@@ -3,8 +3,7 @@ import axios from 'axios';
 import { authDataContext } from '../Context/AuthContext'; 
 import toast from 'react-hot-toast'; 
 
-
-// creating context
+// Creating context
 export const reviewDataContext = createContext(); 
 
 const ReviewContext = ({children}) => {
@@ -19,6 +18,7 @@ const ReviewContext = ({children}) => {
     const [summarized , setSummarized] = useState({}); 
     const [isSummarizing , setIsSummarizing] = useState(false); 
 
+    // ---------- Add Review ----------
     const HandleAddReview = async (id) => {
         if(isAddingReview){
             return ; 
@@ -29,8 +29,8 @@ const ReviewContext = ({children}) => {
                 { feedback , rating } , { withCredentials: true }
             );
 
-
             if(res.data.success){
+                setFeedback(" "); 
                 toast.success("Thanks For Your Feedback"); 
             }
         
@@ -46,6 +46,7 @@ const ReviewContext = ({children}) => {
         }
     }
 
+    // ---------- Get Reviews ----------
     const HandleGetReviews = async (id) => {
         try {
             const res = await axios.get(serverUrl + `/review/getreviews/${id}` , 
@@ -54,8 +55,7 @@ const ReviewContext = ({children}) => {
 
             if(res.data.success){
                 toast.success("Reviews Fetched"); 
-                setReviews(res.data.reviews); 
-                console.log("REVIEWS : " , res.data.reviews); 
+                setReviews(res.data.reviews);  
             }
         }
         
@@ -65,7 +65,7 @@ const ReviewContext = ({children}) => {
         }
     }
 
-
+    // ---------- Fetch Reviews ----------
     const FetchReviews = async () => {
         try {
             const res = await axios.get(serverUrl + '/review/fetchreviews' , 
@@ -84,6 +84,8 @@ const ReviewContext = ({children}) => {
         }
     }
 
+
+    // ---------- Summarize Reviews ------------
     const SummarizeReviews = async (id) => {
         if(isSummarizing){
             return ; 
@@ -96,7 +98,6 @@ const ReviewContext = ({children}) => {
             if(res.data.success){
                 toast.success("Reviews Summarized!"); 
                 setSummarized(res.data?.summmarized); 
-                console.log("Summarized: " , res.data?.summarized); 
             }
             setIsSummarizing(false); 
         }

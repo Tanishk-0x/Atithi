@@ -6,7 +6,7 @@ import { listingDataContext } from './ListingContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-// 1.Create Context
+// Create Context
 export const bookingDataContext = createContext(); 
 
 const BookingContext = ({children}) => {
@@ -26,10 +26,14 @@ const BookingContext = ({children}) => {
 
     const [isCancelling , setIsCancelling] = useState(false); 
 
-    // Handle Booking 
+    // --------- Handle Booking ----------
     const HandleBooking = async (id) => {
-        setBooking(true); 
+        if(booking){
+            return ; 
+        }
+         
         try {
+            setBooking(true);
             const res = await axios.post(serverUrl + `/booking/create/${id}` , 
                 {checkIn , checkOut , totalRent:total} ,
                 {withCredentials : true}
@@ -38,7 +42,6 @@ const BookingContext = ({children}) => {
             await getListings() ; 
             setBookingData(res.data.booking);
             toast.success(res.data.message);
-            console.log(res.data); 
             setBooking(false); 
             if(res.data.success){
                 navigate('/waiting');
@@ -54,7 +57,7 @@ const BookingContext = ({children}) => {
     }
 
 
-    // Cancel Booking 
+    // --------- Cancel Booking ----------
     const CancelBooking = async (id) => {
         if(isCancelling){
             return ; 
@@ -101,7 +104,7 @@ const BookingContext = ({children}) => {
 
     return (
         <div>
-        {/* // 2.Providing the context / passing the value */}
+        {/* Providing the context / passing the value */}
         <bookingDataContext.Provider value={value}>
             {children}
         </bookingDataContext.Provider>

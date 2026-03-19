@@ -12,7 +12,7 @@ const Signup = () => {
 
   // Consume the value 
   const {serverUrl} = useContext(authDataContext) ; 
-  const {userData , setUserData} = useContext(userDataContext) ;
+  const { setUserData } = useContext(userDataContext) ;
 
   const navigate = useNavigate() ; 
 
@@ -28,6 +28,7 @@ const Signup = () => {
   const [isVerifying , setIsVerifying] = useState(false); 
   const [isVerified , setIsVerified] = useState(false); 
 
+  // ------------ Send Otp ---------------
   const SendOtp = async (e) => {
     if(sending){
       return ; 
@@ -65,6 +66,7 @@ const Signup = () => {
     }
   }
 
+  // ----------- Signup Handler ------------
   const SignupHandler = async (e) => {
     e.preventDefault(); 
     if(!isVerified){

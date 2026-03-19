@@ -1,4 +1,4 @@
-import React, { useState , useContext, useEffect } from 'react'
+import React, { useState , useContext } from 'react'
 import logo from '/Airbnb-Logo.png'
 import { FiSearch } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -25,11 +25,10 @@ const Navbar = () => {
     const {serverUrl} = useContext(authDataContext); 
     const {userData , setUserData} = useContext(userDataContext);
     
-    
     const {
-        listingData , setListingData , 
-        newListingData , setNewListingData , 
-        searchData , setSearchData ,
+        listingData ,  
+        setNewListingData , 
+        searchData ,
         HandleSearch ,  
         HandleViewCard
     } = useContext(listingDataContext); 
@@ -39,9 +38,7 @@ const Navbar = () => {
     const [showPopUp , setShowPopUp] = useState(false) ; 
     const [loading , setLoading] = useState(false) ; 
 
-    // Search 
-    const [searchInput , setSearchInput] = useState(''); 
-
+    // ---------- LogOut Handler ----------
     const LogoutHandler = async () => {
         try {
             setLoading(true); 
@@ -52,13 +49,14 @@ const Navbar = () => {
         }
         catch (error) {
             console.log(error) ;
+            setLoading(false); 
         }
         finally{
             setLoading(false); 
         }
     }
 
-    // Category Handler 
+    // ---------- Category Handler ----------
     const HandleCategory = (category) => {
         setCate(category);
 
@@ -70,7 +68,7 @@ const Navbar = () => {
         }
     }
 
-    // ----- Debouncing for search -----
+    // ---------- Debouncing for search ----------
     function Debounce( fn , delay ){
         let timerId ; 
         return function(...args){
@@ -88,10 +86,10 @@ const Navbar = () => {
     // To open the card based on search 
       const HandleClick = (id) => {
         if(userData){
-        HandleViewCard(id);
+            HandleViewCard(id);
         }
         else{
-        navigate('/login');
+            navigate('/login');
         }
     }
 
@@ -147,7 +145,7 @@ const Navbar = () => {
 
                 </div>
 
-                {/* // Search Section  */}
+                {/* Search Section  */}
                 { searchData?.length > 0 && 
                     <div className='w-screen h-[450px] flex flex-col gap-5 absolute top-[50%] overflow-auto left-0 justify-start items-center'>
                         <div className='max-w-[700px] w-screen h-[300px] overflow-hidden flex flex-col bg-[#fefdfd] p-5 rounded-lg border border-[#a2a1a1] cursor-pointer'>

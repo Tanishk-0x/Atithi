@@ -1,4 +1,3 @@
-import React from 'react'
 import { IoLogoInstagram } from "react-icons/io";
 import { SlSocialTwitter, SlSocialFacebook, SlSocialLinkedin } from "react-icons/sl";
 
@@ -7,7 +6,6 @@ const Footer = () => {
   return (
 
     <footer className="w-full bg-white border-t border-gray-200 py-2 md:py-0">
-      
       <div className="max-w-[1275px] mx-auto px-4 md:h-[90px] flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
 
         <div className="flex flex-col items-center md:items-start order-2 md:order-1">

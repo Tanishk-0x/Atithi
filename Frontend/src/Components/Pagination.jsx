@@ -3,7 +3,6 @@ import { listingDataContext } from '../Context/ListingContext'
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 
-
 const Pagination = () => {
 
     const {

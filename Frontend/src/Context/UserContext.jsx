@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import {authDataContext} from './AuthContext'; 
 import axios from 'axios';
 
+// Creating context
 export const userDataContext = createContext() ;
 
 const UserContext = ({children}) => {
@@ -10,20 +11,21 @@ const UserContext = ({children}) => {
 
     const [userData , setUserData] = useState(null) ; 
 
+    // ---------- Get User Detail -----------
     const getUserDetails = async () => {
-        try {
-            const res = await axios.get(serverUrl + "/user/getuser" 
-                , {withCredentials:true});
-            setUserData(res.data.user);
-            console.log(res.data.user);
-        }
+      try {
+        const res = await axios.get(serverUrl + "/user/getuser" 
+          , {withCredentials:true});
+        setUserData(res.data.user);
+      }
 
-        catch (error) {
-           setUserData(null); 
-           console.log(error); 
-        }
+      catch (error) {
+        setUserData(null); 
+        console.log(error); 
+      }
     }
 
+    // ------ UseEffect -------
     useEffect(() => {
         getUserDetails() ; 
     },[]);

@@ -1,4 +1,4 @@
-import React, { createContext, use, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import {authDataContext} from '../Context/AuthContext'
 import axios from 'axios'
 import toast from 'react-hot-toast'; 
@@ -35,8 +35,6 @@ const ListingContext = ({children}) => {
     const [listingData , setListingData] = useState([]); 
     const [newListingData , setNewListingData] = useState([]);
     const [cardDetails , setCardDetails] = useState(null); 
-    const [lat , setLat] = useState(''); 
-    const [lng , setLng] = useState(''); 
     const [mapUrl , setMapUrl] = useState(''); 
 
     const [page , setPage] = useState(1);
@@ -46,10 +44,11 @@ const ListingContext = ({children}) => {
     const [searchData , setSearchData] = useState([]); 
 
     const [adding , setAdding] = useState(false); 
-    const[loading , setLoading] = useState(false);
+    const [loading , setLoading] = useState(false);
     const [updating , setUpdating] = useState(false); 
     const [deleting , setDeleting] = useState(false); 
 
+    // ---------- Add Listing -----------
     const HandleAddListing = async () => {
         try {
             // Formdata
@@ -79,7 +78,6 @@ const ListingContext = ({children}) => {
             const res = await axios.post(serverUrl + "/listing/add" , 
                 formData , {withCredentials : true}
             ); 
-            console.log(res); 
 
             setTitle(""); 
             setDescription(""); 
@@ -101,11 +99,14 @@ const ListingContext = ({children}) => {
         }
 
         catch (error) {
+            toast.error("Error While Adding Listing!"); 
             console.log(error);
             setAdding(false);      
         }
     }
 
+    // ---------- Get Listing ----------
+    // Pagination 
     const getListings = async () => {
         try {
             setLoading(true); 
@@ -116,7 +117,6 @@ const ListingContext = ({children}) => {
             setNewListingData(res.data.listing); 
             setTotalPages(res.data.totalPages); 
             setLoading(false); 
-            console.log(res.data);  
         }
 
         catch (error) {
@@ -125,13 +125,13 @@ const ListingContext = ({children}) => {
         }
     }
 
+    // ---------- Find Listing ------------
     const HandleViewCard = async (id) => {
         try {
             const res = await axios.get(
                 serverUrl + `/listing/findlistingbyid/${id}` , 
                 {withCredentials:true}
             );
-            console.log(res.data); 
             setCardDetails(res.data.listing);
 
             if(res.data.lat && res.data.lon){
@@ -145,11 +145,12 @@ const ListingContext = ({children}) => {
         }
         
         catch (error) {
-            console.log(error);     
+            console.log(error);  
+            toast.error("Error While Fetching Listing");    
         }
     }
 
-    // Handle Search 
+    // ---------- Handle Search ----------
     const HandleSearch = async (data) => {
         try {
             const res = await axios.get(serverUrl + 
@@ -164,9 +165,11 @@ const ListingContext = ({children}) => {
         }
     }
 
+    // ------ UseEffect ------
     useEffect(() => {
         getListings(); 
     },[adding , updating , deleting , page]);
+
 
     const value = {
         title,setTitle , 
@@ -203,7 +206,6 @@ const ListingContext = ({children}) => {
         HandleAddListing , 
         HandleViewCard ,
         HandleSearch , 
-         
     }; 
 
     return (

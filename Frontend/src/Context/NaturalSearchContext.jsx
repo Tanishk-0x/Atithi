@@ -4,7 +4,7 @@ import { createContext } from 'react'
 import {authDataContext} from './AuthContext'; 
 import toast from 'react-hot-toast'; 
 
-// creating context 
+// Creating context 
 export const SearchDataContext = createContext(); 
 
 const NaturalSearchContext = ({children}) => {
@@ -17,6 +17,7 @@ const NaturalSearchContext = ({children}) => {
 
     const {serverUrl} = useContext(authDataContext); 
 
+    // ---------- Natural Search ----------
     const HandleNaturalSearch = async (searchquery) => {
         if(isSearching){
             return ; 

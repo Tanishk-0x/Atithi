@@ -6,17 +6,18 @@ import toast from 'react-hot-toast';
 // create context 
 export const hostDataContext = createContext();
 
-
 const HostContext = ({children}) => {
 
     const { serverUrl } = useContext(authDataContext); 
 
+    // Loading 
     const [isApproving , setIsApproving] = useState(false); 
     const [isGettingData , setIsGettingData] = useState(false); 
     const [isCheckIn , setIsCheckIn] = useState(false); 
     const [isComplete , setIsComplete] = useState(false); 
     const [isReject , setIsReject] = useState(false); 
 
+    // Bookings 
     const [allBookings , setAllBookings] = useState([]); 
     const [pending , setPending] = useState([]); 
     const [approved , setApproved] = useState([]); 
@@ -28,6 +29,8 @@ const HostContext = ({children}) => {
     const [totalRevenue , setTotalRevenue] = useState(0); 
     const [totalBookings , setTotalBookings] = useState(0); 
 
+
+    // ---------- Get Host Data -----------
     // Host Dashboard Data ...
     const getHostData = async () => {
         try {
@@ -48,22 +51,20 @@ const HostContext = ({children}) => {
                 setTotalRevenue(res.data?.totalRevenue); 
                 setTotalBookings(res.data?.totalBookings); 
 
-                console.log("Stats:" , res.data?.revenueStats); 
             }
 
-            console.log("Dashboard Data: " , res.data);  
         }
         
         catch (error) {
             console.error("Fetch Error: " , error); 
-            toast.error("An Error While Approving!");
+            toast.error("An Error While Fetching Data!");
         }
         finally{
             setIsGettingData(false); 
         }
     }
 
-    // Approve Booking ... 
+    // --------- Approve Booking ----------
     const approveBooking = async (id) => {
         if(isApproving){
             return ; // to prevent double click 
@@ -90,7 +91,7 @@ const HostContext = ({children}) => {
         }
     }
 
-    // CheckIn ...
+    // ---------- CheckIn Booking ----------
     const CheckInBooking = async (id , passcode) => {
         if(isCheckIn){
             return ; 
@@ -119,7 +120,7 @@ const HostContext = ({children}) => {
         }
     }
 
-    // Complete ..
+    // --------- Complete Booking ----------
     const CompleteBooking = async (id) => {
         if(isComplete){
             return ; 
@@ -148,8 +149,7 @@ const HostContext = ({children}) => {
         }
     }
 
-
-    // Reject .. 
+    // --------- Reject Request ---------- 
     const RejectBooking = async (id) => {
         if(isReject){
             return ; 
@@ -178,7 +178,6 @@ const HostContext = ({children}) => {
             setIsReject(false); 
         }
     }
-
 
     let value = {
         getHostData ,

@@ -3,7 +3,6 @@ import React, { createContext } from 'react'
 // Create the context 
 export const authDataContext = createContext() ; 
 
-
 const AuthContext = ({children}) => {
 
     const serverUrl = "http://localhost:5000" ; 

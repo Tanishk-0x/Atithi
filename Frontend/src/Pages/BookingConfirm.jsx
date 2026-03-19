@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { GiConfirmed } from "react-icons/gi";
 import { IoMdArrowBack } from "react-icons/io";
-import pr2 from '/pr2.jpg';
 import { CiUser } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 import { PiBuildingOfficeLight } from "react-icons/pi";
@@ -18,7 +17,6 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import { userDataContext } from '../Context/UserContext';
 import { reviewDataContext } from '../Context/ReviewContext';
-import toast from 'react-hot-toast';
 import { FaWhatsapp } from "react-icons/fa";
 import { VscFeedback } from "react-icons/vsc";
 import { IoSadOutline } from "react-icons/io5";
@@ -26,12 +24,9 @@ import { FaRegFaceSadTear } from "react-icons/fa6";
 import { BsEmojiNeutral } from "react-icons/bs";
 import { IoHappyOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { isCancel } from 'axios';
 import { bookingDataContext } from '../Context/BookingContext';
 import { ImCancelCircle } from "react-icons/im";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
-
-
 
 const BookingConfirm = () => {
 
@@ -68,7 +63,6 @@ const BookingConfirm = () => {
 
     const SetImage = (path) => {
         setImagePath(path); 
-        toast.success("IMAGE SET"); 
     }
 
   return (
@@ -76,7 +70,6 @@ const BookingConfirm = () => {
     <div className='relative w-full h-auto md:h-screen flex flex-col items-center justify-start'>
 
         <div className='w-[90%] h-auto md:h-[12%] mt-4 relative px-3 flex justify-center items-center rounded-lg shadow-md shadow-gray-600 py-6 md:py-0'>
-
             <div className='hidden md:flex bg-red-500 cursor-pointer h-[50px] text-[24px] w-[50px] rounded-full absolute top-3 left-3 justify-center items-center'>
                 <IoMdArrowBack />
             </div>
@@ -245,7 +238,7 @@ const BookingConfirm = () => {
             </div>
         </div>
 
-        {/* // --------- Review PopUp --------------- */}
+        {/* ------------ Review PopUp ----------- */}
         { showReviewPopUp && 
             <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[400px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
                 

@@ -65,25 +65,27 @@ const ListingPage1 = () => {
       setFrontEndImage1(URL.createObjectURL(file));
     }
 
+    // Image Set Functions 
     const HandleImage2 = (e) => {
       let file = e.target.files[0] ; 
       setBackEndImage2(file) ; 
       setFrontEndImage2(URL.createObjectURL(file));
     }
 
+    // Image Set Functions 
     const HandleImage3 = (e) => {
       let file = e.target.files[0] ; 
       setBackEndImage3(file) ; 
       setFrontEndImage3(URL.createObjectURL(file));
     }
 
-    // Submit Handler 
+    // --------- Submit Handler ----------
     const SubmitHandler = (e) => {
       e.preventDefault() ; 
       navigate('/listingpage2')
     }
 
-    // Amenities Handler 
+    // ---------- Amenities Handler ----------
     const HandleAmenitiesChange = (e) => {
       const value = e.target.value ; 
 
@@ -91,7 +93,7 @@ const ListingPage1 = () => {
       setAmenities(amenitiesArray); 
     }
 
-    // Toggle Amenities 
+    // ---------- Toggle Amenities ----------
     const HandleAmenitiesToggle = (val) => {
       // amenities already includes then remove it
       if(amenities.includes(val)){
@@ -108,7 +110,8 @@ const ListingPage1 = () => {
     const [showPopUp , setShowPopUp] = useState(false); 
     const [point , setPoint] = useState(''); 
 
-    // Generate Description 
+
+    // ---------- Generate Description ----------
     const GenerateDescription = async () => {
       try {
 
@@ -123,8 +126,6 @@ const ListingPage1 = () => {
           { searchquery : data } , {withCredentials : true} 
         ); 
 
-        console.log("DATA IS ---> " , data); 
-        console.log("DESCRIPTIONS IS ---> " , res); 
         setDescriptions(res.data.desc); 
         toast.success("Description Generated"); 
         setShowPopUp(true); 
@@ -160,7 +161,7 @@ const ListingPage1 = () => {
                 <button className='cursor-pointer' onClick={() => navigate('/')}><FaArrowLeftLong /></button>
               </div>
 
-              <div onClick={() => { console.log("POINTS:" , points)}} className='w-[200px] h-[50px] text-[20px] bg-[#f14242] text-white flex items-center justify-center rounded-[30px] absolute top-[5%] right-2.5 shadow-lg cursor-pointer'>
+              <div className='w-[200px] h-[50px] text-[20px] bg-[#f14242] text-white flex items-center justify-center rounded-[30px] absolute top-[5%] right-2.5 shadow-lg cursor-pointer'>
                   SetUp Your Home
               </div>
 
@@ -182,6 +183,7 @@ const ListingPage1 = () => {
                   </button>
                 </div>
 
+                {/* ---------- Description PopUp ---------- */}
                 {
                   showPopUp && 
                   <div className='w-[90%] flex items-center justify-center flex-col gap-2'>
@@ -191,12 +193,14 @@ const ListingPage1 = () => {
                     }} className='bg-red-100 border-2 border-red-300 rounded-lg px-2 py-1 cursor-pointer hover:border-red-500'>
                       { descriptions.desc1 }
                     </div>
+
                     <div onClick={() => {
                       setDescription(descriptions.desc2) ; 
                       setShowPopUp(false); 
                     }} className='bg-red-100 border-2 border-red-300 rounded-lg px-2 py-1 cursor-pointer hover:border-red-500'>
                       { descriptions.desc2 }
                     </div>
+
                     <div onClick={() => {
                       setDescription(descriptions.desc3) ; 
                       setShowPopUp(false); 
@@ -245,11 +249,11 @@ const ListingPage1 = () => {
                 <input type="text" onChange={(e) => setLandmark(e.target.value)} value={landmark} placeholder='landmark' id='landmark' required className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
               </div>
 
-              {/* // --------- Amenities ---------- */}
+              {/* ----------- Amenities ------------ */}
               <div className='w-[90%] flex items-start justify-start flex-col gap-2.5' >
                 <label htmlFor="amenities" className='text-[20px]'>Amenities</label>
 
-                {/* // ------ Toggle Amenities ---- */}
+                {/* ---------- Toggle Amenities ---------- */}
                 <div className='w-[90%] min-h-[120px] max-h-[150px] flex flex-wrap gap-2 overflow-y-auto'>
                   {
                     AmenitiesData.map((item) => (
@@ -284,12 +288,12 @@ const ListingPage1 = () => {
                 <input
                   onChange={(e) => setPoint(e.target.value)}
                   onKeyDown={HandleKeyDown}
-                  type="text" value={point} placeholder='rules' id='points' className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' 
+                  type="text" value={point} placeholder='Add rules, hit enter to add ' id='points' className='w-[90%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' 
                 />
 
               </div>
 
-              {/* // -------- Max Guest Allowed ---------- */}
+              {/* ---------- Max Guest Allowed ------------ */}
               <div className='w-[90%] flex items-start justify-start flex-col gap-2.5' >
                 <label htmlFor="landmark" className='text-[20px]'>Max Guest Allowed</label>
                 

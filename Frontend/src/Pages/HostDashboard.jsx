@@ -45,33 +45,17 @@ const HostDashboard = () => {
         totalRevenue , 
         totalBookings ,
     } = useContext(hostDataContext); 
-
-
-    // ---- Dummy Data For Chart ----
-    const data = [
-        { month: 'Jan' , value: 12000} ,
-        { month: 'Feb' , value: 6000} ,
-        { month: 'Mar' , value: 8000} , 
-        { month: 'Apr' , value: 13000} , 
-        { month: 'May' , value: 15000} , 
-        { month: 'Jun' , value: 18000} , 
-        { month: 'Jul' , value: 4000} , 
-        { month: 'Aug' , value: 5000} , 
-        { month: 'Sep' , value: 6000} , 
-        { month: 'Oct' , value: 8000} , 
-        { month: 'Nov' , value: 8000} , 
-        { month: 'Dec' , value: 4000} , 
-    ]; 
-
+    
     const [status , setStatus] = useState('all'); 
 
     const [showPopUp , setShowPopUp] = useState(false); 
     const [showManagePopUp , setShowManagePopUp] = useState(false); 
 
-    // ------ CheckIn ---------
+    // ---------- CheckIn -----------
     const [ bookingId , setBookingId ] = useState(''); 
     const [ passCode , setPassCode ] = useState(''); 
 
+    // ----- UseEffect ------
     useEffect(() => {
         getHostData(); 
         FetchReviews(); 
@@ -82,10 +66,12 @@ const HostDashboard = () => {
 
     <div className="md:h-screen h-auto w-full flex flex-col items-center gap-1 relative overflow-x-hidden">
       
+    {/* ---------- Navbar ----------- */}
       <div className="bg-[#eeeeee] h-18 md:h-[8%] w-[95%] md:w-[90%] mt-4 md:mt-2 rounded-lg flex justify-between items-center px-3">
-        <div onClick={() => approveBooking('699087c5bb6b0e785d8411dc')} className="h-full flex items-center justify-center">
+        <div className="h-full flex items-center justify-center">
             <img src="./Airbnb-Logo.png" alt="" className="w-[100px] md:w-[130px]"/>
         </div>
+
         <div className="flex flex-row items-center justify-center gap-2 md:gap-4">
             <div className="flex flex-row gap-2 md:gap-3">
                 <div className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gray-400 text-[white] font-semibold text-[18px] md:text-[24px] flex items-center justify-center">
@@ -102,6 +88,7 @@ const HostDashboard = () => {
         </div>
       </div>
 
+    {/* ---------- Infos ---------- */}
       <div className="h-auto md:h-[14%] w-[95%] md:w-[90%] flex flex-wrap items-center justify-center gap-2 md:gap-4 py-2 md:py-0">
         <div className="bg-red-600 w-[46%] md:w-[20%] h-20 md:h-[80%] rounded-lg flex items-center justify-start px-3 md:px-5 gap-2 md:gap-4">
             <div className="h-10 w-10 md:h-15 md:w-15 bg-red-700 text-[white] text-[20px] md:text-[28px] rounded-lg flex items-center justify-center shrink-0">
@@ -154,9 +141,8 @@ const HostDashboard = () => {
 
       <div className="w-[95%] md:w-[90%] h-auto md:h-[88%] mb-2 flex flex-col md:flex-row gap-2 items-center justify-center">
         <div className="h-full w-full md:w-[65%] flex items-center justify-center flex-col gap-2">
-            
 
-            {/* --------- Chart!----------- */}
+            {/* ----------- Chart! ------------- */}
             <div className="w-full md:w-[98%] h-[300px] md:h-[50%] pt-4 rounded-lg  bg-[white]">
                 <ResponsiveContainer width="98%" height="98%">
                     <BarChart data={revenueStats}>
@@ -164,18 +150,17 @@ const HostDashboard = () => {
                         <YAxis style={{ fontSize: '14px' }} />
 
                         <Tooltip
-                        cursor={{ fill: 'transparent' }}
-                        content={({active , payload }) => {
-                            if (active && payload && payload.length > 0 && payload[0].value > 0 ) {
-                                return (
-                                    <div className="bg-black text-white px-3 py-1 rounded-md shadow-xl text-[14px] font-bold border border-gray-600">
-                                        ₹{payload[0].value}
-                                    </div>
-                                );
-                            }
-                            return null ; 
-                        }}
-
+                            cursor={{ fill: 'transparent' }}
+                            content={({active , payload }) => {
+                                if (active && payload && payload.length > 0 && payload[0].value > 0 ) {
+                                    return (
+                                        <div className="bg-black text-white px-3 py-1 rounded-md shadow-xl text-[14px] font-bold border border-gray-600">
+                                            ₹{payload[0].value}
+                                        </div>
+                                    );
+                                }
+                                return null ; 
+                            }}
                         />
 
                         <Bar dataKey="revenue" fill="#D22B2B" activeBar={{ fill:"red" }} isAnimationActive={true} />
@@ -184,7 +169,7 @@ const HostDashboard = () => {
             </div>
 
 
-            {/* --------- Listings ----------- */}
+            {/* ---------- Listings ---------- */}
             <div className="w-full md:w-[98%] h-auto md:h-[50%] flex items-center justify-center flex-col md:flex-row gap-2">
                 <div className="bg-[#F9F6EE] w-full md:w-[60%] h-[400px] md:h-[98%] rounded-lg flex flex-col justify-center items-center p-2">
                     <div className="w-full flex items-start px-4 font-semibold text-[18px]"> Listings: </div>
@@ -269,7 +254,7 @@ const HostDashboard = () => {
 
         <div className="h-full w-full md:w-[35%] flex flex-col gap-2 items-center justify-center">
             
-            {/* ------- Requests ---------- */}
+            {/* ---------- Requests ---------- */}
             <div className="bg-[#F9F6EE] h-[400px] md:h-[48%] w-full md:w-[98%] rounded-lg flex flex-col items-center justify-center gap-1 p-2">
                 <div className="w-full px-4 items-start font-semibold text-[18px]"> Pending Requests: </div>
                 <div className="bg-white w-[95%] h-[85%] px-2 md:px-4 flex items-center overflow-y-auto rounded-lg mb-2 flex-col gap-2 py-2">
@@ -305,7 +290,7 @@ const HostDashboard = () => {
                 </div>
             </div>
 
-            {/* -------- Timelines --------- */}
+            {/* ---------- CheckIn ---------- */}
             <div className="bg-[#F9F6EE] h-[400px] md:h-[48%] w-full md:w-[98%] rounded-lg flex flex-col items-center justify-center gap-1 p-2">
                 <div className="w-full px-4 items-start font-semibold text-[18px]"> CheckIn/CheckOut Timeline: </div>
                 
@@ -346,6 +331,7 @@ const HostDashboard = () => {
         </div>
       </div>
         
+        {/* ---------- Check In PopUp ---------- */}
         { showPopUp && 
             <div className="bg-[#eeeeee] border-2 border-[gray] fixed h-[220px] w-[90%] max-w-[400px] flex flex-col gap-4 justify-center items-center rounded-lg top-[34%] z-100"> 
                 <button onClick={() => setShowPopUp(false)}
@@ -366,7 +352,7 @@ const HostDashboard = () => {
             </div>
         }
 
-        {/* // --------- Booking PopUp ------------ */}
+        {/* ---------- Booking PopUp ------------ */}
         {
             showManagePopUp && 
             <div className="bg-[#F9F6EE] gap-2 flex justify-start items-center flex-col shdaow-sm shadow-gray-500 rounded-lg border-2 border-gray-800 w-[95%] h-[550px] md:w-[840px] md:h-[600px] fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 z-50">

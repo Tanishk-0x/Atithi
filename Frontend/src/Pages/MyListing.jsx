@@ -55,7 +55,6 @@ const MyListing = () => {
         }
         
 
-
         <Footer />
 
 

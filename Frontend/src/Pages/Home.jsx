@@ -15,7 +15,7 @@ import { MdErrorOutline } from "react-icons/md";
 
 const Home = () => {
 
-  const {listingData , setListingData , newListingData} = useContext(listingDataContext);
+  const { newListingData } = useContext(listingDataContext);
   
   // PopUp 
   const [showPopUp , setShowPopUp] = useState(false); 
@@ -33,6 +33,7 @@ const Home = () => {
 
   const { HandleViewCard } = useContext(listingDataContext); 
 
+  // ------ Key Down For Search ------
   const HandleKeyDown = (e) => {
     if(e.key == "Enter"){
       e.preventDefault(); 
@@ -48,7 +49,7 @@ const Home = () => {
       <div className='w-full min-h-screen flex items-start justify-center gap-[25px] flex-wrap pt-[250px] md:pt-[180px] pb-0 relative'>
         {
           newListingData.map((list) => (
-            <Card 
+            <Card key={list._id}
               title={list.title} 
               landmark={list.landmark}
               city={list.city}
@@ -195,6 +196,7 @@ const Home = () => {
 
         </div>
       }
+
 
     </div>
   )

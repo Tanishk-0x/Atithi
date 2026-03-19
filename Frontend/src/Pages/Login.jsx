@@ -13,7 +13,7 @@ const Login = () => {
 
   // Consume the value
   const {serverUrl} = useContext(authDataContext);
-  const {userData , setUserData} = useContext(userDataContext);
+  const { setUserData } = useContext(userDataContext);
 
   const navigate = useNavigate() ; 
 
@@ -22,7 +22,7 @@ const Login = () => {
   const [password , setPassword] = useState('') ; 
   const [loading , setLoading] = useState(false) ; 
 
-
+  // ---------- Handle Login ----------
   const LoginHandler = async (e) => {
     try {
       e.preventDefault() ; 
