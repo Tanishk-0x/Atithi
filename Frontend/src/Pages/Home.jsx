@@ -58,8 +58,8 @@ const Home = () => {
               rent={list.rent}
               id={list._id}
               ratings={list.ratings}
-              isBooked={list.isBooked}
-              host={list.host}
+              createdAt={list.createdAt}
+              viewCount={list.viewCount}
             />
           ))
         }

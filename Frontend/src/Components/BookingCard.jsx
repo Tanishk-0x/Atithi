@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { IoStar } from "react-icons/io5";
 import { GiConfirmed } from "react-icons/gi";
 import toast from 'react-hot-toast';
+import { FcCancel } from "react-icons/fc";
+
 
 
 const BookingCard = ({ id , listing , status }) => {
@@ -12,11 +14,17 @@ const BookingCard = ({ id , listing , status }) => {
 
     <div onClick={() => navigate(`/confirm/${id}`)} className='w-[330px] max-w-[85%] h-[460px] flex items-start justify-start flex-col rounded-lg curson-pointer no-scrollBar relative z-10'>
       
-      {/* Booking Status Tag */}
+      {/* Status Tag */}
       { 
+        status !== 'rejected' && status !== 'cancelled' ? (
         <div className='text-[green] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] '>
           <GiConfirmed className='w-5 h-5'/> {status}
         </div>
+        ) : (
+          <div className='text-[red] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] '>
+            <FcCancel className='w-5 h-5'/> {status}
+          </div>
+        )
       }
 
 

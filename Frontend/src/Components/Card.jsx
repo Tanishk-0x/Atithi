@@ -6,9 +6,12 @@ import { IoStar } from "react-icons/io5";
 import { GiConfirmed } from "react-icons/gi";
 import { FcCancel } from "react-icons/fc";
 import { bookingDataContext } from '../Context/BookingContext';
+import { MdNewReleases } from "react-icons/md";
+import { IoDiamond } from "react-icons/io5";
+import { HiBadgeCheck } from "react-icons/hi";
 
 
-const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings, isBooked, host}) => {
+const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings, viewCount , createdAt}) => {
 
   const navigate = useNavigate(); 
 
@@ -27,17 +30,45 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
     }
   }
 
+  // -------- Calculate for tags ----------
+  const isNew = ( new Date() - new Date(createdAt) ) / (1000*60*60*24) < 2 ; 
+  const isRare = ratings >= 4.5 && viewCount >= 20 ; 
+  const isTopRated = ratings >= 4.2 && !isRare ; 
+  const isPopular = viewCount > 20 && !isRare ; 
+
   return (
 
     // ----------------------------------------
     <div onClick={HandleClick} className='w-[330px] max-w-[85%] h-[460px] flex items-start justify-start flex-col rounded-lg curson-pointer no-scrollBar relative z-10'>
       
-      {/* // Booked Or Not? PopUp */}
+      {/* Tags */}
       {
-        isBooked && 
-        <div className='text-[red] bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] '>
-          <GiConfirmed className='w-5 h-5'/> PartialBooked
-        </div>
+        isNew && (
+          <div className='text-indigo-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-indigo-400'>
+            <MdNewReleases className='w-5 h-5'/> Recently Listed
+          </div>
+        )
+      }
+      {
+        isRare && (
+          <div className='text-amber-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-amber-400'>
+            <IoDiamond className='w-5 h-5'/> Rare Find
+          </div>
+        )
+      }
+      {
+        isTopRated && (
+          <div className='text-rose-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-rose-400'>
+            <HiBadgeCheck className='w-5 h-5'/> Top Rated 
+          </div>
+        )
+      }
+      {
+        isPopular && (
+          <div className='text-green-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-green-400'>
+            <HiBadgeCheck className='w-5 h-5'/> Popular 
+          </div>
+        )
       }
 
 

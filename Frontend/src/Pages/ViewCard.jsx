@@ -20,6 +20,8 @@ import { IoHappyOutline } from "react-icons/io5";
 import { PiSparkleLight } from "react-icons/pi";
 import { IoIosStar } from "react-icons/io";
 import Loader from '../Components/Loader'; 
+import { HiOutlineEmojiHappy } from "react-icons/hi";
+
 
 
 import DatePicker from "react-datepicker";
@@ -419,6 +421,7 @@ const ViewCard = () => {
                       {(itr.rating === 2) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /></div>) }
                       {(itr.rating === 3) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
                       {(itr.rating === 4) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
+                      {(itr.rating === 5) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
                     </div>
                     <div className=' w-full px-2'>
                       <p className='text-[12px] md:text-[14px]'>
@@ -680,24 +683,29 @@ const ViewCard = () => {
             </h1>
 
             <div className='w-full h-[100px] flex justify-center items-center flex-row flex-wrap gap-3 '>
-                <div onClick={() => setRating(1)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400 ${ (rating === 1) && 'bg-red-400'}`}>
-                    <IoSadOutline className='text-[24px] md:text-[34px]'/>
-                    <p className='text-[8px] md:text-[12px]'>Disappointed</p> 
+                <div onClick={() => setRating(1)} className={`h-12 w-12 md:h-15 md:w-15 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-red-400 ${ (rating === 1) && 'bg-red-400'}`}>
+                    <IoSadOutline className='text-[18px] md:text-[26px]'/>
+                    <p className='text-[8px] md:text-[10px]'>Angry</p> 
                 </div>
 
-                <div onClick={() => setRating(2)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400 ${ (rating === 2) && 'bg-orange-400'}`}>
-                    <FaRegFaceSadTear className='text-[24px] md:text-[34px]'/>
-                    <p className='text-[8px] md:text-[12px]'>Sad</p>
+                <div onClick={() => setRating(2)} className={`h-12 w-12 md:h-15 md:w-15 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-orange-400 ${ (rating === 2) && 'bg-orange-400'}`}>
+                    <FaRegFaceSadTear className='text-[18px] md:text-[26px]'/>
+                    <p className='text-[8px] md:text-[10px]'>Sad</p> 
                 </div>
 
-                <div onClick={() => setRating(3)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400 ${ (rating === 3) && 'bg-yellow-400'}`}>
-                    <BsEmojiNeutral className='text-[24px] md:text-[34px]'/>
-                    <p className='text-[8px] md:text-[12px]'>Neutral</p>
+                <div onClick={() => setRating(3)} className={`h-12 w-12 md:h-15 md:w-15 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-yellow-400 ${ (rating === 3) && 'bg-yellow-400'}`}>
+                    <BsEmojiNeutral className='text-[18px] md:text-[26px]'/>
+                    <p className='text-[8px] md:text-[10px]'>Neutral</p>
                 </div>
 
-                <div onClick={() => setRating(4)} className={`h-15 w-15 md:h-20 md:w-20 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400 ${ (rating === 4) && 'bg-green-400'}`}>
-                    <IoHappyOutline className='text-[24px] md:text-[34px]'/>
-                    <p className='text-[8px] md:text-[12px]'>Happy</p>
+                <div onClick={() => setRating(4)} className={`h-12 w-12 md:h-15 md:w-15 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-green-400 ${ (rating === 4) && 'bg-green-400'}`}>
+                    <HiOutlineEmojiHappy className='text-[18px] md:text-[26px]'/>
+                    <p className='text-[8px] md:text-[10px]'>Happy</p>
+                </div>
+
+                <div onClick={() => setRating(5)} className={`h-12 w-12 md:h-15 md:w-15 flex justify-center items-center flex-col rounded-lg cursor-pointer border-2 border-gray-500 hover:bg-cyan-400 ${ (rating === 5) && 'bg-cyan-400'}`}>
+                    <IoHappyOutline className='text-[18px] md:text-[26px]'/>
+                    <p className='text-[8px] md:text-[10px]'>Wonderful</p>
                 </div>
                     
             </div>
