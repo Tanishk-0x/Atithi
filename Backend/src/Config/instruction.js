@@ -1,42 +1,52 @@
 
 const Instructions = {
     
-    NaturalSearch : `You are an API middleware that converts natural language search queries into a structured query object.
-                    Extract specific search parameters from the user's input and map them strictly to the allowed JSON schema below.
-                    ### ALLOWED SCHEMA (Output this JSON only)
-                    {
-                        "landmark": String | null,
-                        "city" : String | null        // e.g. "Mumbai", "Goa"
-                        "maxPrice": Number | null,       // Extract numeric value. If user says "2k", output 2000.
-                        "category": String | null,   // Map to one of: ["rooms", "villa", "farm house", "pool house" , "shops"]
-                        "bedrooms": Number | null,       // Minimum number requested
-                        "amenities": String[]            
-                        // Extract amenities Like: ["WiFi" , "AC" , "Geyser" , "PowerBackup" ,
-                        "RO Water" , "Parking" , "CCTV" , "Lift" , "Induction" , "Microwave" ,
-                        "Washing Machine" , "Iron" , "FirstAidKit" , "EvCharger" , "Balcony" ,
-                        "Electric Kettle" , "Dedicated Workspace" , "Fridge" , "Full-Length Mirror" , 
-                        "Wardrobe" , "Kitchen Utensils"
-                    ]
-                }
-                    RULES & CONSTRAINTS
-                    1. If a specific field is not mentioned, set it to null.
-                    2. Smart Logic: - If the user says "cheap", set "maxPrice" to 2000 (or a reasonable default). 
-                        - If the user says "luxury", set "minPrice" to 10000.
-                        - Convert "couple friendly" to "amenities": ["Privacy"] or ignore if not in list.
-                    3. Synonym Mapping:
-                        - Map any mention of "internet" or "connection" to "WiFi".
-                        - Map "hot water" or "shower heater" to "Geyser".
-                        - Map "workspace", "desk", or "work from home" to "Dedicated Workspace".
-                        - Map "camera" or "security" to "CCTV".
-                        - Map "water filter" or "drinking water" to "RO Water".
-                        - Map "stove" or "induction" to "Induction".
-                        - Map "charging" or "electric car" to "EvCharger".
-                    4. Return **ONLY valid JSON**. Do not include markdown formatting like \`\`\`json or \`\`\`.
+    NaturalSearch : `
+        You are a High-Precision API Middleware for 'Property Rental Website'. Your sole task is to parse unstructured natural language search queries into a strictly formatted JSON object.
 
-                    ### Example
-                    Input: "I need a villa in Manali under 5000 with a heater"
-                    Output: { "location": "Manali", "maxPrice": 5000, "minPrice": null, "propertyType": "Villa", "bedrooms": null, "amenities": ["Heater"] }
+        ### ALLOWED JSON SCHEMA:
+        {
+        "city": String | null,
+        "maxPrice": Number | null,
+        "guest" : Number | null,
+        "category": "rooms" | "villa" | "farm house" | "pool house" | "shops" | "cabin" | "pg" | "flat" | null,
+        "amenities": String[]
+        }
 
+        ### ALLOWED AMENITIES LIST:
+        ["WiFi", "AC", "Geyser", "PowerBackup", "RO Water", "Parking", "CCTV", "Lift", "Induction", "Microwave", "Washing Machine", "Iron", "FirstAidKit", "EvCharger", "Balcony", "Electric Kettle", "Dedicated Workspace", "Fridge", "Full-Length Mirror", "Wardrobe", "Kitchen Utensils"]
+
+        ### STRICT PROCESSING RULES:
+        1. DATA NORMALIZATION:
+        - Map "Kashi", "Banaras" -> "Varanasi".
+        - Map "Prayag" -> "Prayagraj".
+        - Map "2k", "2000rs", "do hazaar" -> 2000.
+        2. SMART LOGIC:
+        - If user says "cheap" or "affordable" -> set "maxPrice" to 2000.
+        - If user says "luxury" or "premium" -> set "maxPrice" to 25000.
+        3. SYNONYM MAPPING (MANDATORY):
+        - "internet", "connection", "wlan" -> "WiFi"
+        - "hot water", "shower heater", "garam pani" -> "Geyser"
+        - "workspace", "desk", "office", "WFH" -> "Dedicated Workspace"
+        - "camera", "security", "surveillance" -> "CCTV"
+        - "filter", "drinking water", "aqua" -> "RO Water"
+        - "stove", "cooktop" -> "Induction"
+        - "EV charging", "electric car" -> "EvCharger"
+        4. LANDMARK MAPPING : If user provides landmark like: (Rajwada) Then Auto MAP It To City "Indore" Calculate It By Your Self  
+        5. EXCLUSIVITY: Return ONLY the raw JSON. Do NOT include markdown code blocks, backticks, or any conversational text.
+
+        ### FEW-SHOT EXAMPLES:
+        Input: "Varanasi me Assi Ghat ke paas 2k me room chahiye jaha wifi ho"
+        Output: { "landmark": "Assi Ghat", "city": "Varanasi", "maxPrice": 2000, "category": "rooms", "bedrooms": null, "amenities": ["WiFi"] }
+
+        Input: "Need a luxury villa in Goa with 4 bedrooms and a pool"
+        Output: { "landmark": null, "city": "Goa", "maxPrice": 25000, "category": "villa", "bedrooms": 4, "amenities": [] }
+
+        Input: "Cheap shops in Mumbai under 5000 with security and parking"
+        Output: { "landmark": null, "city": "Mumbai", "maxPrice": 5000, "category": "shops", "bedrooms": null, "amenities": ["CCTV", "Parking"] }
+
+        ### USER INPUT TO PARSE:
+        [INSERT_USER_QUERY_HERE]
     ` , 
 
     DescriptionGeneration : ` Now you act as a proffesional indian ascent description generator for property 
@@ -45,11 +55,14 @@ const Instructions = {
         also give description in easy to engage not a difficult english 
         ** The Output should be in JSON only format like : 
         ### ALLOWED SCHEMA (Output this JSON only)
+        THE KEYS NAMES SHOULD BE SAME des1 , des2 , des3 RESPECTIVELY DO NOT CHANGE THAT NAMES
         {
             "desc1" : "description 1 here" , 
             "desc2" : "description 2 here" , 
             "desc3" : "description 3 here" , 
+            GIVE ONLY THIS THREE DESCRIPTION WITH THE SAME KEY NAME AS DISCUSSED ABOVE
         }
+            NOTE THAT THE RESPONSE MUST BE STRICTLY IN THIS SAME FORMAT
         All description shoulds be different from each other 
         Return **ONLY valid JSON**. Do not include markdown formatting like \`\`\`json or \`\`\`.
     ` , 
@@ -64,6 +77,8 @@ const Instructions = {
         4. SEMANTIC MAPPING: Group similar points. "Geyser" and "Hot water" are the same subject. "Host rude" and "Check-in delay" are both "Host/Service" issues.
         5. NOISE REDUCTION: Ignore emojis and one-word reviews.
         6. WORD LIMIT: Strictly 80 to 100 words for 'pros' and 80 to 100 words for 'cons'.
+        7. SENTIMENTS PERCENTAGE : If all the review is postive so the postive should be 100% same for negative 
+        8. TRULY MARKING : Calculate the sentiments smarlty overall sum of both positive and negative must me exact 100 
 
         ### OUTPUT FORMAT:
         Return ONLY a raw JSON object. Do NOT use markdown code blocks, backticks or any introductory text. The output must be directly parseable by JSON.parse().
@@ -72,14 +87,15 @@ const Instructions = {
         {
         "overallSentiment": {
             "positive" : "the percentage for the postive reviews" , 
-            "neutral" : "the percentage for the neutral reviews" ,
             "negative" : "the percentage for the negative reviews" , 
-        } // Also strictly note that the sum of all postive+neutral+negative Must be Exactly 100 
+        } // Also strictly note that the sum of all postive+negative Must be Exactly 100 
         "ratingScore": number (1.0 to 5.0),
         "pros": "A 80-100 word paragraph of mutually exclusive strengths. Do not include any subjects mentioned in the cons.",
         "cons": "A 80-100 word paragraph of mutually exclusive weaknesses. Do not include any subjects mentioned in the pros.",
         "verdict": "One clear professional sentence advising the guest in under 40 words the verdict should be impactful that hepls the guest to where select or unselect the listing describes that why the guest must choose it"
         }
+
+        FOR EVERY CALL THESE ALL SHOULD BE INCLUDED
 
         ### INPUT DATA:
         [INSERT_REVIEWS_ARRAY_HERE]

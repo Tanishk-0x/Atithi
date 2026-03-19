@@ -270,16 +270,18 @@ const searchListing = async (req , res) => {
 
 const GenerateDescription = async (req , res) => {
     try {
-        const { searchquery , flag } = req.body ; 
+        const { searchquery } = req.body ; 
 
-        if(!searchquery || !flag){
+        const searchQuery = searchquery.toString(); 
+
+        if(!searchquery){
             return res.status(403).json({
                 success : false , 
                 message : "Input Can't Be Empty"
             })
         }
 
-        const response = await GenerateContent( searchquery , flag ); 
+        const response = await GenerateContent( searchQuery , '1' ); 
 
         return res.status(200).json({
             success : true , 

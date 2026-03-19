@@ -24,8 +24,8 @@ const GenerateByGroq = async ( ques , flag ) => {
         const SystemInstruction = await SetSystemInstruction(flag);  
 
         const ChatCompletion = await groq.chat.completions.create({
-            // Model ... 
-            model : "llama-3.3-70b-versatile" ,
+            // Model ... llama-3.3-70b-versatile
+            model : "llama-3.1-8b-instant" ,
 
             // Message ... 
             messages : [
@@ -50,7 +50,7 @@ const GenerateByGroq = async ( ques , flag ) => {
     
     catch (error) { 
         console.log(`Error In Groq : ${error}`);
-        return error ;
+        throw error ;
     }
 }
 

@@ -10,7 +10,7 @@ const GenerateContent = async ( searchquery , flag ) => {
     
     catch (error) {
         console.log(`Error : ${error}`)
-        return error ;
+        throw error ;
     }
 }
 

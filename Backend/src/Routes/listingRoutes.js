@@ -3,7 +3,7 @@ const router = express.Router() ;
 const isAuth = require('../Middlewares/authMiddleware'); 
 const Upload = require('../Middlewares/multer');
 const {addListing , getListing , findListing , updateListing , deleteListing , rateListing , searchListing , GenerateDescription} = require('../Controllers/listingController'); 
-const naturalSearch = require('../Controllers/naturalSearch');
+const NaturalSearch = require('../Controllers/naturalSearch');
 
 router.post('/add' , isAuth , Upload.fields([
     {name:"image1" , maxCount:1 },
@@ -26,7 +26,7 @@ router.post('/ratings/:id' , isAuth , rateListing);
 
 router.get('/search' , searchListing); 
 
-router.post('/naturalsearch' , naturalSearch); 
+router.get('/naturalsearch' , NaturalSearch); 
 
 router.post('/generatedesc' , GenerateDescription); 
 
