@@ -10,29 +10,55 @@ export const SearchDataContext = createContext();
 const NaturalSearchContext = ({children}) => {
 
     const [searchListing , setSearchListings] = useState([]); 
+    const [matchedListings , setMatchedListings] = useState(0); 
+    const [searchQuery , setSearchQuery] = useState('');
+    const [isSearching , setIsSearching] = useState(false); 
+    const [searched , setSearched] = useState(false); 
 
     const {serverUrl} = useContext(authDataContext); 
 
     const HandleNaturalSearch = async (searchquery) => {
+        if(isSearching){
+            return ; 
+        }
+
         try {
-            const res = await axios.post(serverUrl + '/listing/naturalsearch' , 
-                {searchquery : searchquery , flag : '0'} , {withCredentials : true}
+            setSearched(false); 
+            setIsSearching(true); 
+            const res = await axios.get(serverUrl + 
+                `/listing/naturalsearch?query=${searchquery}`
             ); 
 
-            setSearchListings(res.data.listing); 
-            toast.success("Listing Searched");
-            console.log("SEARCHED LISTINGS -->" , res.data.listing); 
+            if(res.data.success){
+                setSearchListings(res.data?.results); 
+                setMatchedListings(res.data?.matchedListings);
+                setSearchQuery(' '); 
+                toast.success("Listing Searched");
+                setSearched(true); 
+            }
+            setIsSearching(false); 
         }
         
         catch (error) {
             console.log(`Error In Natural Search : ${error}`); 
             toast.error("Error While Searching");
+            setIsSearching(false); 
+            setSearched(false); 
+        }
+
+        finally{
+            setIsSearching(false); 
         }
     }
 
     const value = {
         HandleNaturalSearch , 
-        searchListing
+        searchListing , 
+        isSearching , 
+        searched , 
+        matchedListings , 
+        searchQuery , 
+        setSearchQuery , 
     };
 
     return (

@@ -19,6 +19,7 @@ import { BsEmojiNeutral } from "react-icons/bs";
 import { IoHappyOutline } from "react-icons/io5";
 import { PiSparkleLight } from "react-icons/pi";
 import { IoIosStar } from "react-icons/io";
+import Loader from '../Components/Loader'; 
 
 
 import DatePicker from "react-datepicker";
@@ -40,6 +41,9 @@ const ViewCard = () => {
     HandleAddReview ,
     HandleGetReviews , 
     reviews , 
+    SummarizeReviews , 
+    isSummarizing , 
+    summarized , 
   } = useContext(reviewDataContext); 
 
   const [showUpdatePopUp , setShowUpdatePopUp] = useState(false);
@@ -393,7 +397,7 @@ const ViewCard = () => {
                 </div>
 
                 <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
-                  Summarize with Ai
+                  Summarize with AI
                   <button onClick={() => setShowSummarizePopUp(true)} className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
                     Summarize
                   </button>
@@ -717,22 +721,67 @@ const ViewCard = () => {
 
       {/* // --------- Review Summarize PopUp ---------- */}
       { showSummarizePopUp && 
-          <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[500px] w-[90%] md:w-[500px] flex items-center justify-center flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50'>
+          <div className='fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-[#fffefc] h-[500px] w-[90%] md:w-[500px] flex items-center justify-start  flex-col gap-1 rounded-lg shadow-xl shadow-gray-500 border border-gray-500 z-50 overflow-y-auto'>
                 
             <button onClick={() => setShowSummarizePopUp(false)} className='absolute top-1 font-semibold text-gray-800 right-1 p-1 text-2xl flex items-center justify-center rounded-full cursor-pointer'>
                 <RxCross2 />
             </button>
                 
-            <h1 className='font-semibold text-[26px] text-gray-900 flex justify-center items-center gap-1'> 
+            <h1 className='mt-3 font-semibold text-[26px] text-gray-900 flex justify-center items-center gap-1'> 
               <PiSparkleLight className='text-[red]'/>  AI Review Summary
             </h1>
 
-            <p className='text-center'>
+            <p className='text-center text-[14px] md:text-[16px] w-[90%] md:w-[80%] '>
               Get a quick overview of guest feedback for this property without reading every review.
             </p>
 
-            <button className='bg-[red] w-[90%] py-3 rounded-lg cursor-pointer text-[white] font-semibold hover:bg-red-600'>
-              Summarize with AI
+            {
+              summarized?.overallSentiment && (
+                <div className='h-10 w-[90%] flex justify-center items-center'>
+                  {/* // ----- bar ------  */}
+                  <div style={{ width: `${Number(summarized?.overallSentiment?.positive)}%` }}
+                  className='bg-green-500 h-5 flex justify-center items-center text-[8px]'>
+                    { Number(summarized?.overallSentiment?.positive) > 0 && `${Math.ceil(summarized?.overallSentiment?.positive)}% Positive` }
+                  </div>
+
+                  <div style={{ width: `${Number(summarized?.overallSentiment?.negative)}%` }}
+                  className='bg-red-500 h-5 flex justify-center items-center text-[8px]'>
+                    { Number(summarized?.overallSentiment?.negative) > 0 && `${Math.ceil(summarized?.overallSentiment?.negative)}% Negative` }
+                  </div>
+                </div>
+              )
+            }
+
+            {
+              summarized?.pros && 
+              <div className='w-[90%] flex justify-start items-center flex-col gap-2'>
+                
+                <div className='w-[90%] h-[50px] text-gray-600 rounded-lg bg-gray-50 border-2 border-gray-200 flex justify-center items-center'>
+                  <p className='font-semibold text-[22px]'> Avg Rating: <span> {summarized?.ratingScore}<span>⭐</span> <span className='text-[15px]'> (out of 5) </span> </span> </p>
+                </div>
+                
+                <div className='bg-green-100 w-full border-2 border-green-300 px-2 py-1 rounded-lg '>
+                  <p className='text-[16px] font-semibold text-[green]'> +
+                    <span className='text-[14px] font-normal'> { summarized?.pros } </span>
+                  </p>
+                </div>
+
+                <div className='bg-red-100 w-full border-2 border-red-300 px-2 py-1 rounded-lg '>
+                  <p className='text-[16px] font-semibold text-[red]'> - 
+                    <span className='text-[14px] font-normal'> { summarized?.cons } </span>
+                  </p>
+                </div>
+
+                <div className='bg-gray-100 w-full rounded-lg border-2 border-gray-300 px-2 py-1'>
+                  <p className='text-[16px] font-semibold'> Verdict: 
+                    <span className='text-[14px] font-normal'> { summarized?.verdict } </span>
+                  </p>
+                </div>
+              </div>
+            }
+
+            <button onClick={() => SummarizeReviews(cardDetails._id)} className='bg-[red] mb-4 mt-2 w-[90%] py-3 rounded-lg cursor-pointer text-[white] font-semibold hover:bg-red-600 text-center flex justify-center items-center'>
+              { isSummarizing ? <Loader /> : 'Summarize with AI' }
             </button>
 
         

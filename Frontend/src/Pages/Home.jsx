@@ -10,7 +10,7 @@ import {SearchDataContext} from '../Context/NaturalSearchContext';
 import Pagination from '../Components/Pagination';
 import Footer from '../Components/Footer';
 import { PiSparkleLight } from "react-icons/pi";
-
+import { MdErrorOutline } from "react-icons/md";
 
 
 const Home = () => {
@@ -19,11 +19,16 @@ const Home = () => {
   
   // PopUp 
   const [showPopUp , setShowPopUp] = useState(false); 
-  const [searchQuery , setSearchQuery] = useState(''); 
+   
 
   const {
       HandleNaturalSearch ,
-      searchListing 
+      searchListing , 
+      isSearching , 
+      searched ,
+      matchedListings , 
+      searchQuery , 
+      setSearchQuery , 
   } = useContext(SearchDataContext); 
 
   const { HandleViewCard } = useContext(listingDataContext); 
@@ -78,12 +83,19 @@ const Home = () => {
       {/* ----- Natural Search PopUp ----- */}
       { 
         showPopUp && 
-        <div className='shadow-sm shadow-gray-400 fixed flex justify-between items-center flex-col bg-[#FAF9F6] min-h-[400px] max-h-[500px] w-[90%] md:w-[500px] bottom-4 right-4 z-100 rounded-lg border-2 border-[black]'>
+        <div className='shadow-sm shadow-gray-400 fixed flex justify-between items-center flex-col bg-[#FAF9F6] min-h-[400px] max-h-[500px] w-[91%] md:w-[500px] bottom-4 right-4 z-100 rounded-lg border-2 border-gray-500'>
           
           <div className='flex justify-between w-full p-2 items-center border-b-2 border-gray-300 h-[10%]'>
-            <p className='font-mono text-gray-900 text-[22px] flex flex-row gap-1 justify-center items-center'>
+            <p className='font-mono text-gray-900 font-semibold text-[22px] flex flex-row gap-1 justify-center items-center'>
               <PiSparkleLight className='font-semibold'/> Smart Search
             </p>
+
+            { searched && searchListing.length > 0 && (
+              <p className='bg-gray-100 rounded-lg border border-gray-300 px-2 py-1 text-[12px] text-nowrap md:text-[16px]'>
+                {matchedListings} Matches Found
+              </p>
+            ) }
+
             <button onClick={() => setShowPopUp(false)} className='text-[24px] px-1 py-1 rounded-full cursor-pointer'>
               <RxCross2 />
             </button>
@@ -93,13 +105,13 @@ const Home = () => {
           <div className='w-full h-full flex items-center justify-center flex-wrap overflow-y-auto gap-2 mt-2 mb-2'>
             
             {
-              searchListing && searchListing.length > 0 ? 
+              searched && searchListing.length > 0 &&  
               (
                 searchListing.map((item) => (
                   <div key={item._id} onClick={() => HandleViewCard(item._id)} className='flex flex-row  w-[95%] h-[110px] rounded-lg border-2 border-gray-700 cursor-pointer hover:border'>
 
                     <div className='w-[35%] h-full flex justify-center items-center'>
-                      <img src={item.image1} alt={item.title} className='w-full h-full object-cover'/>
+                      <img draggable={false} src={item.image1} alt={item.title} className='w-full h-full object-cover'/>
                     </div>
 
                     <div className='w-[65%] p-2 flex flex-col justify-between overflow-y-auto'>
@@ -108,12 +120,12 @@ const Home = () => {
                           <h4 className='font-bold text-sm truncate w-[70%]'> {item.title} </h4>
                           <p className='font-bold text-red-500 text-xs'>₹{item.rent}/day</p>
                         </div>
-                        <p className='text-[11px] line-clamp-2 text-gray-500'> {item.description} </p>
+                        <p className='text-[11px] line-clamp-2 text-gray-500'> {(item.description?.split(" ").slice(0,20).join(" "))+(item.description?.split(" ").length > 20 ? '...' : "") }  </p>
                       </div>
 
                       <div className='flex items-center flex-wrap gap-1'>
                         {
-                          item.amenities.map((itr , index) => (
+                          item.amenities?.map((itr , index) => (
                             <div key={index} className='p-1 text-xs bg-gray-300 text-gray-600 rounded'>
                               {itr}
                             </div>
@@ -130,7 +142,9 @@ const Home = () => {
                   </div>
                 ))
               )
-              : 
+            }
+
+            { !searched && !isSearching && 
               (
                 <div className='h-full flex items-center justify-center flex-col'>
                   <div>
@@ -147,16 +161,34 @@ const Home = () => {
                 </div>
               )
             }
+
+            {
+              isSearching && (
+                <div className='flex flex-col gap-1 justify-center items-center text-center'>
+                  <div class="spinner"></div>
+                  <p> We are finding top matched listings for you</p>
+                </div>
+              )
+            }
+
+            {
+              searched && searchListing.length === 0 && (
+                <div className='flex justify-center items-center flex-col gap-1 w-[80%] md:w-[70%] '>
+                  <MdErrorOutline  className='text-[62px] md:text-[88px] font-semibold text-gray-400'/>
+                  <p className='text-[14px] md:text-[18px] font-semibold text-gray-400 text-center'> Sorry To concern that there may be an issue in our side !</p>
+                </div>
+              )
+            }
             
           </div>
 
-          <div className='w-full h-auto p-1 flex items-center justify-center border-t-2 border-gray-300'>
-            <textarea className='bg-gray-200 min-h-20 max-h-[150px] relative w-[98%] h-[45px] px-3 border border-[gray] outline-none rounded-lg'
-            type="text" placeholder='Search you vibe here ..'
+          <div className='mb-1 w-full h-auto p-1 flex items-center justify-center border-t-2 border-gray-300'>
+            <textarea className='bg-gray-200 mt-1 py-1 min-h-20 max-h-[150px] relative w-[98%] h-[45px] px-3 border-2 border-gray-500 outline-none rounded-lg text-[16px]'
+            type="text" placeholder='Search you vibe here ..' value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => HandleKeyDown(e)}
             />
-            <button className='absolute right-5 bg-[red] px-3 py-3 rounded-full'>
+            <button onClick={() => HandleNaturalSearch(searchQuery)} className='absolute right-5 bg-[red] px-3 py-3 rounded-full cursor-pointer'>
               <GrSearchAdvanced />
             </button>
           </div>

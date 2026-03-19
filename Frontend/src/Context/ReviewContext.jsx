@@ -16,6 +16,8 @@ const ReviewContext = ({children}) => {
     const [isAddingReview , setIsAddingReview] = useState(false); 
     const [reviews , setReviews] = useState([]);
     const [reviewsHost , setReviewsHost] = useState([]);  
+    const [summarized , setSummarized] = useState({}); 
+    const [isSummarizing , setIsSummarizing] = useState(false); 
 
     const HandleAddReview = async (id) => {
         if(isAddingReview){
@@ -82,6 +84,32 @@ const ReviewContext = ({children}) => {
         }
     }
 
+    const SummarizeReviews = async (id) => {
+        if(isSummarizing){
+            return ; 
+        }
+
+        try {
+            setIsSummarizing(true); 
+            const res = await axios.get(serverUrl + `/review/summarize/${id}`); 
+
+            if(res.data.success){
+                toast.success("Reviews Summarized!"); 
+                setSummarized(res.data?.summmarized); 
+                console.log("Summarized: " , res.data?.summarized); 
+            }
+            setIsSummarizing(false); 
+        }
+        
+        catch (error) {
+            toast.error("Error While Summarizing Reviews!"); 
+            setIsSummarizing(false); 
+            console.log(error); 
+        }
+        finally{
+            setIsSummarizing(false); 
+        }
+    }
 
     const value = {
         feedback , setFeedback , 
@@ -92,6 +120,10 @@ const ReviewContext = ({children}) => {
         reviews , 
         FetchReviews , 
         reviewsHost , 
+
+        SummarizeReviews , 
+        isSummarizing , 
+        summarized , 
     }; 
 
     return (

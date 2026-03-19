@@ -6,6 +6,7 @@ import { IoMdColorWand } from "react-icons/io";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { authDataContext } from '../Context/AuthContext';
+import Loader from '../Components/Loader'; 
 
 const ListingPage1 = () => {
 
@@ -117,9 +118,9 @@ const ListingPage1 = () => {
         }
 
         setGenerating(true); 
-        const data = title + "," + description + "," + rent + "," + city + "," + landmark + "," + amenities ; 
+        const data = title + "," + description + "," + rent + "," + city + "," + landmark + "," + amenities + "," + points + "," + maxGuestAllowed ; 
         const res = await axios.post(serverUrl + '/listing/generatedesc' , 
-          { searchquery : data , flag : '1' } , {withCredentials : true} 
+          { searchquery : data } , {withCredentials : true} 
         ); 
 
         console.log("DATA IS ---> " , data); 
@@ -177,20 +178,29 @@ const ListingPage1 = () => {
                   }}
                     className='bg-red-100 px-2 py-1 rounded-lg border-2 border-red-700 flex flex-row items-center justify-center cursor-pointer gap-1'
                   >
-                    { generating ? 'generating..' : <p className='flex flex-row items-center justify-center gap-1'>Generate with Ai <span><IoMdColorWand/></span></p> }
+                    { generating ? <Loader /> : <p className='flex flex-row items-center justify-center gap-1'>Generate with Ai <span><IoMdColorWand/></span></p> }
                   </button>
                 </div>
 
                 {
                   showPopUp && 
                   <div className='w-[90%] flex items-center justify-center flex-col gap-2'>
-                    <div onClick={() => setDescription(descriptions.desc1)} className='bg-red-200 border border-red-700 rounded-lg px-2 py-1 cursor-pointer hover:border-2'>
+                    <div onClick={() => {
+                      setDescription(descriptions.desc1) ; 
+                      setShowPopUp(false); 
+                    }} className='bg-red-100 border-2 border-red-300 rounded-lg px-2 py-1 cursor-pointer hover:border-red-500'>
                       { descriptions.desc1 }
                     </div>
-                    <div onClick={() => setDescription(descriptions.desc2)} className='bg-red-200 border border-red-700 rounded-lg px-2 py-1 cursor-pointer hover:border-2'>
+                    <div onClick={() => {
+                      setDescription(descriptions.desc2) ; 
+                      setShowPopUp(false); 
+                    }} className='bg-red-100 border-2 border-red-300 rounded-lg px-2 py-1 cursor-pointer hover:border-red-500'>
                       { descriptions.desc2 }
                     </div>
-                    <div onClick={() => setDescription(descriptions.desc3)} className='bg-red-200 border border-red-700 rounded-lg px-2 py-1 cursor-pointer hover:border-2'>
+                    <div onClick={() => {
+                      setDescription(descriptions.desc3) ; 
+                      setShowPopUp(false); 
+                    }} className='bg-red-100 border-2 border-red-300 rounded-lg px-2 py-1 cursor-pointer hover:border-red-500'>
                       { descriptions.desc3 }
                     </div>
                   </div>
