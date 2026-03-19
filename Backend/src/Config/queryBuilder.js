@@ -1,31 +1,32 @@
 
-const QueryBuilder = async (response) => {
-    
-    const Query = { isBooked : false } ; 
+const QueryBuilder = ( data ) => {
 
-    if(response.city){
-        Query.city = {$regex : response.city , $options:"i"}
+    let Query = {} ; 
+
+    // setting the unNull data 
+
+    if(data.city){
+        Query.city = { $regex : data.city , $options: "i" };
     }
 
-    if(response.landmark){
-        Query.landmark = {$regex : response.landmark , $options:"i"}
+    if(data.maxPrice){
+        Query.rent = { $lte: data.maxPrice };
     }
 
-    if(response.category){
-        Query.category = {$regex : response.category , $options:"i"} 
+    if(data.guest){
+        Query.maxGuestAllowed = { $gte : data.guest };
     }
 
-    if(response.maxPrice){
-        Query.rent = {$lte : response.maxPrice}
+    if(data.category){
+        Query.category = data.category ;
     }
 
-    if( response.amenities && response.amenities.length > 0){
-        const AmenitiesArray = response.amenities.map(item => new RegExp(item, "i")); 
-        Query.amenities = { $all : AmenitiesArray }
+    if(data.amenities?.length > 0){
+        Query.amenities = { $all : data.amenities };
     }
 
     return Query ; 
-
-}
+    
+}; 
 
 module.exports = QueryBuilder ; 

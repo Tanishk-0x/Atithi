@@ -2,53 +2,55 @@ const Listing = require('../Models/listingModel');
 const GenerateContent = require('../GroqAI/ai.controller'); 
 const QueryBuilder = require('../Config/queryBuilder');
 
-// 1. fetch search query 
-// 2. call groq to generate JSON
-// 3. create query 
-// 4. search for listing with that query 
-// 5. return listings as response 
+/*
+1. get the query from request 
+2. send the query to Groq(ai) to parse and extract useful info
+3. now send the aiResponse to Query-Builder to built dynamic query 
+4. using that query -> Query the database 
+5. sort them accordingly 
+*/
 
-const naturalSearch = async (req , res) => {
+
+const NaturalSearch = async (req , res) => {
     try {
-        const searchQuery = req.body.searchquery ; 
-        const flag = req.body.flag ; 
+        const { query } = req.query ; 
 
-        if(!flag || !searchQuery){
-            return res.status(403).json({
+        if(!query){
+            return res.status(401).json({
                 success : false , 
-                message : "Input Can't Be Empty"
-            });
-        }
-
-        const response = await GenerateContent(searchQuery , flag); 
-
-        const Query = await QueryBuilder(response); 
-
-        const listing = await Listing.find(Query).sort({rent : -1});   
-
-        if(!listing){
-            return res.status(404).json({
-                success : false , 
-                message : "No Listing Found!"
+                message : "SearchQuery Required!"
             }); 
         }
 
+        // calling ai 
+        const response = await GenerateContent( query , '0' ); 
+
+        // build query 
+        const queryBuilds = QueryBuilder( response ); 
+
+        // find listing using his query 
+        const listings = await Listing.find( queryBuilds )
+            .limit(12)
+            .lean()
+            .select('title description rent city landmark image1 category'); 
+        
+
         return res.status(200).json({
             success : true , 
-            message : "Listing Found SuccessFully" , 
-            response : response ,
-            query : Query ,
-            listing : listing
+            message : "Natural Search Worked!" , 
+            aiResponse : response , 
+            buildQuery : queryBuilds , 
+            matchedListings : listings.length , 
+            results : listings , 
         }); 
- 
     }
     
     catch (error) {
         return res.status(500).json({
             success : false , 
-            message : `An Error Occured In Natural Search : ${error}`
-        });    
+            message : `Error In Natural Search: ${error}`
+        });     
     }
 }
 
-module.exports = naturalSearch ; 
+module.exports = NaturalSearch ; 
