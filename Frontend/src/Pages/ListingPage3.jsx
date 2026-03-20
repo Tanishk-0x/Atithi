@@ -8,6 +8,7 @@ import axios from 'axios';
 import { authDataContext } from '../Context/AuthContext';
 import { GiConfirmed } from "react-icons/gi";
 import { IoPeopleSharp } from "react-icons/io5";
+import Loader from '../Components/Loader'; 
 
 
 const ListingPage3 = () => {
@@ -202,8 +203,8 @@ const ListingPage3 = () => {
 
 
         <div className='w-[90%] h-[70px] mb-5 px-2 flex items-center justify-center md:justify-start'>
-            <button disabled={adding} onClick={addListing} className='bg-[red] rounded-lg py-4 w-[280px] font-semibold text-[white] cursor-pointer hover:bg-red-600'>
-                {adding ? 'Adding..' : 'Add Listing'}
+            <button disabled={adding} onClick={addListing} className='bg-[red] rounded-lg py-4 w-[280px] font-semibold text-[white] cursor-pointer hover:bg-red-600 flex text-center justify-center items-center'>
+                {adding ? <Loader /> : 'Add Listing'}
             </button>
         </div>
         
@@ -224,8 +225,8 @@ const ListingPage3 = () => {
                     />
 
                     <button onClick={updatePhone} 
-                     className='h-12 w-[120px] bg-red-500 text-white rounded-lg border-red-900 cursor-pointer'>
-                        { validating ? 'Validating..' : 'Validate' }
+                     className='h-12 w-[120px] bg-red-500 text-white rounded-lg border-red-900 cursor-pointer flex text-center justify-center items-center'>
+                        { validating ? <Loader /> : 'Validate' }
                     </button>
                 </div>
             </div>

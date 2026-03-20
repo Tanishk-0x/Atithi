@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
 
         <div className="flex items-center justify-center order-1 md:order-2">
-          <img src="./Airbnb-Logo.png" alt="Logo" className="h-10 md:h-14 w-auto object-contain" />
+          <img src="./logo.png" alt="Logo" draggable={false} className="h-10 md:h-14 w-auto object-contain" />
         </div>
 
         <div className="flex items-center justify-center md:justify-end order-3">

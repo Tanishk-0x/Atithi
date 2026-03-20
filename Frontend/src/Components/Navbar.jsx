@@ -1,5 +1,5 @@
 import React, { useState , useContext } from 'react'
-import logo from '/Airbnb-Logo.png'
+import logo from '/logo.png'
 import { FiSearch } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegUserCircle } from "react-icons/fa";
@@ -40,12 +40,18 @@ const Navbar = () => {
 
     // ---------- LogOut Handler ----------
     const LogoutHandler = async () => {
+        if(loading){
+            return ; 
+        }
         try {
             setLoading(true); 
             const res = await axios.post(  serverUrl + "/auth/logout" , 
              {} , {withCredentials : true}); 
-            toast.success(res.data.message);
-            navigate('/login');
+            if(res.data.success){
+                toast.success(res.data.message);
+                navigate('/login');
+                setLoading(false); 
+            }
         }
         catch (error) {
             console.log(error) ;
@@ -93,6 +99,17 @@ const Navbar = () => {
         }
     }
 
+    // ---- To Handle HostDashboard Access ----
+    const HandleDashboard = () => {
+        if(userData?.listing?.length > 0){
+            navigate('/hostdashboard'); 
+        }
+        else{
+            toast.error("You Must Have Atleast One Listing!"); 
+            return ; 
+        }
+    }
+
     return (
         
         <div className='fixed top-0 bg-[white] z-20'>
@@ -100,7 +117,7 @@ const Navbar = () => {
             <div className='w-screen min-h-20 border-b border-[#dcdcdc] px-5 flex items-center justify-between md:px-10'>
                 
                 <div >
-                    <img src={logo} className='w-[130px] '/>
+                    <img src={logo} draggable={false} className='w-[110px] md:w-[130px] '/>
                 </div>
 
                 <div className='w-[35%] relative hidden md:block '>
@@ -135,7 +152,7 @@ const Navbar = () => {
                             }
                             
                             <div className='w-full h-px bg-[#c1c0c0]'></div>
-                            <li className='w-full px-[15px] py-2.5 hover:bg-[#f4f3f3] cursor-pointer' onClick={() => {navigate('/hostdashboard') ; setShowPopUp(false)}}>Host Dashboard</li>
+                            <li className='w-full px-[15px] py-2.5 hover:bg-[#f4f3f3] cursor-pointer' onClick={() => {HandleDashboard() ; setShowPopUp(false)}}>Host Dashboard</li>
                             <li className='w-full px-[15px] py-2.5 hover:bg-[#f4f3f3] cursor-pointer' onClick={() => {navigate('/listingpage1') ; setShowPopUp(false)}}>List your home</li>
                             <li className='w-full px-[15px] py-2.5 hover:bg-[#f4f3f3] cursor-pointer' onClick={() => {navigate('/mylisting') ; setShowPopUp(false)}}>My Listing</li>
                             <li className='w-full px-[15px] py-2.5 hover:bg-[#f4f3f3] cursor-pointer' onClick={() => {navigate('/mybooking') ; setShowPopUp(false)}}>My Booking</li>

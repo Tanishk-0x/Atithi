@@ -8,7 +8,7 @@ import { authDataContext } from '../Context/AuthContext';
 import {toast} from 'react-hot-toast'
 import { bookingDataContext } from '../Context/BookingContext';
 import { GiConfirmed } from "react-icons/gi";
-import { IoPeopleSharp } from "react-icons/io5";
+import { IoPeopleSharp, IoTicketSharp } from "react-icons/io5";
 import { IoSadOutline } from "react-icons/io5";
 import { FaRegFaceSadTear } from "react-icons/fa6";
 import { BsEmojiNeutral } from "react-icons/bs";
@@ -17,6 +17,10 @@ import { PiSparkleLight } from "react-icons/pi";
 import { IoIosStar } from "react-icons/io";
 import Loader from '../Components/Loader'; 
 import { HiOutlineEmojiHappy } from "react-icons/hi";
+import { FaWhatsapp } from "react-icons/fa";
+import { HiOutlineTicket } from "react-icons/hi2";
+
+
 // ---------- Date Picker -----------
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -40,11 +44,12 @@ const ViewCard = () => {
     SummarizeReviews , 
     isSummarizing , 
     summarized , 
+    showReviewPopUp , 
+    setShowReviewPopUp ,
   } = useContext(reviewDataContext); 
 
   const [showUpdatePopUp , setShowUpdatePopUp] = useState(false);
   const [showBookingPopUp , setShowBookingPopUp] = useState(false); 
-  const [showReviewPopUp , setShowReviewPopUp] = useState(false); 
   const [showSummarizePopUp , setShowSummarizePopUp] = useState(false); 
   
   const [title , setTitle] = useState(cardDetails.title); 
@@ -101,8 +106,11 @@ const ViewCard = () => {
 
   // ----------- Update Listing -------------
   const HandleUpdateListing = async () => {
-        setUpdating(true);
+        if(updating){
+          return ; 
+        }
         try { 
+            setUpdating(true);
             // Formdata
             let formData = new FormData(); 
  
@@ -124,20 +132,27 @@ const ViewCard = () => {
             const res = await axios.post(serverUrl + `/listing/update/${cardDetails._id}` , 
                 formData , {withCredentials : true}
             ); 
-            setTitle(""); 
-            setDescription(""); 
-            setRent(""); 
-            setCity(""); 
-            setLandmark(""); 
+            if(res.data.success){
+              setTitle(""); 
+              setDescription(""); 
+              setRent(""); 
+              setCity(""); 
+              setLandmark(""); 
 
-            toast.success(res.data.message); 
-            setUpdating(false); 
-            navigate('/'); 
+              toast.success(res.data.message); 
+              setUpdating(false); 
+              navigate('/'); 
+              setUpdating(false); 
+            }
         }
 
         catch (error) {
             toast.error('Error While Updating');
             setUpdating(false); 
+        }
+
+        finally{
+          setUpdating(false); 
         }
   }
 
@@ -161,19 +176,28 @@ const ViewCard = () => {
 
   // ------------ Delete Listing ------------
   const HandleDeleteListing = async () => {
-    setDeleting(true); 
+    if(deleting){
+      return ; 
+    }
     try {
+      setDeleting(true); 
       const res = await axios.delete(serverUrl + `/listing/deletelistingbyid/${cardDetails._id}` , 
         {withCredentials : true}
       ); 
-      toast.success(res.data.message); 
-      setDeleting(false); 
-      navigate('/'); 
+      if(res.data.success){
+        toast.success(res.data.message); 
+        setDeleting(false); 
+        navigate('/'); 
+      }
     }
     
     catch (error) {
       console.log(error);  
       toast.error('Error While Deleting'); 
+      setDeleting(false); 
+    }
+
+    finally{
       setDeleting(false); 
     }
   }
@@ -221,6 +245,18 @@ const ViewCard = () => {
     HandleGetReviews(cardDetails._id); 
   },[]); 
 
+
+  // --------- Handle Review PopUp --------------
+  const HandleReviewPopUp = () => {
+    if( cardDetails.host._id === userData._id ){
+      toast.error("Host Can't Review Own Listing!"); 
+      return ; 
+    }
+    else {
+      setShowReviewPopUp(true); 
+    }
+  }
+
   // --------------------------------------------
 
   return (
@@ -233,7 +269,7 @@ const ViewCard = () => {
             <p className='font-semibold text-[18px] md:text-[30px]'>In {cardDetails.landmark}, {cardDetails.city}</p>
           </div>
 
-          <button className='bg-red-500 hidden md:block rounded-lg px-20 py-3 text-[white] text-[18px] font-semibold cursor-pointer hover:bg-red-600'>
+          <button onClick={() => navigate('/')} className='bg-red-500 hidden md:block rounded-lg px-20 py-3 text-[white] text-[18px] font-semibold cursor-pointer hover:bg-red-600'>
             Back to Home
           </button>
         </div>
@@ -294,7 +330,7 @@ const ViewCard = () => {
               
               <div className='bg-[#FAF9F6] shadow-sm shadow-gray-500 rounded-lg w-[98%] md:w-[48%] h-[60px] flex items-center justify-center '>
                 <div className='text-[red] h-12 w-12 rounded-full border-2 border-red-500 flex items-center justify-center font-semibold text-[20px] bg-gray-300'>
-                  T
+                  { cardDetails.host?.name.slice(0,1).toUpperCase() }
                 </div>
                 <div className='flex flex-col ml-1'>
                   <div>Hosted by - {cardDetails.host?.name}</div>
@@ -369,12 +405,12 @@ const ViewCard = () => {
               cardDetails.host?._id !== userData._id ? 
               (
                 <div className='w-full flex items-center justify-center flex-row gap-3'>
-                  <button onClick={() => setShowBookingPopUp(true)} className='bg-[red] w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-red-600 border border-gray-800'>
-                    Reserve
+                  <button onClick={() => setShowBookingPopUp(true)} className='bg-[red] w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-red-600 border border-gray-800 flex text-center justify-center items-center gap-1 flex-row'>
+                    <HiOutlineTicket className='text-[22px]'/> Reserve
                   </button>
 
-                  <button onClick={() => HandleWhatsappConnect(cardDetails.host.phone , title)} className='bg-green-500 w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-green-600 border border-gray-800'>
-                    Connect 
+                  <button onClick={() => HandleWhatsappConnect(cardDetails.host.phone , title)} className='bg-green-500 w-[50%] py-3 md:py-4 rounded-lg text-[18px] text-[white] font-semibold cursor-pointer hover:bg-green-600 border border-gray-800 flex text-center items-center justify-center flex-row gap-1'>
+                    <FaWhatsapp className='text-[22px]'/> Connect 
                   </button>
                 </div>
               ) : 
@@ -392,15 +428,15 @@ const ViewCard = () => {
               Reviews
             </p>
 
-            <div className='w-full h-auto md:h-[60px] flex flex-col md:flex-row justify-center items-center gap-2 '>
-                <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
+            <div className='bg-[#FAF9F6] w-full h-auto md:h-[60px] flex flex-col md:flex-row justify-center items-center gap-2 '>
+                <div className='text-[18px] md:text-[20px] text-nowrap shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
                   Write a review
-                  <button onClick={() => setShowReviewPopUp(true)} className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
+                  <button onClick={() => HandleReviewPopUp() } className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
                     Review
                   </button>
                 </div>
 
-                <div className='text-[18px] md:text-[20px] shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
+                <div className='text-[18px] md:text-[20px] text-nowrap shadow-sm shadow-gray-500 rounded-lg h-[50px] w-[98%] md:w-[48%] flex items-center justify-center flex-row gap-2 border border-gray-400'>
                   Summarize with AI
                   <button onClick={() => setShowSummarizePopUp(true)} className='bg-[red] w-[85px] py-2 md:py-1 rounded-lg text-[14px] text-[white] cursor-pointer hover:bg-red-600 border border-gray-800'>
                     Summarize
@@ -408,39 +444,70 @@ const ViewCard = () => {
                 </div>
             </div>
 
-            <div className='bg-gray-100 rounded-lg w-[98%] h-[130px] mt-2 flex flex-wrap overflow-y-auto justify-center items-center gap-3 md:gap-4'>
-              
-              {
-                reviews.length > 0 && 
-                reviews.map((itr) => (
-                  <div className='bg-[#FAF9F6] w-[48%] md:w-[200px] h-auto md:h-auto overflow-y-auto rounded-lg border border-gray-600 shadow-sm shadow-gray-500'>
-                    <div className=' flex justify-between px-2 items-center'>
-                      <p className='text-[14px] md:text-[16px]'> {itr.guest.name} </p>
-                      <p className='text-[14px] md:text-[16px] text-red-500'> {itr.createdAt.split('T')[0]} </p>
-                    </div>
-                    <div className=' text-[14px] md:text-[16px] w-full flex items-center justify-start px-2 text-[#ff0048]'>
-                      {(itr.rating === 1) && (<IoIosStar />) }
-                      {(itr.rating === 2) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /></div>) }
-                      {(itr.rating === 3) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
-                      {(itr.rating === 4) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
-                      {(itr.rating === 5) && (<div className='flex flex-row'><IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /> <IoIosStar /></div>) }
-                    </div>
-                    <div className=' w-full px-2'>
-                      <p className='text-[12px] md:text-[14px]'>
-                        {itr.feedback}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              }
+            {/* ----------- Reviews --------------- */}
+            <div className='w-full mt-6'>
+              <div className='flex items-center gap-2 mb-4 px-1'>
+                  <div className='w-1 h-6 bg-red-600 rounded-full'></div>
+                  <h2 className='text-lg font-bold text-gray-800 tracking-tight'>Guest Reviews</h2>
+                  <span className='bg-red-50 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full border border-red-100'>
+                      {reviews.length}
+                  </span>
+              </div>
 
-              {
-                reviews.length === 0 && 
-                <div className='font-semibold font-mono text-[22px] text-center text-gray-600'>
-                  No reviews!
-                </div>
-              }
+              <div className='w-full flex overflow-x-auto md:overflow-y-auto pb-4 gap-4 no-scrollbar snap-x snap-mandatory scroll-smooth'>
+                  {reviews.length > 0 ? (
+                      reviews.map((itr, index) => (
+                          <div 
+                              key={index} 
+                              className='shrink-0 w-[280px] md:w-[320px] bg-[#ffebeb] border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300 snap-start relative'
+                          >
+                              <div className='flex justify-between items-start mb-3'>
+                                  <div className='flex flex-col'>
+                                      <span className='font-bold text-gray-900 text-[15px] capitalize truncate w-32'>
+                                          {itr.guest.name}
+                                      </span>
+                                      <span className='text-[11px] text-gray-400 font-medium uppercase tracking-wider'>
+                                          {new Date(itr.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                      </span>
+                                  </div>
+                                  <div className='flex items-center bg-red-50 px-2 py-1 rounded-lg gap-1'>
+                                      <IoIosStar className='text-red-500 text-sm' />
+                                      <span className='text-red-600 font-black text-xs'>{itr.rating}.0</span>
+                                  </div>
+                              </div>
 
+                              <div className='flex gap-0.5 mb-3'>
+                                  {[...Array(5)].map((_, i) => (
+                                      <IoIosStar 
+                                          key={i} 
+                                          className={`text-[13px] ${i < itr.rating ? 'text-red-500' : 'text-gray-200'}`} 
+                                      />
+                                  ))}
+                              </div>
+
+                              <div className='relative'>
+                                  <p className='text-[13px] text-gray-600 leading-relaxed italic line-clamp-3'>
+                                      "{itr.feedback}"
+                                  </p>
+                              </div>
+                              
+                              <div className='absolute bottom-0 right-4 translate-y-1/2'>
+                                  <div className='w-8 h-8 bg-red-600 rounded-full flex items-center justify-center border-4 border-white shadow-sm'>
+                                      <span className='text-white text-[10px] font-bold'>{itr.guest.name.charAt(0).toUpperCase()}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      ))
+                  ) : (
+                      <div className='w-full py-10 flex flex-col items-center justify-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200'>
+                          <div className='w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-3'>
+                              <IoIosStar className='text-white text-2xl' />
+                          </div>
+                          <p className='font-bold text-gray-400 text-sm tracking-wide'>NO REVIEWS YET</p>
+                          <p className='text-[11px] text-gray-300'>Be the first one to share your experience!</p>
+                      </div>
+                  )}
+              </div>
             </div>
 
           </div>
@@ -511,12 +578,12 @@ const ViewCard = () => {
   
                 <div className='w-full flex items-center justify-center gap-5 '>
                   <button disabled={updating} onClick={HandleUpdateListing} className='px-5 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer mt-2 md:text-[18px] text-nowrap' >
-                    { updating ? 'Updating' : 'Update Listing' }
+                    { updating ? <Loader /> : 'Update Listing' }
                   </button>
                   
                   {/* ----- Delete ----- */}
                   <button onClick={HandleDeleteListing} className='px-5 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer mt-2 md:text-[18px] text-nowrap' >
-                    { deleting ? 'Deleting' : 'Delete Listing' }
+                    { deleting ? <Loader /> : 'Delete Listing' }
                   </button>
                 </div>
   
@@ -530,28 +597,28 @@ const ViewCard = () => {
 
        { showBookingPopUp &&
 
-          <div className='gap-2  w-full h-full flex items-center justify-center bg-[#000000a9] fixed top-0 z-100 p-5  backdrop-blur-sm md:flex-row md:gap-[100px] flex-col'>
+          <div className='gap-2  w-full h-full flex items-center justify-center bg-[#000000a9] fixed top-0 z-100 p-5  backdrop-blur-sm md:flex-row md:gap-10 flex-col'>
 
             <div onClick={() => setShowBookingPopUp(false)} className='h-8 w-8 bg-[red] rounded-full flex justify-center items-center top-[6%] left-[25px] absolute text-[18px] font-bold'>
               <RxCross2/>
             </div>
 
             <form onSubmit={(e) => {e.preventDefault()}}
-            className='h-[50%] md:max-w-[450px] w-[90%] md:h-[450px] overflow-auto bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#dedddd]'>
+            className='shadow-sm shadow-gray-400 h-[50%] md:max-w-[450px] w-[90%] md:h-[450px] overflow-auto bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#dedddd]'>
               
-              <h1 className='w-full flex items-center justify-center py-2.5 text-[25px] border-b border-[#a3a3a3] '>
+              <h1 className='font-semibold w-full flex items-center justify-center py-2.5 text-[25px] border-b-2 border-[#a3a3a3] '>
                 Confirm & Book
               </h1>
 
-              <div className='w-full h-[80%] bg-[#79797933] mt-2.5 rounded-lg p-2.5 md:h-[70%]'>
-                <h3 className='text-[14px] md:text-[19px] font-semibold'>
+              <div className='w-full h-[80%] flex justify-center items-center flex-col border-2 border-gray-200 bg-[#fcf5f5] shadow-sm shadow-gray-300 mt-2.5 rounded-lg p-2.5 md:h-[70%]'>
+                <h3 className='w-full flex items-start text-[18px] md:text-[18px] font-semibold'>
                   Your Trip - 
                 </h3>
 
                 {/* // ---------------------------------------- */}
 
-                <div className='w-[90%] flex items-center justify-center flex-col gap-1 md:gap-2 md:justify-center md:flex-col md:items-center mt-1 md:mt-2  ' >
-                  <label className='text-[18px] md:text-[20px]'> Select Dates </label>
+                <div className='w-[98%] flex items-center justify-center flex-col gap-1 md:gap-2 md:justify-center md:flex-col md:items-center mt-0 md:mt-2  ' >
+                  <label className='text-[14px] md:text-[18px] font-semibold'> Select Dates </label>
                   
                   {/* ------ Exclude Dates Using DatePicker ------ */}
                   <DatePicker 
@@ -582,11 +649,11 @@ const ViewCard = () => {
                     minDate={ new Date() }
                     isClearable={true}
                     placeholderText='Select In/Out Dates'
-                    className="w-full max-w-[300px] h-10 md:h-12 border-[#555656] border-2 rounded-[10px] px-3 text-center"
+                    className="w-full  max-w-[300px] md:max-w-[400px] h-10 md:h-12 border-[#555656] border-2 rounded-[10px] px-3 text-center"
                   />
                 </div>
 
-                <div className='w-full flex items-center justify-center flex-col gap-1 md:gap-2 mt-2'>
+                <div className='w-full flex items-center px-3 justify-center flex-col gap-1 md:gap-1 mt-2'>
                   <p className='font-semibold text-[12px] md:text-[16px]'> CheckIn - <span>{checkIn.split('T')[0]}</span> </p>
                   <p className='font-semibold text-[12px] md:text-[16px]'> CheckOut - <span>{checkOut.split('T')[0]}</span> </p>
                 </div>
@@ -594,8 +661,8 @@ const ViewCard = () => {
                 {/* // ---------------------------------------- */}
 
                 <div className='w-full flex items-center justify-center'>
-                  <button disabled={booking} onClick={() => HandleBooking(cardDetails._id)} className='px-20 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer text-nowrap mt-2.5' >
-                    { booking ? 'Booking..' : 'Book Now' }
+                  <button disabled={booking} onClick={() => HandleBooking(cardDetails._id)} className='px-20 py-2.5 bg-[red] text-[white] text-[15px] md:px-[100px] rounded-lg cursor-pointer text-nowrap mt-2.5 flex text-center items-center justify-center gap-1' >
+                    <IoTicketSharp /> { booking ? <Loader /> : 'Book Now' }
                   </button>
                 </div>
 
@@ -603,25 +670,38 @@ const ViewCard = () => {
 
             </form>
 
-            <div className='h-[45%] md:max-w-[450px] w-[90%] md:h-[450px] bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#e2e1e1] '>
+            <div className='shadow-md shadow-gray-400 h-[45%] md:max-w-[450px] w-[90%] md:h-[450px] bg-[#f7fbfcfe] p-5 rounded-lg flex items-center justify-center flex-col gap-2.5 border border-[#e2e1e1] '>
               
-              <div className='w-[95%] h-[30%] border border-[#abaaaa] rounded-lg flex justify-center items-center gap-2 p-5 overflow-hidden'>
-
-                <div className='w-[70px] h-[90px] flex items-center justify-center shrink-0 rounded-lg md:w-[100px] md:h-[100px]  '>
-                  <img className='w-full h-full  rounded-lg' src={cardDetails.image1} alt="" />
+              <div className='w-[98%] md:w-[95%] h-auto md:h-[30%] bg-white border border-gray-200 rounded-xl shadow-sm flex items-center gap-3 p-2 md:p-3 overflow-hidden hover:shadow-md transition-shadow'>
+                <div className='w-[75px] h-[75px] md:w-[100px] md:h-[100px] flex items-center justify-center shrink-0 rounded-lg overflow-hidden border border-gray-100 shadow-inner'>
+                  <img className='w-full h-full object-cover rounded-lg' src={cardDetails.image1} alt="" />
                 </div>
 
-                <div className='w-[80%] h-[100px] gap-[5px]'>
-                    <h1 className='text-[12px] md:text-[18px] w-[90%] truncate'>
-                      { `In ${cardDetails.landmark},${cardDetails.city}` }
-                    </h1>
-                    <h1 className='text-[12px] md:text-[18px]'> {cardDetails.title} </h1>
-                    <h1 className='text-[12px] md:text-[18px]'> {cardDetails.category.toUpperCase()} </h1>
+                <div className='flex-1 flex flex-col justify-center gap-1 md:gap-[5px] overflow-hidden'>
+                  <h1 className='text-[13px] md:text-[16px] w-[95%] truncate text-red-600 font-bold tracking-tight'>
+                    {cardDetails.title}
+                  </h1>
+                
+                  <h1 className='text-[10px] md:text-[12px] text-gray-500 leading-tight line-clamp-2 md:line-clamp-1'> 
+                    {(cardDetails.description?.split(" ").slice(0,14).join(" "))+(cardDetails.description?.split(" ").length > 20 ? '...' : "") } 
+                  </h1>
+                
+                  <div className='mt-1.5 flex items-center justify-between'>
+                    <p className='text-[9px] text-nowrap truncate md:text-[12px] font-medium text-gray-400 uppercase tracking-tighter'> 
+                      {cardDetails.landmark} • {cardDetails.city} 
+                    </p>
+                  
+                    <div className='flex items-center gap-2 md:gap-3 shrink-0'>
+                      <p className='text-[11px] md:text-[14px] text-red-500 font-black'> ₹{cardDetails.rent} </p>
+                      <span className='text-[8px] md:text-[11px] px-2 py-0.5 bg-green-50 text-green-600 border border-green-200 font-bold rounded-md uppercase'> 
+                        {cardDetails.category} 
+                      </span>
+                    </div>
+                  </div>
                 </div>
+            </div>
 
-              </div>
-
-              <div className='w-[95%] h-[60%] border border-[#abaaaa] rounded-lg flex justify-start items-start p-2 md:p-5 gap-1 md:gap-[15px] flex-col'>
+              <div className='w-[95%] shadow-sm shadow-gray-300  h-[60%] border-2 border-gray-200 rounded-lg flex justify-start items-start p-2 md:p-5 gap-1 md:gap-[15px] flex-col'>
                 <h1 className='text-[14px] md:text-[22px] font-semibold'>
                   Booking Price -
                 </h1>
@@ -720,8 +800,8 @@ const ViewCard = () => {
                 />
             </div>
 
-            <button onClick={() => HandleAddReview(cardDetails._id)} disabled={isAddingReview} className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700'>
-              { isAddingReview ? 'Adding Review...' : 'Submit Review' }
+            <button onClick={() => HandleAddReview(cardDetails._id)} disabled={isAddingReview} className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700 flex text-center justify-center items-center'>
+              { isAddingReview ? <Loader /> : 'Submit Review' }
             </button>
 
         </div>
@@ -765,7 +845,7 @@ const ViewCard = () => {
               <div className='w-[90%] flex justify-start items-center flex-col gap-2'>
                 
                 <div className='w-[90%] h-[50px] text-gray-600 rounded-lg bg-gray-50 border-2 border-gray-200 flex justify-center items-center'>
-                  <p className='font-semibold text-[22px]'> Avg Rating: <span> {summarized?.ratingScore}<span>⭐</span> <span className='text-[15px]'> (out of 5) </span> </span> </p>
+                  <p className='font-semibold text-[22px]'> Avg Rating: <span> {Math.ceil(summarized?.ratingScore)}<span>⭐</span> <span className='text-[15px]'> (out of 5) </span> </span> </p>
                 </div>
                 
                 <div className='bg-green-100 w-full border-2 border-green-300 px-2 py-1 rounded-lg '>

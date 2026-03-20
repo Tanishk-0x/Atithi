@@ -43,21 +43,21 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
         )
       }
       {
-        isRare && (
+        isRare && !isNew && (
           <div className='text-amber-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-amber-400'>
             <IoDiamond className='w-5 h-5'/> Rare Find
           </div>
         )
       }
       {
-        isTopRated && (
+        isTopRated && !isNew && (
           <div className='text-rose-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-rose-400'>
             <HiBadgeCheck className='w-5 h-5'/> Top Rated 
           </div>
         )
       }
       {
-        isPopular && (
+        isPopular && !isNew && !isTopRated && (
           <div className='text-green-500 bg-[white] rounded-lg absolute flex items-center justify-center right-1 top-1 gap-[5px] p-[5px] border-2 border-green-400'>
             <HiBadgeCheck className='w-5 h-5'/> Popular 
           </div>

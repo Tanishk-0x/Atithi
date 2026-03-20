@@ -32,58 +32,58 @@ const ListingPage2 = () => {
                 SetUp Your Category
             </div>
 
-            <div className='max-w-[900px] w-full h-[550px] overflow-auto bg-white flex items-center justify-start flex-col gap-10 mt-[30px]'>
-                <h1 className='text-[18px] px-2.5 text-[black] md:text-[30px]'>
+            <div className='max-w-[900px] w-full h-[550px] overflow-auto  flex items-center justify-start flex-col gap-4 md:gap-10 mt-[30px]'>
+                <h1 className='text-[18px] px-2.5 text-[black] mt-5 md:mt-0 md:text-[30px]'>
                     Which of these best describes your place?
                 </h1>
 
 
-                <div className='max-w-[900px] w-full h-full flex items-center justify-center flex-wrap  gap-[15px] md:w-[70%] '>
+                <div className='max-w-[900px] w-[95%] h-[420px] md:h-full flex items-center justify-center flex-wrap gap-[15px] md:w-[70%] '>
 
                     <div onClick={() => setCategory("villa")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "villa" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={` w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "villa" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <GiFamilyHouse className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Villa</h3>
                     </div>
 
                     <div onClick={() => setCategory("farm house")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "farm house" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "farm house" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <FaTreeCity className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Farm House</h3>
                     </div>
 
                     <div onClick={() => setCategory("pool house")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "pool house" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "pool house" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <MdOutlinePool className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Pool House</h3>
                     </div>
 
                     <div onClick={() => setCategory("rooms")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "rooms" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "rooms" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <MdBedroomParent className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Rooms</h3>
                     </div>
 
                     <div onClick={() => setCategory("flat")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "flat" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "flat" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <MdOutlineMapsHomeWork className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Flat</h3>
                     </div>
 
                     <div onClick={() => setCategory("pg")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "pg" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "pg" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <IoBedOutline className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>PG</h3>
                     </div>
 
                     <div onClick={() => setCategory("cabin")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "cabin" ? 'border-3 border-[#8b8b8b]' : '' } `}>
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "cabin" ? 'border-3 border-[#8b8b8b]' : '' } `}>
                         <GiWoodCabin className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Cabin</h3>
                     </div>
 
                     <div onClick={() => setCategory("shops")} 
-                    className={`w-[180px] h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "shops" ? 'border-3 border-[#8b8b8b]' : '' } `}>                        <BsShop className='w-[30px] h-[30px] text-[black]'/> 
+                    className={`w-[120px] h-20 md:w-[180px] md:h-[100px] flex justify-center items-center flex-col cursor-pointer border-2 border-[#c7c7c7] hover:border-[#a6a5a5] text-[16px] rounded-lg ${ category == "shops" ? 'border-3 border-[#8b8b8b]' : '' } `}>                        <BsShop className='w-[30px] h-[30px] text-[black]'/> 
                         <h3>Shops</h3>
                     </div>
 

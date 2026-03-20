@@ -7,6 +7,7 @@ import axios from 'axios';
 import { authDataContext } from '../Context/AuthContext';
 import toast from 'react-hot-toast';
 import { userDataContext } from '../Context/UserContext';
+import Loader from '../Components/Loader'; 
 
 
 const Login = () => {
@@ -24,21 +25,29 @@ const Login = () => {
 
   // ---------- Handle Login ----------
   const LoginHandler = async (e) => {
+    if(loading){
+      return ; 
+    }
+
     try {
       e.preventDefault() ; 
       setLoading(true);
       const res = await axios.post( serverUrl + "/auth/login" , 
         {email , password} , {withCredentials : true}
       );
-      toast.success(res.data.message); 
-      setUserData(res.data.user);
-      setEmail(""); 
-      setPassword("");
-      navigate('/');
+      if(res.data.success){
+        toast.success(res.data.message); 
+        setUserData(res.data.user);
+        setEmail(""); 
+        setPassword("");
+        navigate('/');
+        setLoading(false); 
+      }
     }
     catch (error) {
       console.log(error);
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message); 
+      setLoading(false); 
     }
     finally{
       setLoading(false)
@@ -82,8 +91,8 @@ const Login = () => {
               }
           </div>
 
-          <button className='bg-[red] w-[90%] mt-2 h-12 rounded-lg text-white cursor-pointer text-[18px]'>
-            {loading ? 'loading' : 'Login'}
+          <button className='bg-[red] w-[90%] mt-2 h-12 rounded-lg text-white cursor-pointer text-[18px] flex text-center items-center justify-center'>
+            {loading ? <Loader /> : 'Login'}
           </button>
 
           <p className='text-[18px] mb-6 mt-2'>Does not have account? <span className='text-[19px] text-[red] cursor-pointer' onClick={() => navigate('/signup')}> Signup </span></p>

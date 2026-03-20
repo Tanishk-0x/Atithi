@@ -50,6 +50,10 @@ const ListingContext = ({children}) => {
 
     // ---------- Add Listing -----------
     const HandleAddListing = async () => {
+        if(adding){
+            return ; 
+        }
+
         try {
             // Formdata
             setAdding(true); 
@@ -79,29 +83,36 @@ const ListingContext = ({children}) => {
                 formData , {withCredentials : true}
             ); 
 
-            setTitle(""); 
-            setDescription(""); 
-            setFrontEndImage1(null);
-            setFrontEndImage2(null);
-            setFrontEndImage3(null);
-            setBackEndImage1(null); 
-            setBackEndImage2(null); 
-            setBackEndImage3(null); 
-            setRent(""); 
-            setCity(""); 
-            setLandmark(""); 
-            setCategory("");  
-            setAmenities(""); 
+            if(res.data.success){
+                setTitle(""); 
+                setDescription(""); 
+                setFrontEndImage1(null);
+                setFrontEndImage2(null);
+                setFrontEndImage3(null);
+                setBackEndImage1(null); 
+                setBackEndImage2(null); 
+                setBackEndImage3(null); 
+                setRent(""); 
+                setCity(""); 
+                setLandmark(""); 
+                setCategory("");  
+                setAmenities(""); 
 
-            toast.success(res.data.message); 
-            navigate('/'); 
-            setAdding(false); 
+                toast.success(res.data.message); 
+                navigate('/'); 
+                setAdding(false); 
+            }
+            
         }
 
         catch (error) {
             toast.error("Error While Adding Listing!"); 
             console.log(error);
             setAdding(false);      
+        }
+
+        finally{
+            setAdding(false); 
         }
     }
 
@@ -113,15 +124,21 @@ const ListingContext = ({children}) => {
             const res = await axios.get(serverUrl + `/listing/get?page=${page}&limit=12` , 
                 {withCredentials:true}
             );     
-            setListingData(res.data.listing);
-            setNewListingData(res.data.listing); 
-            setTotalPages(res.data.totalPages); 
-            setLoading(false); 
+            if(res.data.success){
+                setListingData(res.data.listing);
+                setNewListingData(res.data.listing); 
+                setTotalPages(res.data.totalPages); 
+                setLoading(false); 
+            }
         }
 
         catch (error) {
             console.log(error);  
             setLoading(false);    
+        }
+
+        finally{
+            setLoading(false); 
         }
     }
 

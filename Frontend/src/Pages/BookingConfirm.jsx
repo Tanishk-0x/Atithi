@@ -27,10 +27,11 @@ import { RxCross2 } from "react-icons/rx";
 import { bookingDataContext } from '../Context/BookingContext';
 import { ImCancelCircle } from "react-icons/im";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
+import Loader from '../Components/Loader';
+import toast from 'react-hot-toast'; 
 
 const BookingConfirm = () => {
 
-    const [showReviewPopUp , setShowReviewPopUp] = useState(false); 
 
     // to fetch id from params (URL) 
     const {id} = useParams(); 
@@ -41,6 +42,8 @@ const BookingConfirm = () => {
         rating , setRating , 
         isAddingReview , 
         HandleAddReview ,
+        showReviewPopUp ,
+        setShowReviewPopUp
     } = useContext(reviewDataContext); 
 
     const {
@@ -64,6 +67,28 @@ const BookingConfirm = () => {
     const SetImage = (path) => {
         setImagePath(path); 
     }
+
+    // ----------- Handle Whatsapp Connect ------------
+    const HandleWhatsappConnect = (phone , title) => {
+        const phoneno = Number(phone); 
+        // create message , embeded url , redirect 
+        toast.success("Redirecting to whatsapp"); 
+        const msg = `Hi! I'have booked a listing: ${title} ` ; 
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}` ; 
+        window.open(url , "_blank") ; 
+    }
+
+    // --------- Handle Cancel Booking ---------
+    const HandleCancelBooking = (id) => {
+        if(booking.status && booking.status === 'cancelled'){
+            toast.error("Booking Has Already Cancelled!"); 
+            return ; 
+        }
+        else{
+            CancelBooking(id); 
+        }
+    }
+
 
   return (
 
@@ -169,7 +194,7 @@ const BookingConfirm = () => {
                         <div className='flex flex-row gap-1 items-center justify-center'>
                             <LuBuilding className='text-[red]'/> Booking Id 
                         </div>
-                        <p className='font-semibold'> {`BD-${id}`} </p>
+                        <p className='font-semibold'> {`BD-${booking._id?.slice(-8).toUpperCase()}`} </p>
                     </div>
                     <div className='w-full text-[14px] md:text-[18px] flex justify-between items-center px-2'>
                         <div className='flex flex-row gap-1 items-center justify-center'>
@@ -185,9 +210,9 @@ const BookingConfirm = () => {
                     </div>
                     <div className='w-full text-[14px] md:text-[18px] flex justify-between items-center px-2'>
                         <div className='flex flex-row gap-1 items-center justify-center'>
-                            <FiUsers className='text-[red]'/> Number of Guests
+                            <FiUsers className='text-[red]'/> Guest Allowed
                         </div>
-                        <p className='font-semibold'>  2 Adult </p>
+                        <p className='font-semibold'>  {booking.listing?.maxGuestAllowed} Adult </p>
                     </div>
                     <div className='w-full text-[14px] md:text-[18px] flex justify-between items-center px-2'>
                         <div className='flex flex-row gap-1 items-center justify-center'>
@@ -220,7 +245,7 @@ const BookingConfirm = () => {
                 </div>
 
                 <div className='w-[95%] flex items-center justify-between mt-2'>
-                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                    <button onClick={() => HandleWhatsappConnect( booking.host?.phone , booking.listing?.title)} className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <FaWhatsapp className='font-semibold'/> Whatsapp
                     </button>
 
@@ -229,8 +254,8 @@ const BookingConfirm = () => {
                         <VscFeedback className='font-semibold'/> Review
                     </button>
 
-                    <button onClick={() => CancelBooking(booking._id)}  className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
-                        <ImCancelCircle className='font-semibold'/> { isCancelling ? 'loading' : 'Cancel' }
+                    <button onClick={() => HandleCancelBooking(booking._id)}  className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
+                        <ImCancelCircle className='font-semibold'/> { isCancelling ? <Loader /> : 'Cancel' }
                     </button>
                 </div>
 
@@ -287,8 +312,8 @@ const BookingConfirm = () => {
                     />
                 </div>
 
-                <button onClick={() => HandleAddReview(booking?.listing._id)} disabled={isAddingReview}  className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700'>
-                    { isAddingReview ? 'Adding Review...' : 'Submit Review' }
+                <button onClick={() => HandleAddReview(booking?.listing._id)} disabled={isAddingReview}  className='bg-teal-600 w-[95%] h-[50px] rounded-lg text-[white] text-[18px] font-semibold cursor-pointer hover:bg-teal-700 flex text-center justify-center items-center'>
+                    { isAddingReview ? <Loader /> : 'Submit Review' }
                 </button>
 
             </div>

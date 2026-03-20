@@ -31,6 +31,11 @@ const BookingContext = ({children}) => {
         if(booking){
             return ; 
         }
+
+        if(!checkIn || !checkOut){
+            toast.error("Dates Can't Be Empty!"); 
+            return ; 
+        }
          
         try {
             setBooking(true);
@@ -38,12 +43,13 @@ const BookingContext = ({children}) => {
                 {checkIn , checkOut , totalRent:total} ,
                 {withCredentials : true}
             );
-            await getUserDetails() ; 
-            await getListings() ; 
-            setBookingData(res.data.booking);
-            toast.success(res.data.message);
-            setBooking(false); 
+
             if(res.data.success){
+                await getUserDetails() ; 
+                await getListings() ; 
+                setBookingData(res.data.booking);
+                toast.success(res.data.message);
+                setBooking(false); 
                 navigate('/waiting');
             }
         }
@@ -53,6 +59,10 @@ const BookingContext = ({children}) => {
             setBookingData(null);
             setBooking(false); 
             toast.error(error.response.data.message); 
+        }
+
+        finally{
+            setBooking(false); 
         }
     }
 

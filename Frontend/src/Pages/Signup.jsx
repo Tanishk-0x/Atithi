@@ -7,6 +7,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { authDataContext } from '../Context/AuthContext';
 import toast from 'react-hot-toast';
 import { userDataContext } from '../Context/UserContext';
+import Loader from '../Components/Loader'; 
 
 const Signup = () => {
 
@@ -81,20 +82,25 @@ const Signup = () => {
 
     try {
       setLoading(true) ; 
+      const Otp = Number(otp); 
       const res = await axios.post( serverUrl + "/auth/signup" , 
-        {name , email , password , otp} , {withCredentials : true}
+        {name , email , password , otp : Otp} , {withCredentials : true}
       ); 
-      toast.success(res.data.message) ; 
-      setUserData(res.data.user) ; 
-      setName("") ; 
-      setEmail("") ;
-      setPassword("") ; 
-      navigate('/') ; 
+      if(res.data.success){
+        toast.success(res.data.message) ; 
+        setUserData(res.data.user) ; 
+        setName("") ; 
+        setEmail("") ;
+        setPassword("") ; 
+        navigate('/') ;
+        setLoading(false); 
+      } 
     }
 
     catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+      setLoading(false); 
     }
 
     finally{
@@ -133,15 +139,15 @@ const Signup = () => {
 
           <button onClick={(e) => {
             SendOtp(e);  
-          }} className='bg-[red] w-[90%] mt-2 h-10 rounded-lg text-white cursor-pointer text-[16px]'>
-            { sending ? 'loading..' : 'Verify Email' }
+          }} className='bg-[red] w-[90%] mt-2 h-10 rounded-lg text-white cursor-pointer text-[16px] flex text-center items-center justify-center'>
+            { sending ? <Loader /> : 'Verify Email' }
           </button>
 
           {
             isVerifying && 
             <div className='w-[90%] flex items-start justify-start flex-col gap-0 mt-1 '>
               <label htmlFor="otp" className='text-[18px]'>Otp : <span className='text-gray-700 text-[16px]'>An otp is sent to your email</span></label>
-              <input type="text" placeholder='enter otp' id='otp' required value={otp} onChange={(e) => setOtp(Number(e.target.value))} className='w-[98%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
+              <input type="number" placeholder='enter otp' id='otp' required value={otp} onChange={(e) => setOtp(Number(e.target.value))} className='w-[98%] h-10 border-2 border-[#555656] rounded-lg text-[18px] px-4' />
             </div>
           }
 
@@ -168,8 +174,8 @@ const Signup = () => {
 
             </div>
 
-          <button className='bg-[red] w-[90%] mt-2 h-12 rounded-lg text-white cursor-pointer text-[18px]'>
-            { loading ? 'loading' : 'Signup' }
+          <button className='bg-[red] w-[90%] mt-2 h-12 rounded-lg text-white cursor-pointer text-[18px] flex text-center items-center justify-center'>
+            { loading ? <Loader /> : 'Signup' }
           </button>
 
           <p className='text-[18px]'>Already have an account? <span className='text-[19px] text-[red] cursor-pointer' onClick={() => navigate('/login')}> Login </span></p>

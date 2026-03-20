@@ -13,6 +13,7 @@ const ReviewContext = ({children}) => {
     const [feedback , setFeedback] = useState(''); 
     const [rating , setRating] = useState(3); 
     const [isAddingReview , setIsAddingReview] = useState(false); 
+    const [showReviewPopUp , setShowReviewPopUp] = useState(false); 
     const [reviews , setReviews] = useState([]);
     const [reviewsHost , setReviewsHost] = useState([]);  
     const [summarized , setSummarized] = useState({}); 
@@ -32,6 +33,8 @@ const ReviewContext = ({children}) => {
             if(res.data.success){
                 setFeedback(" "); 
                 toast.success("Thanks For Your Feedback"); 
+                setIsAddingReview(false); 
+                setShowReviewPopUp(false); 
             }
         
         }
@@ -39,6 +42,7 @@ const ReviewContext = ({children}) => {
         catch (error) {
             toast.error("Error While Adding Review"); 
             console.log(error); 
+            setIsAddingReview(false); 
         }
 
         finally{
@@ -54,7 +58,6 @@ const ReviewContext = ({children}) => {
             ); 
 
             if(res.data.success){
-                toast.success("Reviews Fetched"); 
                 setReviews(res.data.reviews);  
             }
         }
@@ -74,7 +77,6 @@ const ReviewContext = ({children}) => {
 
             if(res.data.success){
                 setReviewsHost(res.data.reviews); 
-                toast.success("Reviews Fetched"); 
             }
         }
         
@@ -125,6 +127,8 @@ const ReviewContext = ({children}) => {
         SummarizeReviews , 
         isSummarizing , 
         summarized , 
+        showReviewPopUp , 
+        setShowReviewPopUp , 
     }; 
 
     return (

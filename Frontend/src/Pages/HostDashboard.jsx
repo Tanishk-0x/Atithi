@@ -13,6 +13,7 @@ import { RxCross2 } from "react-icons/rx";
 import { TiInputChecked } from "react-icons/ti";
 import { MdDoNotDisturb } from "react-icons/md";
 import { ImCancelCircle } from "react-icons/im";
+import Loader from '../Components/Loader';
 
 const HostDashboard = () => {
 
@@ -44,11 +45,12 @@ const HostDashboard = () => {
         revenueStats , 
         totalRevenue , 
         totalBookings ,
+        showPopUp ,
+        setShowPopUp ,
     } = useContext(hostDataContext); 
     
     const [status , setStatus] = useState('all'); 
 
-    const [showPopUp , setShowPopUp] = useState(false); 
     const [showManagePopUp , setShowManagePopUp] = useState(false); 
 
     // ---------- CheckIn -----------
@@ -69,7 +71,7 @@ const HostDashboard = () => {
     {/* ---------- Navbar ----------- */}
       <div className="bg-[#eeeeee] h-18 md:h-[8%] w-[95%] md:w-[90%] mt-4 md:mt-2 rounded-lg flex justify-between items-center px-3">
         <div className="h-full flex items-center justify-center">
-            <img src="./Airbnb-Logo.png" alt="" className="w-[100px] md:w-[130px]"/>
+            <img src="./logo.png" draggable={false} alt="" className="w-[100px] md:w-[98px] py-0 md:py-1"/>
         </div>
 
         <div className="flex flex-row items-center justify-center gap-2 md:gap-4">
@@ -178,7 +180,7 @@ const HostDashboard = () => {
                         
                         {
                             userData?.listing.map((item,key) => (
-                                <div key={key} className="bg-[#edede3] min-h-[110px] w-[95%] flex flex-row rounded-lg shrink-0">
+                                <div key={key}  className="bg-[#edede3] min-h-[110px] w-[95%] flex flex-row rounded-lg shrink-0">
                                     <div className="h-full w-[30%] flex items-center justify-center p-1">
                                         <img src={item.image1} alt="" className="rounded-lg w-full h-[90px] object-cover" />
                                     </div>
@@ -273,13 +275,13 @@ const HostDashboard = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-2 w-full md:w-auto justify-end">
-                                    <button onClick={() => RejectBooking(item._id)} className="px-2 md:px-3 py-1 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
-                                        { isReject ? 'loading' : 'Reject' }
+                                    <button onClick={() => RejectBooking(item._id)} className="px-2 md:px-3 py-1 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px] flex text-center items-center justify-center">
+                                        { isReject ? <Loader /> : 'Reject' }
                                     </button>
 
                                     <button onClick={() => approveBooking(item._id)}
-                                    className="px-2 md:px-2 py-2 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
-                                        { isApproving ? 'Approving' : 'Approve'}
+                                    className="px-2 md:px-2 py-2 md:py-3 font-semibold md:text-[14px] bg-red-500 rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px] flex text-center items-center justify-center">
+                                        { isApproving ? <Loader /> : 'Approve'}
                                     </button>
                                 </div>
                             </div>
@@ -315,7 +317,6 @@ const HostDashboard = () => {
                                     <button onClick={() => {
                                         setShowPopUp(true) ; 
                                         setBookingId(item._id);
-                                        console.log("ID: " , bookingId); 
                                     }} className="bg-red-500 px-2 md:px-3 py-2 md:py-3 font-semibold md:text-[14px] rounded-lg cursor-pointer text-[white] hover:bg-red-600 text-[12px]">
                                         CheckIn
                                     </button>
@@ -346,8 +347,8 @@ const HostDashboard = () => {
                 </div>
                 <button onClick={() => 
                     CheckInBooking(bookingId , passCode)
-                } className="px-4 py-2 bg-red-500 cursor-pointer rounded-lg text-[white] hover:bg-red-600 text-[18px] md:text-[22px]">
-                    { isCheckIn ? 'loading..' : 'CheckIn' }
+                } className="px-4 py-2 bg-red-500 cursor-pointer rounded-lg text-[white] hover:bg-red-600 text-[18px] md:text-[22px] flex text-center items-center justify-center">
+                    { isCheckIn ? <Loader /> : 'CheckIn' }
                 </button>
             </div>
         }
@@ -385,7 +386,7 @@ const HostDashboard = () => {
 
                         <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-semibold">
                             <tr>
-                                <th className="px-1 py-4 text-[white] bg-red-500 border-r-2 border-r-gray-500 text-center">S.no</th>
+                                <th className="px-1 py-4 text-[white] bg-red-500 border-r-2 border-r-gray-500 text-center">Id</th>
                                 <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">title</th>
                                 <th className="px-4 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">guest</th>
                                 <th className="px-6 py-4 text-[white] bg-red-500 border-r-2 text-center border-r-gray-500">checkin</th>
@@ -405,7 +406,7 @@ const HostDashboard = () => {
                                     status === 'approved' ? approved : []
                                 ).map((itr , index) => (
                                     <tr className="hover:bg-gray-50 transition-colors outline-1 outline-gray-400">
-                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> {index+1} </td>
+                                        <td className="text-center py-3 border-r-2 border-r-gray-200"> BD-{itr._id.slice(-8).toUpperCase()} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.listing?.title || "Property Deleted"} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.guest?.name} </td>
                                         <td className="text-center py-3 border-r-2 border-r-gray-200"> {itr.checkIn.split('T')[0]} </td>
@@ -418,18 +419,18 @@ const HostDashboard = () => {
                                                 <button onClick={() => {
                                                     setBookingId(itr._id); 
                                                     setShowPopUp(true);
-                                                }} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
-                                                    { isCheckIn ? 'loading' : 'CheckIn' }
+                                                }} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600 flex text-center items-center justify-center">
+                                                    { isCheckIn ? <Loader /> : 'CheckIn' }
                                                 </button>
                                                ) : 
                                                 itr.status === 'ongoing' ? (
-                                                    <button onClick={() => CompleteBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
-                                                        { isComplete ? 'loading' : 'Complete' }
+                                                    <button onClick={() => CompleteBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600 flex text-center items-center justify-center">
+                                                        { isComplete ? <Loader /> : 'Complete' }
                                                     </button>
                                                 ) : 
                                                 itr.status === 'pending' ? (
-                                                    <button onClick={() => approveBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600">
-                                                        { isApproving ? 'loading' : 'Approve' }
+                                                    <button onClick={() => approveBooking(itr._id)} className="h-8 w-16 text-[white] font-semibold bg-[red] rounded-lg cursor-pointer hover:bg-red-600 flex text-center items-center justify-center">
+                                                        { isApproving ? <Loader /> : 'Approve' }
                                                     </button>
                                                 ) : 
                                                 itr.status === 'completed' ? (

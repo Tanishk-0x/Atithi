@@ -28,7 +28,7 @@ const MyListing = () => {
                 <div className='w-full h-[90%] flex items-center justify-center gap-[25px] flex-wrap mt-2 md:mt-[18px]'>
                     {
                     userData.listing.map((list) => (
-                        <Card 
+                        <Card key={list._id}
                             title={list.title} 
                             landmark={list.landmark}
                             city={list.city}
@@ -37,9 +37,10 @@ const MyListing = () => {
                             image3={list.image3}
                             rent={list.rent}
                             id={list._id}
-                            isBooked={list.isBooked}
                             host={list.host}
                             ratings={list.ratings}
+                            viewCount={list.viewCount}
+                            createdAt={list.createdAt}
                         />
                     )) 
                     }

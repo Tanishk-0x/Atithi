@@ -23,6 +23,7 @@ const HostContext = ({children}) => {
     const [approved , setApproved] = useState([]); 
     const [ongoing , setOngoing] = useState([]); 
     const [completed , setCompleted] = useState([]); 
+    const [showPopUp , setShowPopUp] = useState(false); 
 
     // Revenue Stats 
     const [revenueStats , setRevenueStats] = useState([]); 
@@ -39,18 +40,19 @@ const HostContext = ({children}) => {
                 {withCredentials : true} 
             );
 
-            if( res.data?.success ){
-                const result = res.data.data ; 
-                setAllBookings(result?.bookings || []); 
-                setCompleted(result?.completed || []); 
-                setPending(result?.pending || []); 
-                setApproved(result?.approved || []); 
-                setOngoing(result?.ongoing || []); 
+            if( res.data.success ){
+                setAllBookings(res.data.booking); 
+
+                // filtering ..
+                setApproved( res.data.booking?.filter( itr => itr.status === 'approved' ) ); 
+                setPending( res.data.booking?.filter( itr => itr.status === 'pending' ) );
+                setOngoing( res.data.booking?.filter( itr => itr.status === 'ongoing' ) );
+                setCompleted( res.data.booking?.filter( itr => itr.status === 'completed' ) );
 
                 setRevenueStats(res.data?.revenueStats); 
                 setTotalRevenue(res.data?.totalRevenue); 
                 setTotalBookings(res.data?.totalBookings); 
-
+                setIsGettingData(false); 
             }
 
         }
@@ -58,6 +60,7 @@ const HostContext = ({children}) => {
         catch (error) {
             console.error("Fetch Error: " , error); 
             toast.error("An Error While Fetching Data!");
+            setIsGettingData(false);
         }
         finally{
             setIsGettingData(false); 
@@ -79,15 +82,17 @@ const HostContext = ({children}) => {
             if(res.data.success){
                 toast.success("Approved"); 
                 await getHostData(); // refresh the page 
+                setIsApproving(false); 
             }
         }
 
         catch (error) {
             console.error("Approval Error:" ,error);
             toast.error("Error While Approving"); 
+            setIsApproving(false); 
         }
         finally{
-            isApproving(false); 
+          setIsApproving(false); 
         }
     }
 
@@ -106,6 +111,7 @@ const HostContext = ({children}) => {
                 toast.success("CheckInned!"); 
                 await getHostData(); 
                 setIsCheckIn(false); 
+                setShowPopUp(false); 
             }
         }
         
@@ -199,6 +205,8 @@ const HostContext = ({children}) => {
         revenueStats , 
         totalRevenue , 
         totalBookings ,
+        showPopUp ,
+        setShowPopUp
     }; 
 
     return (
