@@ -1,9 +1,21 @@
 const OTP = require('../Models/otpModel'); 
 const nodemailer = require('nodemailer'); 
+require('dotenv').config(); 
 
 const GenerateOtp = () => {
     return Math.floor(1000 + Math.random() * 9000);
 }
+
+// create a transport (gmail smtp configuration)
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com' , 
+    port: 587 , 
+    secure: false , 
+    auth : {
+        user: process.env.HOST_EMAIL , 
+        pass: process.env.EMAIL_APP_PASSWORD
+    },
+});
 
 // ---------- Send Otp ----------
 const sendOtp = async (req , res) => {
@@ -17,26 +29,18 @@ const sendOtp = async (req , res) => {
             }); 
         }
 
+        // delete old otps
+        await OTP.deleteMany({ email : email });
+
         // Generate OTP 
         const otp = GenerateOtp(); 
 
         // save otp in DB 
         await OTP.create({
-            email , 
-            otp ,
+            email : email , 
+            otp : otp 
         });
 
-        
-        // create a transport (gmail smtp configuration)
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com' , 
-            port: 587 , 
-            secure: false , 
-            auth : {
-                user: process.env.HOST_EMAIL , 
-                pass: process.env.EMAIL_APP_PASSWORD
-            },
-        });
 
         const htmlContent = `
             <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
