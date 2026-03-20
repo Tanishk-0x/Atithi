@@ -30,6 +30,9 @@ const Signup = async (req , res) => {
         const user = await User.create({
             name , email , password : hashedPassword
         }); 
+        
+        const userObj = user.toObject(); 
+        delete userObj.password ; 
 
         const token = await GenerateToken(user._id); 
 
@@ -43,7 +46,7 @@ const Signup = async (req , res) => {
         return res.status(201).json({
             success : true , 
             message : "Signup SuccessFully" , 
-            user 
+            user : userObj ,
         });
     }
     
@@ -79,6 +82,9 @@ const Login = async (req , res) => {
             })
         }
 
+        const userObj = user.toObject(); 
+        delete userObj.password ; 
+
         const token = await GenerateToken(user._id); 
 
         res.cookie("token" , token , {
@@ -91,7 +97,7 @@ const Login = async (req , res) => {
         return res.status(200).json({
             success : true , 
             message : "Login SuccessFully" , 
-            user 
+            user : userObj ,
         });
 
     }

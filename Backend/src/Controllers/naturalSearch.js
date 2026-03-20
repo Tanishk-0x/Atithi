@@ -43,9 +43,6 @@ const NaturalSearch = async (req , res) => {
         return res.status(200).json({
             success : true , 
             message : "Natural Search Worked!" , 
-            aiResponse : response , 
-            validated : validatedResult , 
-            buildQuery : queryBuilds , 
             matchedListings : listings.length , 
             results : listings , 
         }); 

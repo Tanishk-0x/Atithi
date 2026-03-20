@@ -36,16 +36,20 @@ const sendOtp = async (req , res) => {
         const otp = GenerateOtp(); 
 
         // save otp in DB 
-        await OTP.create({
+        const savedOtp = await OTP.create({
             email : email , 
             otp : otp 
         });
+
+        if (!savedOtp) {
+            throw new Error("Database failed to create OTP record");
+        }
 
 
         const htmlContent = `
             <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                 <div style="background-color: #ef4444; color: white; padding: 25px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 28px; letter-spacing: 1px;">Atithi Rentals 🏠</h1>
+                    <h1 style="margin: 0; font-size: 28px; letter-spacing: 1px;">Atithi 🏡</h1>
                     <p style="margin: 5px 0 0; opacity: 0.9; font-size: 16px;">Secure Account Verification</p>
                 </div>
 
@@ -74,13 +78,20 @@ const sendOtp = async (req , res) => {
         `;
 
         // sending mail 
-        const info = await transporter.sendMail({
-            from: '"Project Alpha 🪴" <projectalpha00956@gmail.com>',
-            to: email, 
-            subject: "Otp Verification - Your Otp Inside",
-            text: `We have send and Otp, valid for 5 min ${otp}`,
-            html: htmlContent,
-        });
+        try {
+            const info = await transporter.sendMail({
+                from: '"Atithi 🏡" <projectalpha00956@gmail.com>',
+                to: email, 
+                subject: "Otp Verification - Your Otp Inside",
+                text: `We have send and Otp, valid for 5 min ${otp}`,
+                html: htmlContent,
+            });
+        } catch (mailError) {
+            return res.status(500).json({
+                success : false , 
+                message : 'Email Server Failed!'
+            }); 
+        }
 
         return res.status(200).json({
             success : true , 

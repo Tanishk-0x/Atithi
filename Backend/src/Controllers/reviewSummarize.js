@@ -18,7 +18,6 @@ const SummarizeReviews = async (req , res) => {
         return res.status(200).json({
             success : true , 
             message : "Reviews Summarized SuccessFully!" , 
-            reviews : reviews , 
             summmarized : Summmarized , 
         }); 
     }

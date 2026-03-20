@@ -19,7 +19,7 @@ const SendMail = async (email , passcode) => {
     const htmlContent = `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden;">
             <div style="background-color: #ef4444; color: white; padding: 20px; text-align: center;">
-                <h1 style="margin: 0;">Project Alpha 🪴</h1>
+                <h1 style="margin: 0;">Atithi 🏡</h1>
                 <p style="margin: 5px 0 0;">Booking Confirmed</p>
             </div>
             <div style="padding: 30px; color: #333;">
@@ -33,14 +33,14 @@ const SendMail = async (email , passcode) => {
                 <p>Enjoy your stay and have a wonderful experience!</p>
             </div>
             <div style="background-color: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #888;">
-                © 2026 Project Alpha | RentHub
+                © 2026 Atithi
             </div>
         </div>
     `;
 
     // sending mail 
     const info = await transporter.sendMail({
-        from: '"Project Alpha 🪴" <projectalpha00956@gmail.com>',
+        from: '"Atithi🏡 " <projectalpha00956@gmail.com>',
         to: email, 
         subject: "🎉 Booking Confirmation - Your Passcode Inside",
         text: `Your Booking is Confirmed! Your check-in passcode is ${passcode}`,

@@ -11,7 +11,7 @@ const getCurrentUser = async (req , res) => {
             populate : [
                 { 
                     path: 'listing' ,
-                    select : 'title landmark city rent image1 image2 image3 isBooked ratings'
+                    select : 'title landmark city rent image1 image2 image3 ratings maxGuestAllowed'
                 },
                 {
                     path: 'host' , 

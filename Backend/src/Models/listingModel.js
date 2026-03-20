@@ -46,16 +46,11 @@ const listingSchema = new mongoose.Schema({
         required : true
     }, 
 
-    guest : {
-        type : mongoose.Schema.Types.ObjectId , 
-        ref : "User" , 
-    }, 
-
     ratings : {
         type : Number , 
-        min : 1 ,
+        min : 0 ,
         max : 5 ,
-        default : 0
+        default : 1
     },
 
     amenities : {

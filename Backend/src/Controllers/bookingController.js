@@ -46,7 +46,21 @@ const createBooking = async (req , res) => {
                 success : false , 
                 message : "Invalid CheckIn/CheckOut Date"
             }); 
-        } 
+        }
+        
+        // check for already booked 
+        const alreadyBooked = await Booking.findOne({
+            listing : id , 
+            guest : req.userId ,
+            status : { $in : ['pending', 'approved', 'ongoing'] }
+        }); 
+
+        if(alreadyBooked){
+            return res.status(403).json({
+                success : false , 
+                message : "You Have Already Booked This Listing!"
+            }); 
+        }
 
         // creating booking
         const booking = await Booking.create({
@@ -73,9 +87,6 @@ const createBooking = async (req , res) => {
                 message : "User Not Found"
             });
         }
-
-        // mark the guest
-        listing.guest = req.userId ; 
 
         // save
         await listing.save(); 
@@ -340,22 +351,10 @@ const getBookingsData = async (req , res) => {
             }
         }); 
 
-        // filter 
-        const pending = bookings.filter(b => b.status === 'pending'); 
-        const approved = bookings.filter(b => b.status === 'approved');
-        const ongoing = bookings.filter(b => b.status === 'ongoing');  
-        const completed = bookings.filter(b => b.status === 'completed'); 
-
         res.status(200).json({
             success : true , 
             message : "Data Fetched SuccessFully" , 
-            data : {
-                bookings ,
-                pending ,
-                approved , 
-                ongoing ,
-                completed , 
-            },
+            booking : bookings ,
             revenueStats : FinalData ,
             totalRevenue : parseInt(totalOverallRevenue) , 
             totalBookings : totalOverallBookings , 
