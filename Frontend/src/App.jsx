@@ -15,6 +15,7 @@ import MyBooking from './Pages/MyBooking'
 import HostDashboard from './Pages/HostDashboard'
 import WaitingPage from './Pages/WaitingPage'
 import BookingConfirm from './Pages/BookingConfirm'
+import NotFound from './Pages/NotFound'; 
 
 const App = () => {
 
@@ -32,6 +33,8 @@ const App = () => {
         <Route path='/mylisting' element={ userData != null ? <MyListing/> : <Navigate to={'/'}/>}/>
         <Route path='/viewcard' element={userData != null ? <ViewCard/> : <Navigate to={'/'}/>}/>
         <Route path='/mybooking' element={userData != null ? <MyBooking/> : <Navigate to={'/'}/>}/>
+
+        <Route path='*' element={<NotFound/>} />
 
         <Route path='/hostdashboard' element={userData != null ? <HostDashboard/> : <Navigate to={'/'}/>}/>
         <Route path='/waiting' element={userData != null ? <WaitingPage/> : <Navigate to={'/'}/>} />
