@@ -11,6 +11,10 @@ const isAuth = async (req , res , next) => {
             }); 
         }
 
+        if (token.startsWith('"') && token.endsWith('"')) {
+            token = token.slice(1, -1);
+        }
+
         const verifyToken = jwt.verify(token , process.env.JWT_SECRET);
         if(!verifyToken){
             res.status(400).json({

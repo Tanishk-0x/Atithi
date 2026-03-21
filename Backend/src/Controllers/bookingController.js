@@ -91,7 +91,7 @@ const createBooking = async (req , res) => {
         // save
         await listing.save(); 
 
-        res.status(201).json({
+        return res.status(201).json({
             success : true , 
             message : "Booking Created SuccessFully" , 
             booking : booking , 
@@ -99,7 +99,7 @@ const createBooking = async (req , res) => {
     }
     
     catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Booking : ${error}`
         }); 
@@ -149,7 +149,7 @@ const ApproveBooking = async (req , res) => {
     }
     
     catch (error) {
-       res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Approving Booking : ${error}`
         }); 
@@ -197,7 +197,7 @@ const CheckInBooking = async (req , res) => {
     }
     
     catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While CheckIn : ${error}`
         }); 
@@ -229,7 +229,7 @@ const CompleteBooking = async (req , res) => {
     }
     
     catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Completing : ${error}`
         });
@@ -260,7 +260,7 @@ const RejectBooking = async (req , res) => {
     }
     
     catch (error) {
-       res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Rejecting : ${error}`
         }); 
@@ -352,7 +352,7 @@ const getBookingsData = async (req , res) => {
             }
         }); 
 
-        res.status(200).json({
+        return res.status(200).json({
             success : true , 
             message : "Data Fetched SuccessFully" , 
             booking : bookings ,
@@ -363,7 +363,7 @@ const getBookingsData = async (req , res) => {
     }
     
     catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Getting Data : ${error}`
         }); 
@@ -412,7 +412,7 @@ const CancelBooking = async (req , res) => {
     }
     
     catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured Cancelling Booking : ${error}`
         }); 
@@ -443,7 +443,7 @@ const FetchBusyDates = async (req , res) => {
             }); 
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success : true , 
             message : 'Dates Fetched SuccessFully!' , 
             dates : busyBookings , 
@@ -452,7 +452,7 @@ const FetchBusyDates = async (req , res) => {
     }
     
     catch (error) {
-          res.status(500).json({
+        return res.status(500).json({
             success : false , 
             message : `An Error Occured While Fetching Dates : ${error}`
         });   

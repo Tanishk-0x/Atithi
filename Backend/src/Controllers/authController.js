@@ -7,6 +7,12 @@ const Signup = async (req , res) => {
     try {
         const {name , email , password , otp} = req.body ; 
         const userExist = await User.findOne({email}); 
+        if(userExist){
+            return res.status(400).json({
+                success : false , 
+                message : "User Already Exist"
+            })
+        }
 
         // Verify Otp 
         const otpCheck = await Otp.findOne({ email , otp }); 
@@ -16,13 +22,6 @@ const Signup = async (req , res) => {
                 success : false , 
                 message : "Invalid or Expired Otp"
             }); 
-        }
-
-        if(userExist){
-            return res.status(400).json({
-                success : false , 
-                message : "User Already Exist"
-            })
         }
 
         const hashedPassword = await bcrypt.hash(password , 10); 
