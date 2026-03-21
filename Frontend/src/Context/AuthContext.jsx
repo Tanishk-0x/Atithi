@@ -5,7 +5,7 @@ export const authDataContext = createContext() ;
 
 const AuthContext = ({children}) => {
 
-    const serverUrl = "https://atithi-backend-6wut.onrender.com" ; 
+    const serverUrl = "https://atithi-go.onrender.com" ; 
 
     let value = {
         serverUrl
