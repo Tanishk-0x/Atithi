@@ -182,7 +182,7 @@ const HostDashboard = () => {
                             userData?.listing.map((item,key) => (
                                 <div key={key}  className="bg-[#edede3] min-h-[110px] w-[95%] flex flex-row rounded-lg shrink-0">
                                     <div className="h-full w-[30%] flex items-center justify-center p-1">
-                                        <img src={item.image1} alt="" className="rounded-lg w-full h-[90px] object-cover" />
+                                        <img src={item?.image1} alt="Image" className="rounded-lg w-full h-[90px] object-cover" />
                                     </div>
                                     <div className="h-full w-[70%] flex justify-between flex-col py-1">
                                         <div className="w-full flex flex-col">
@@ -302,16 +302,16 @@ const HostDashboard = () => {
                         approved.map((item,key) => (
                             <div key={key} className="bg-[#edede3] w-[98%] min-h-[90px] md:h-20 rounded-lg border-b-2 border-[gray] flex justify-between items-center gap-2 p-1 shrink-0">
                                 <div className=" h-full w-[24%]">
-                                    <img src={item.listing.image1} alt="" className="h-full w-full object-cover rounded-lg" />
+                                    <img src={item.listing?.image1} alt="Image" className="h-full w-full object-cover rounded-lg" />
                                 </div>
                                 <div className="px-1 w-[52%] h-full flex flex-col items-start justify-center overflow-hidden">
                                     <div className="w-full flex items-center justify-between">
-                                        <p className="text-[12px] md:text-[14px] font-semibold truncate"> {item.listing.title} </p>
-                                        <p className="text-[12px] md:text-[14px] font-semibold text-[green]"> {`₹${item.totalRent}`} </p>
+                                        <p className="text-[12px] md:text-[14px] font-semibold truncate"> {item.listing?.title} </p>
+                                        <p className="text-[12px] md:text-[14px] font-semibold text-[green]"> {`₹${item?.totalRent}`} </p>
                                     </div>
-                                    <p className="text-[12px] truncate"> {item.guest?.name} </p>
-                                    <p className="text-[12px] font-semibold text-[red] truncate"> {`${item.checkIn.split('T')[0]} - ${item.checkOut.split('T')[0]}`} </p>
-                                    <p className="text-[gray] text-[10px] truncate"> {`${item.listing.landmark}/${item.listing.city}`} </p>
+                                    <p className="text-[12px] truncate"> {item?.guest?.name} </p>
+                                    <p className="text-[12px] font-semibold text-[red] truncate"> {`${item?.checkIn?.split('T')[0]} - ${item?.checkOut?.split('T')[0]}`} </p>
+                                    <p className="text-[gray] text-[10px] truncate"> {`${item?.listing?.landmark}/${item?.listing?.city}`} </p>
                                 </div>
                                 <div className="px-1 w-[22%]">
                                     <button onClick={() => {
