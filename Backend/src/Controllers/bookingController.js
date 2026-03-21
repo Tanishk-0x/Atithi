@@ -281,6 +281,7 @@ const getBookingsData = async (req , res) => {
         }
 
         const bookings = await Booking.find({ host: hostId })
+            .lean()
             .populate('guest' , 'name email')
             .populate('listing' , 'title image1 landmark city')
             .sort({createdAt: -1});
@@ -433,7 +434,7 @@ const FetchBusyDates = async (req , res) => {
 
         const busyBookings = await Booking.find({
             listing : id 
-        }).select('checkIn checkOut -_id'); 
+        }).lean().select('checkIn checkOut -_id'); 
 
         if(!busyBookings){
             return res.status(404).json({

@@ -71,7 +71,11 @@ const getReviews = async (req , res) => {
 
         const reviews = await Review.find(
             { listing : id }
-        ).populate('guest' , 'name').populate('listing' , 'title').sort({ createdAt: -1 }); 
+        ).lean()
+        .populate('guest' , 'name')
+        .populate('listing' , 'title')
+        .select('feedback rating createdAt guest listing')
+        .sort({ createdAt: -1 }); 
 
         if(!reviews){
             return res.status(404).json({

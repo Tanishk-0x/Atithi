@@ -69,6 +69,7 @@ const getListing = async (req , res) => {
 
         // fetch the listings 
         const listings = await Listing.find()
+            .lean()
             .sort({ createdAt: -1 } )
             .skip(skip)
             .limit(limit);
@@ -224,7 +225,7 @@ const searchListing = async (req , res) => {
                 { city : { $regex : query , $options : "i"}} , 
                 { title : { $regex : query , $options : "i"}} , 
             ]
-        }); 
+        }).lean();  
 
         return res.status(200).json({
             success : true , 
