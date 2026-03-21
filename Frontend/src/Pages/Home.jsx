@@ -37,7 +37,6 @@ const Home = () => {
   const HandleKeyDown = (e) => {
     if(e.key == "Enter"){
       e.preventDefault(); 
-      toast.success(searchQuery);
       HandleNaturalSearch(searchQuery); 
     }
   }

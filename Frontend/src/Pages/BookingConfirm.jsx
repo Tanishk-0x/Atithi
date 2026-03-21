@@ -237,13 +237,6 @@ const BookingConfirm = () => {
                     <p> <span className='text-[red]'> {booking?.passCode} </span> </p>
                 </div>
 
-
-                <div className='w-[95%] flex items-center justify-center mt-2'>
-                    <button className='bg-red-600 text-white flex justify-center items-center font-semibold w-full py-4 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
-                        <MdOutlineFileDownload className='font-semibold'/> Download Booking Details As Pdf
-                    </button>
-                </div>
-
                 <div className='w-[95%] flex items-center justify-between mt-2'>
                     <button onClick={() => HandleWhatsappConnect( booking.host?.phone , booking.listing?.title)} className='bg-red-600 text-white flex justify-center items-center font-semibold w-[32%] py-3 rounded-lg cursor-pointer hover:bg-red-500 text-[14px] md:text-[18px] transition-all active:scale-95'>
                         <FaWhatsapp className='font-semibold'/> Whatsapp

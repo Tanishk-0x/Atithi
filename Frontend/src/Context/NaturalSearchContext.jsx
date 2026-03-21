@@ -34,7 +34,6 @@ const NaturalSearchContext = ({children}) => {
                 setSearchListings(res.data?.results); 
                 setMatchedListings(res.data?.matchedListings);
                 setSearchQuery(' '); 
-                toast.success("Listing Searched");
                 setSearched(true); 
             }
             setIsSearching(false); 

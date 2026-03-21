@@ -7,6 +7,18 @@ import { MdNewReleases } from "react-icons/md";
 import { IoDiamond } from "react-icons/io5";
 import { HiBadgeCheck } from "react-icons/hi";
 
+// --- Function to optimize the cloudinary url ---
+const getOptimizedUrl = ( url , width = 800 ) => {
+    if(!url){
+        return "" ;
+    }
+    if (!url.includes("res.cloudinary.com")) {
+        return url; 
+    }
+    const transformation = `q_auto,f_auto,w_${width},c_fill` ; 
+    return url.replace('/upload/' , `/upload/${transformation}/`); 
+}
+
 
 const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings, viewCount , createdAt}) => {
 
@@ -66,9 +78,9 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
 
 
       <div className='w-full h-[67%] bg-[#2e2d2d] rounded-lg overflow-auto flex'>
-        <img src={image1} alt="" className='w-full shrink-0' /> 
-        <img src={image2} alt="" className='w-full shrink-0' />
-        <img src={image3} alt="" className='w-full shrink-0' />
+        <img src={getOptimizedUrl(image1 , 500)} alt="" className='w-full shrink-0' /> 
+        <img src={getOptimizedUrl(image2 , 500)} alt="" loading='lazy' className='w-full shrink-0' />
+        <img src={getOptimizedUrl(image3 , 500)} alt="" loading='lazy' className='w-full shrink-0' />
       </div>
 
       <div className='w-full h-[33%] py-5 flex flex-col gap-0.5'>
