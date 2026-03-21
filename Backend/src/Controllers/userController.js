@@ -1,12 +1,12 @@
 const User = require('../Models/userModel'); 
-const { dbconnect } = require('../Config/database') 
+const { dbConnect } = require('../Config/database') 
 
 // ---------- Get Current User Date ----------
 const getCurrentUser = async (req , res) => {
     try {
         // fixing buffering timeout 
-        await dbconnect(); 
-        
+        await dbConnect(); 
+
         const user = await User.findById(req.userId).select('-password')
         // updating populate 
         .populate('listing')

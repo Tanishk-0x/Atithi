@@ -3,7 +3,7 @@ const Listing = require('../Models/listingModel');
 const User = require('../Models/userModel'); 
 const GenerateContent = require('../GroqAI/ai.controller'); 
 const getCordinates = require('../Services/geoCoding'); 
-const { dbconnect } = require('../Config/database'); 
+const { dbConnect } = require('../Config/database'); 
 
 // ---------- Add Listing ----------
 const addListing = async (req , res) => {
@@ -59,7 +59,7 @@ const addListing = async (req , res) => {
 const getListing = async (req , res) => {
     try {
         // fixing the buffering timeout 
-        await dbconnect(); 
+        await dbConnect(); 
 
         // taking page & limit from query 
         const page = parseInt(req.query.page) || 1 ;  

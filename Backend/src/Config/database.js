@@ -1,9 +1,9 @@
 const mongoose = require('mongoose') ; 
 const Mongo_Url = process.env.MONGO_URL ; 
 
-exports.dbConnect = () => {
+exports.dbConnect = async () => {
 
-    mongoose.connect(Mongo_Url)
+    await mongoose.connect(Mongo_Url)
     .then(() => {
         console.log("DB Connected SuccessFully✅"); 
     })
