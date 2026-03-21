@@ -26,6 +26,8 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json()); 
 
+app.set("trust proxy", 1);
+
 //Mounting
 app.use('/auth' , authRoutes);
 app.use('/user' , userRoutes);
