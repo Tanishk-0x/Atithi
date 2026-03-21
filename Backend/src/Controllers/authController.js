@@ -2,7 +2,6 @@ const User = require('../Models/userModel');
 const bcrypt = require('bcrypt');
 const GenerateToken = require('../Utils/token');
 const Otp = require('../Models/otpModel'); 
-const { dbConnect } = require('../Config/database'); 
 
 const Signup = async (req , res) => {
     try {
@@ -61,9 +60,6 @@ const Signup = async (req , res) => {
 
 const Login = async (req , res) => {
     try {
-        // fixing the buffering timeout error 
-        await dbConnect(); 
-
         const {email , password} = req.body ;
         const user = await User.findOne({email}).populate(
             "listing" , "title description image1 image2 image3 rent city landmark category"

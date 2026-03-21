@@ -9,6 +9,7 @@ const reviewRoutes = require('./src/Routes/reviewRoutes');
 const aiRoutes = require('./src/GroqAI/ai.routes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors') ;
+const { dbConnect } = require('./src/Config/database');
 
 const app = express() ; 
 const Port = process.env.PORT ; 
@@ -26,6 +27,12 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json()); 
 
+// global fix for buffering timeout
+app.use(async (req , res , next) => {
+    await dbConnect(); 
+    next(); 
+});
+
 app.set("trust proxy", 1);
 
 //Mounting
@@ -39,6 +46,7 @@ app.use('/ai' , aiRoutes);
 app.get('/' , (req , res) => {
     res.send(`<h1>Default Route!</h1>`);
 });
+
 
 //Starting Server
 app.listen(Port , () => {
