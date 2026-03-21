@@ -8,13 +8,18 @@ const GenerateOtp = () => {
 
 // create a transport (gmail smtp configuration)
 const transporter = nodemailer.createTransport({
+    service: 'gmail' , 
     host: 'smtp.gmail.com' , 
-    port: 587 , 
-    secure: false , 
+    port: 465 , 
+    secure: true ,
+    pool: true ,  
     auth : {
         user: process.env.HOST_EMAIL , 
         pass: process.env.EMAIL_APP_PASSWORD
     },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 // ---------- Send Otp ----------
