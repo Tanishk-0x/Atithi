@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { userDataContext } from "../Context/UserContext";
 import { useNavigate } from 'react-router-dom';
 import { hostDataContext } from "../Context/HostContext";
-import { reviewDataContext } from "../Context/reviewContext";
+import { reviewDataContext } from "../Context/ReviewContext";
 import { IoIosStar } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { TiInputChecked } from "react-icons/ti";
