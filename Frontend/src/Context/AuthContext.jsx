@@ -5,7 +5,7 @@ export const authDataContext = createContext() ;
 
 const AuthContext = ({children}) => {
 
-    const serverUrl = "http://localhost:5000" ; 
+    const serverUrl = "https://atithi-lor5.onrender.com" ; 
 
     let value = {
         serverUrl
