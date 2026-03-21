@@ -24,7 +24,7 @@ import { HiOutlineTicket } from "react-icons/hi2";
 // ---------- Date Picker -----------
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { reviewDataContext } from '../Context/reviewContext';
+import { reviewDataContext } from '../Context/ReviewContext';
 
 const ViewCard = () => {
 
