@@ -36,6 +36,10 @@ app.use('/booking' , bookingRoutes);
 app.use('/review' , reviewRoutes); 
 app.use('/ai' , aiRoutes); 
 
+app.get('/' , (req , res) => {
+    res.send(`<h1>Default Route!</h1>`);
+});
+
 //Starting Server
 app.listen(Port , () => {
     console.log(`Server Started SuccessFully At Port : ${Port}✅`)
