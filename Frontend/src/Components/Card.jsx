@@ -28,12 +28,7 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
   const {HandleViewCard} = useContext(listingDataContext);
 
   const HandleClick = () => {
-    if(userData){
-      HandleViewCard(id);
-    }
-    else{
-      navigate('/login');
-    }
+    HandleViewCard(id);
   }
 
   // ---------- Calculate for tags ----------
