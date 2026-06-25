@@ -12,7 +12,7 @@ router.post('/add' , isAuth , Upload.fields([
 ]) , addListing ); 
 
 router.get('/get' , getListing); 
-router.get('/findlistingbyid/:id' , isAuth , findListing); 
+router.get('/findlistingbyid/:id' , findListing); 
 
 router.post('/update/:id' , isAuth , Upload.fields([
     {name:"image1" , maxCount:1 },
