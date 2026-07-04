@@ -1,0 +1,27 @@
+
+services:
+
+  backend:
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: atithi_backend
+    ports:
+      - 8000:8000
+    env_file:
+      - ./Backend/.env
+    environment:
+      - PORT=8000
+    restart: unless-stopped
+  
+
+  frontend: 
+    build: 
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: atithi_frontend
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+    restart: unless-stopped
