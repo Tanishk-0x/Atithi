@@ -17,6 +17,9 @@ const SetSystemInstruction = async (flag) => {
     if( flag === '2' ){
         system = Instructions.SummaryGeneration ; 
     }
+    if( flag === '3' ){
+        system = Instructions.ItineraryGeneration ; 
+    }
     return system ; 
 }
 
@@ -32,8 +35,7 @@ const GenerateByGroq = async ( ques , flag ) => {
             messages : [
                 {
                     role : "system" ,
-                    content : SystemInstruction ,
-                            
+                    content : SystemInstruction , 
                 },
                 {
                     role : "user" , 
