@@ -5,7 +5,7 @@ export const authDataContext = createContext() ;
 
 const AuthContext = ({children}) => {
 
-    const serverUrl = "https://atithi-backend.vercel.app" ; 
+    const serverUrl = "/api" ; 
 
     let value = {
         serverUrl

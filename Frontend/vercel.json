@@ -1,0 +1,8 @@
+{
+    "rewrites" : [
+        {
+            "source" : "/api/:path*" , 
+            "destination" : "https://atithi-backend.vercel.app/:path*"
+        }
+    ]
+}
