@@ -27,8 +27,15 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
   const {userData} = useContext(userDataContext);
   const {HandleViewCard} = useContext(listingDataContext);
 
+  const [imgLoaded, setImgLoaded] = useState(false) ; 
+
   const HandleClick = () => {
+    if( userData ){
       HandleViewCard(id);
+    }
+    else{
+      navigate('/login') ; 
+    }
   }
 
   // ---------- Calculate for tags ----------
@@ -72,10 +79,17 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
       }
 
 
-      <div className='w-full h-[67%] bg-[#2e2d2d] rounded-lg overflow-auto flex'>
-        <img src={getOptimizedUrl(image1 , 500)} alt="" className='w-full shrink-0' /> 
-        <img src={getOptimizedUrl(image2 , 500)} alt="" loading='lazy' className='w-full shrink-0' />
-        <img src={getOptimizedUrl(image3 , 500)} alt="" loading='lazy' className='w-full shrink-0' />
+      <div className='w-full h-[67%] bg-[#2e2d2d] rounded-lg overflow-auto flex relative'>
+        {
+          !imgLoaded && (
+            <div className='absolute inset-0 bg-[#F3F1EC] rounded-lg overflow-hidden z-10'>
+              <div className='w-full h-full bg-linear-to-r from-[#F3F1EC] via-gray-200 to-[#F3F1EC] bg-size-[200%_100%] animate-[shimmer_1.6s_ease-in-out_infinite]'></div>
+            </div>
+          )
+        }
+        <img src={getOptimizedUrl(image1 , 500)} alt="" onLoad={() => setImgLoaded(true)} className={`w-full shrink-0 transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}  /> 
+        <img src={getOptimizedUrl(image2 , 500)} alt="" loading='lazy' className={`w-full shrink-0 transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`} />
+        <img src={getOptimizedUrl(image3 , 500)} alt="" loading='lazy' className={`w-full shrink-0 transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`} />
       </div>
 
       <div className='w-full h-[33%] py-5 flex flex-col gap-0.5'>
@@ -87,6 +101,13 @@ const Card = ({title, landmark, city, image1, image2, image3, rent, id, ratings,
         <span className='text-[15px] w-[80%] text-ellipsis overflow-hidden text-nowrap'> {title.toUpperCase()} </span>
         <span className='text-[16px] font-semibold text-[#986b6b]'> ₹{rent}/day</span>
       </div>
+
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}</style>
 
     </div>
 

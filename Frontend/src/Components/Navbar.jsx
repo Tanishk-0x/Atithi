@@ -33,7 +33,9 @@ const Navbar = () => {
         setNewListingData , 
         searchData ,
         HandleSearch ,  
-        HandleViewCard
+        HandleViewCard , 
+        filterCategory, 
+        setFilterCategory ,
     } = useContext(listingDataContext); 
 
     const [cate , setCate] = useState(''); 
@@ -65,17 +67,6 @@ const Navbar = () => {
         }
     }
 
-    // ---------- Category Handler ----------
-    const HandleCategory = (category) => {
-        setCate(category);
-
-        if(category == "trending"){
-            setNewListingData(listingData); 
-        }
-        else{
-            setNewListingData(listingData.filter((list) => list.category == category)); 
-        }
-    }
 
     // ---------- Debouncing for search ----------
     function Debounce( fn , delay ){
@@ -217,47 +208,47 @@ const Navbar = () => {
 
             <div className='w-screen h-[85px] flex items-center justify-start gap-10 overflow-auto md:justify-center px-[15px]'>
                 
-                <div onClick={() => { HandleCategory("trending") ; setCate("")} } className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='trending' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('') } className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='trending' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <MdWhatshot className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Trending</h3>
                 </div>
                 
-                <div onClick={() => HandleCategory("villa")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='villa' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('villa')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='villa' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <GiFamilyHouse className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Villa</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("farm house")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='farm house' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('farm house')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='farm house' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <FaTreeCity className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Farm House</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("pool house")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='pool house' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('pool house')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='pool house' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <MdOutlinePool className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Pool House</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("rooms")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='rooms' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('rooms')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='rooms' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <MdBedroomParent className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Room</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("flat")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='flat' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('flat')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='flat' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <MdOutlineMapsHomeWork className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Flat</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("hostel")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='pg' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('hostel')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='pg' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <IoBedOutline className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Hostel</h3>
                 </div>
                 
-                <div onClick={() => HandleCategory("campsite")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='shops' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('campsite')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='shops' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <GiCampingTent className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Campsite</h3>
                 </div>
 
-                <div onClick={() => HandleCategory("cabin")} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='cabin' ? 'border-b border-[#a6a5a5]' : '' }`}>
+                <div onClick={() => setFilterCategory('cabin')} className={`flex justify-center items-center flex-col  cursor-pointer hover:border-b border-[#a6a5a5] text-[13px] transition-all duration-300 ${cate=='cabin' ? 'border-b border-[#a6a5a5]' : '' }`}>
                     <GiWoodCabin className='w-[30px] h-[30px] text-[black] transition-transform duration-300 hover:-translate-y-1' />
                     <h3>Cabin</h3>
                 </div>

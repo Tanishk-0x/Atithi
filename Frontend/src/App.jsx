@@ -16,6 +16,7 @@ import HostDashboard from './Pages/HostDashboard'
 import WaitingPage from './Pages/WaitingPage'
 import BookingConfirm from './Pages/BookingConfirm'
 import NotFound from './Pages/NotFound'; 
+import Itinerary from './Pages/Itinerary' ; 
 
 const App = () => {
 
@@ -31,13 +32,14 @@ const App = () => {
         <Route path='/listingpage2' element={ userData != null ? <ListingPage2/> : <Navigate to={'/'}/>}/>
         <Route path='/listingpage3' element={ userData != null ? <ListingPage3/> : <Navigate to={'/'}/>}/>
         <Route path='/mylisting' element={ userData != null ? <MyListing/> : <Navigate to={'/'}/>}/>
-        <Route path='/viewcard' element={<ViewCard/> }/>
+        <Route path='/viewcard' element={userData != null ? <ViewCard/> : <Navigate to={'/login'}/>}/>
         <Route path='/mybooking' element={userData != null ? <MyBooking/> : <Navigate to={'/'}/>}/>
 
         <Route path='*' element={<NotFound/>} />
 
         <Route path='/hostdashboard' element={userData != null ? <HostDashboard/> : <Navigate to={'/'}/>}/>
         <Route path='/waiting' element={userData != null ? <WaitingPage/> : <Navigate to={'/'}/>} />
+        <Route path='/itinerary' element={userData != null ? <Itinerary/> : <Navigate to={'/login'}/>} />
 
         // Dynamic Routing 
         <Route path='/confirm/:id' element={userData != null ? <BookingConfirm/> : <Navigate to={'/'}/>} />

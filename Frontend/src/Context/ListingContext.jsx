@@ -39,6 +39,7 @@ const ListingContext = ({children}) => {
 
     const [page , setPage] = useState(1);
     const [totalPages , setTotalPages] = useState(1);  
+    const [filterCategory, setFilterCategory] = useState('') ; 
 
     // Search 
     const [searchData , setSearchData] = useState([]); 
@@ -121,7 +122,7 @@ const ListingContext = ({children}) => {
     const getListings = async () => {
         try {
             setLoading(true); 
-            const res = await axios.get(serverUrl + `/listing/get?page=${page}&limit=12` , 
+            const res = await axios.get(serverUrl + `/listing/get?category=${filterCategory}&page=${page}&limit=12` , 
                 {withCredentials:true}
             );     
             if(res.data.success){
@@ -185,7 +186,7 @@ const ListingContext = ({children}) => {
     // ------ UseEffect ------
     useEffect(() => {
         getListings(); 
-    },[adding , updating , deleting , page]);
+    },[adding , updating , deleting , page, filterCategory]);
 
 
     const value = {
@@ -208,6 +209,7 @@ const ListingContext = ({children}) => {
         mapUrl , 
         page , setPage , 
         totalPages , 
+        filterCategory, setFilterCategory ,
         
         loading , setLoading ,
         adding ,
