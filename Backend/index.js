@@ -14,7 +14,6 @@ const itenaryRoutes = require('./src/Routes/itenaryRoutes') ;
 const cookieParser = require('cookie-parser');
 const cors = require('cors') ;
 const { dbConnect } = require('./src/Config/database');
-const fileUpload = require('express-fileupload') ; 
 
 const app = express() ; 
 const Port = process.env.PORT || 5000 ; 
@@ -32,10 +31,6 @@ app.use(cors({
 app.use(cookieParser()); 
 app.use(express.json()); 
 
-app.use(fileUpload({
-    useTempFiles: true, 
-    tempFileDir: '/tmp/'
-}))
 
 // global fix for buffering timeout
 app.use(async (req , res , next) => {
