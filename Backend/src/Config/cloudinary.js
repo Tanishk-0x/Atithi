@@ -17,7 +17,11 @@ const uploadOnCloudinary = async (filepath) => {
 
         // Upload on cloudinary 
         const UploadResult = await cloudinary.uploader.upload(filepath); 
-        fs.unlinkSync(filepath); // delete from local
+        // fs.unlinkSync(filepath); 
+        // // delete from local
+        if( fs.existsSync(filepath) ){
+            fs.unlinkSync(filepath) ; 
+        }
 
         return UploadResult.secure_url ; 
     }
