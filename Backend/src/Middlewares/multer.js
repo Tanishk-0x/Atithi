@@ -7,11 +7,12 @@ const storage = multer.diskStorage({
         cb( null , '/tmp'); 
     }, 
     filename : (req , file , cb) => {
-        cb( null , file.originalname);
+        const suffix = Date.now() + '-' + (Math.round(Math.random() * 1000) + 1) ; 
+        cb( null , suffix + '-' + file.originalname);
     }
     
 }); 
 
 // Initialise Multer Middleware 
-const Upload = multer({storage: storage, dest: '/tmp/'}); 
+const Upload = multer({storage}); 
 module.exports = Upload ; 
