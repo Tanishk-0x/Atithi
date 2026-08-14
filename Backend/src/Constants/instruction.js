@@ -9,7 +9,7 @@ const Instructions = {
         "city": String | null,
         "maxPrice": Number | null,
         "guest" : Number | null,
-        "category": "rooms" | "villa" | "farm house" | "pool house" | "shops" | "cabin" | "pg" | "flat" | null,
+        "category": "rooms" | "villa" | "farm house" | "pool house" | "hostel" | "cabin" | "campsites" | "flat" | null,
         "amenities": String[]
         }
         

@@ -60,15 +60,28 @@ const getListing = async (req , res) => {
         // taking page & limit from query 
         const page = parseInt(req.query.page) || 1 ;  
         const limit = parseInt(req.query.limit) || 12 ; 
+        const category = req.query.category ; 
+        console.log("QUERY: " , req.query) ; 
+
+        // to filter based on category
+        let filter = {} ; 
+
+        if( category && category !== 'trending' && category !== '' ){
+            filter.category = category ; 
+        }
+
+        console.log("FILTER: " , filter) ; 
 
         // calculate document to skip 
         const skip = (page-1) * limit ; 
 
         // total documents 
-        const totalListings = await Listing.countDocuments(); 
+        const totalListings = await Listing.countDocuments(filter); 
+
+        console.log("TOTAL: " , totalListings) ; 
 
         // fetch the listings 
-        const listings = await Listing.find()
+        const listings = await Listing.find(filter)
             .lean()
             .sort({ createdAt: -1 } )
             .skip(skip)

@@ -1,3 +1,6 @@
+// const dns = require('dns'); 
+// dns.setServers(['8.8.8.8', '8.8.4.4']);
+// dns.setDefaultResultOrder('ipv4first') ; 
 const express = require('express') ; 
 require('dotenv').config() ; 
 // require('./src/Config/database').dbConnect() ; 
@@ -10,7 +13,7 @@ const aiRoutes = require('./src/GroqAI/ai.routes');
 const itenaryRoutes = require('./src/Routes/itenaryRoutes') ; 
 const cookieParser = require('cookie-parser');
 const cors = require('cors') ;
-// const { dbConnect } = require('./src/Config/database');
+const { dbConnect } = require('./src/Config/database');
 
 const app = express() ; 
 const Port = process.env.PORT || 5000 ; 
@@ -29,10 +32,10 @@ app.use(cookieParser());
 app.use(express.json()); 
 
 // global fix for buffering timeout
-// app.use(async (req , res , next) => {
-//     await dbConnect(); 
-//     next(); 
-// });
+app.use(async (req , res , next) => {
+    await dbConnect(); 
+    next(); 
+});
 
 app.set("trust proxy", 1);
 
