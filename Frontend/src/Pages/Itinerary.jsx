@@ -151,11 +151,8 @@ const Itinerary = () => {
         }
       `}</style>
 
-      {/* ---------------------------------------------------------- */}
-      {/* Hero                                                        */}
-      {/* ---------------------------------------------------------- */}
       <div className="relative overflow-hidden pt-28 pb-16 px-6 flex flex-col items-center text-center">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[38rem] h-[38rem] bg-[radial-gradient(circle,_rgba(226,55,68,0.16)_0%,_transparent_70%)] ambient-glow -z-10" />
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-152 h-152 bg-[radial-gradient(circle,rgba(226,55,68,0.16)_0%,transparent_70%)] ambient-glow -z-10" />
         <div className="absolute top-10 right-10 spin-slow opacity-[0.06] -z-10 hidden md:block">
           <IconCompass className="w-40 h-40 text-[#E23744]" />
         </div>
@@ -186,7 +183,7 @@ const Itinerary = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group bg-gradient-to-r from-[#E23744] to-[#FF6B4A] hover:brightness-110 text-white px-7 py-3.5 rounded-full font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-[0_10px_25px_-8px_rgba(226,55,68,0.55)] shrink-0"
+              className="group bg-linear-to-r from-[#E23744] to-[#FF6B4A] hover:brightness-110 text-white px-7 py-3.5 rounded-full font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-[0_10px_25px_-8px_rgba(226,55,68,0.55)] shrink-0"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -207,9 +204,7 @@ const Itinerary = () => {
         </form>
       </div>
 
-      {/* ---------------------------------------------------------- */}
-      {/* Error                                                       */}
-      {/* ---------------------------------------------------------- */}
+
       {error && (
         <div className="max-w-2xl mx-auto px-6 mb-8 text-center hero-fade">
           <div className="bg-[#FDEEEC] border border-[#F3D3CE] text-[#B91C28] px-5 py-4 rounded-2xl text-sm font-medium">
@@ -218,9 +213,7 @@ const Itinerary = () => {
         </div>
       )}
 
-      {/* ---------------------------------------------------------- */}
-      {/* Loading skeleton                                            */}
-      {/* ---------------------------------------------------------- */}
+      
       {loading && (
         <div className="max-w-4xl mx-auto px-6 pb-24">
           <div className="flex flex-col gap-8 mt-8">
@@ -234,33 +227,31 @@ const Itinerary = () => {
         </div>
       )}
 
-      {/* ---------------------------------------------------------- */}
-      {/* Results                                                     */}
-      {/* ---------------------------------------------------------- */}
+      
       {itineraryData && !loading && (
         <div className="max-w-4xl mx-auto px-6 pb-28">
           <div className="text-center mb-16 hero-fade">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C97B72]">Your route</span>
             <h2 className="font-display text-4xl text-[#241A18] mt-2">{itineraryData.destination}</h2>
-            <div className="h-[3px] w-16 bg-gradient-to-r from-[#E23744] to-[#FF6B4A] mx-auto mt-4 rounded-full" />
+            <div className="h-[3px] w-16 bg-linear-to-r from-[#E23744] to-[#FF6B4A] mx-auto mt-4 rounded-full" />
           </div>
 
           <div className="space-y-16 relative md:pl-16">
             {/* Route line */}
-            <div className="hidden md:block absolute left-[1.35rem] top-2 bottom-2 w-[3px] bg-gradient-to-b from-[#E23744]/40 via-[#F0D8D2] to-transparent rounded-full" />
+            <div className="hidden md:block absolute left-[1.35rem] top-2 bottom-2 w-[3px] bg-linear-to-b from-[#E23744]/40 via-[#F0D8D2] to-transparent rounded-full" />
 
             {itineraryData.itinerary.map((dayData, dayIdx) => (
               <div key={dayIdx} className="relative">
                 {/* Pin marker on the route */}
-                <div className="hidden md:flex absolute -left-[3.25rem] top-0 flex-col items-center z-10">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#E23744] to-[#FF6B4A] flex items-center justify-center shadow-[0_8px_20px_-4px_rgba(226,55,68,0.55)] ring-4 ring-[#FFFBF8]">
+                <div className="hidden md:flex absolute -left-13 top-0 flex-col items-center z-10">
+                  <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#E23744] to-[#FF6B4A] flex items-center justify-center shadow-[0_8px_20px_-4px_rgba(226,55,68,0.55)] ring-4 ring-[#FFFBF8]">
                     <IconPin className="w-5 h-5 text-white" />
                   </div>
                 </div>
 
                 {/* Day header */}
                 <div className="flex items-center gap-4 mb-7">
-                  <div className="md:hidden w-11 h-11 rounded-full bg-gradient-to-br from-[#E23744] to-[#FF6B4A] flex items-center justify-center shadow-lg shrink-0">
+                  <div className="md:hidden w-11 h-11 rounded-full bg-linear-to-br from-[#E23744] to-[#FF6B4A] flex items-center justify-center shadow-lg shrink-0">
                     <IconPin className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex flex-col">
@@ -269,10 +260,9 @@ const Itinerary = () => {
                     </span>
                     <h3 className="font-display text-2xl text-[#241A18]">{dayData.title || 'On the road'}</h3>
                   </div>
-                  <div className="h-px flex-1 bg-gradient-to-r from-[#F0D8D2] to-transparent ml-2" />
+                  <div className="h-px flex-1 bg-linear-to-r from-[#F0D8D2] to-transparent ml-2" />
                 </div>
 
-                {/* Places */}
                 <div className="flex flex-col gap-6 pb-4">
                   {dayData.places.map((place, placeIdx) => (
                     <div
@@ -280,22 +270,20 @@ const Itinerary = () => {
                       className="card-in group flex flex-col sm:flex-row bg-white border border-[#F0E4E0] rounded-[1.75rem] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_45px_-15px_rgba(226,55,68,0.28)] hover:-translate-y-1 hover:border-[#E23744]/30"
                       style={{ animationDelay: `${placeIdx * 90}ms` }}
                     >
-                      {/* Image */}
                       <div className="w-full sm:w-[38%] h-56 sm:h-auto relative overflow-hidden shrink-0">
                         <img
                           src={place.imageUrl}
                           alt={place.placeName}
                           loading="lazy"
-                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1200 ease-out"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 sm:bg-gradient-to-r sm:from-black/10" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-black/0 sm:bg-linear-to-r sm:from-black/10" />
                         <span className="absolute bottom-3 left-3 sm:hidden inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-[#B91C28] text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1.5 rounded-full shadow-sm">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#E23744]" />
                           {place.timeSlot}
                         </span>
                       </div>
 
-                      {/* Content */}
                       <div className="p-7 flex flex-col justify-center w-full">
                         <span className="hidden sm:inline-flex w-fit items-center gap-1.5 bg-[#FDEEEC] text-[#B91C28] text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1.5 rounded-full border border-[#F3D3CE] mb-3">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#E23744]" />
@@ -305,7 +293,6 @@ const Itinerary = () => {
                           {place.placeName}
                         </h3>
 
-                        {/* Distance / duration meta row */}
                         {(place.distanceFromCenter || place.recommendedDuration) && (
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-3">
                             {place.distanceFromCenter && (
