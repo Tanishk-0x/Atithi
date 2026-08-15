@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { authDataContext } from '../Context/AuthContext';
 
 const Itinerary = () => {
+
+  const { serverUrl } = useContext(authDataContext) ; 
 
   const [destination, setDestination] = useState('');
   const [loading, setLoading] = useState(false);
@@ -84,7 +87,7 @@ const Itinerary = () => {
     setItineraryData(null);
 
     try {
-      const { data: result } = await axios.post('http://localhost:8000/itinerary/generate', {
+      const { data: result } = await axios.post(serverUrl + '/itinerary/generate', {
         destination,
       });
 
