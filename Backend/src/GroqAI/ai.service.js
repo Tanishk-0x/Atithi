@@ -29,7 +29,7 @@ const GenerateByGroq = async ( ques , flag ) => {
 
         const ChatCompletion = await groq.chat.completions.create({
             // Model ... llama-3.3-70b-versatile
-            model : "llama3-70b-8192" ,
+            model : "openai/gpt-oss-20b" ,
 
             // Message ... 
             messages : [
@@ -42,7 +42,7 @@ const GenerateByGroq = async ( ques , flag ) => {
                     content : ques 
                 }
             ],
-
+            response_format: { type: "json_object" },
             
         }); 
 
