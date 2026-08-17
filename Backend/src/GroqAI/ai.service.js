@@ -29,7 +29,7 @@ const GenerateByGroq = async ( ques , flag ) => {
 
         const ChatCompletion = await groq.chat.completions.create({
             // Model ... llama-3.3-70b-versatile
-            model : "llama-3.1-8b-instant" ,
+            model : "llama-3.3-70b-versatile" ,
 
             // Message ... 
             messages : [
